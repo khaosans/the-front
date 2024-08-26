@@ -2,12 +2,23 @@
 
 import { useState, useEffect } from "react"
 import TodoComponent from "./Todo"
-import { Todo } from "./types/todo"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Todo as TodoType } from "@/app/types/todo";
+
+// Update the Todo interface to match your table structure
+export interface Todo {
+
+  id: number;
+  text: string;
+  completed: boolean;
+  created_at: string;
+  user_id: string;
+  title: string;
+}
 
 export default function Board() {
   const [todos, setTodos] = useState<Todo[]>([])
-  const [newTodoTitle, setNewTodoTitle] = useState("")
+  const [newTodoText, setNewTodoText] = useState("")
   const supabase = createClientComponentClient()
 
   useEffect(() => {
@@ -17,7 +28,7 @@ export default function Board() {
         .select('*')
         .order('created_at', { ascending: false })
       if (fetchedTodos) {
-        setTodos(fetchedTodos)
+        setTodos(fetchedTodos as Todo[])
       }
       if (error) {
         console.error('Error fetching todos:', error)
@@ -27,23 +38,30 @@ export default function Board() {
   }, [supabase])
 
   const handleAddTodo = async () => {
-    if (newTodoTitle.trim() !== "") {
-      const { data: newTodo, error } = await supabase
+    if (newTodoText.trim() !== "") {
+      const newTodo: Partial<Todo> = {
+        title: newTodoText,
+        text: newTodoText, // For backwards compatibility
+        completed: false,
+      };
+
+      const { data, error } = await supabase
         .from('todos')
-        .insert({ title: newTodoTitle, completed: false })
+        .insert(newTodo)
         .select()
-        .single()
-      if (newTodo) {
-        setTodos([newTodo, ...todos])
-        setNewTodoTitle("")
+        .single();
+
+      if (data) {
+        setTodos([data as Todo, ...todos]);
+        setNewTodoText("");
       }
       if (error) {
-        console.error('Error adding todo:', error)
+        console.error('Error adding todo:', error);
       }
     }
   }
 
-  const handleToggleTodo = async (id: string) => {
+  const handleToggleTodo = async (id: number) => {
     const todo = todos.find(t => t.id === id)
     if (todo) {
       const { error } = await supabase
@@ -58,7 +76,7 @@ export default function Board() {
     }
   }
 
-  const handleDeleteTodo = async (id: string) => {
+  const handleDeleteTodo = async (id: number) => {
     const { error } = await supabase
       .from('todos')
       .delete()
@@ -76,8 +94,8 @@ export default function Board() {
       <div className="flex mb-4">
         <input
           type="text"
-          value={newTodoTitle}
-          onChange={(e) => setNewTodoTitle(e.target.value)}
+          value={newTodoText}
+          onChange={(e) => setNewTodoText(e.target.value)}
           className="flex-grow p-2 border rounded-l bg-gray-800 text-white border-gray-700"
           placeholder="Add a new todo"
         />
@@ -91,8 +109,15 @@ export default function Board() {
       <ul className="space-y-2">
         {todos.map((todo) => (
           <TodoComponent
-            key={todo.id}
-            todo={todo}
+            key={todo.id.toString()}
+            todo={{
+              id: todo.id.toString(),
+              text: todo.text,
+              completed: todo.completed,
+              created_at: todo.created_at,
+              user_id: todo.user_id,
+              title: todo.title
+            }}
             onToggle={() => handleToggleTodo(todo.id)}
             onDelete={() => handleDeleteTodo(todo.id)}
           />

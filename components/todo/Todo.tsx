@@ -1,26 +1,26 @@
-import { Todo as TodoType } from "@/app/types/todo"
+import { Todo } from "@/app/types/todo";
 
-interface TodoProps {
-    todo: TodoType;
+interface TodoComponentProps {
+    todo: Todo;
     onToggle: () => void;
     onDelete: () => void;
 }
 
-export default function TodoItem({ todo, onToggle, onDelete }: TodoProps) {
+export default function TodoComponent({ todo, onToggle, onDelete }: TodoComponentProps) {
     return (
-        <li className="flex items-center space-x-3 bg-gray-800 p-3 rounded">
+        <li className="flex items-center space-x-3 bg-gray-700 p-3 rounded">
             <input
                 type="checkbox"
                 checked={todo.completed}
                 onChange={onToggle}
-                className="form-checkbox h-5 w-5 text-blue-600 rounded bg-gray-700 border-gray-600"
+                className="form-checkbox h-5 w-5 text-blue-600 rounded bg-gray-600 border-gray-500"
             />
-            <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-white'}`}>
-                {todo.title}
+            <span className={`flex-grow ${todo.completed ? 'line-through text-gray-400' : 'text-white'}`}>
+                {todo.title || todo.text}
             </span>
             <button
                 onClick={onDelete}
-                className="text-red-500 hover:text-red-700 transition-colors"
+                className="text-red-400 hover:text-red-300 transition-colors"
             >
                 Delete
             </button>
