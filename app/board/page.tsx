@@ -1,38 +1,20 @@
-'use client';
+import AuthenticatedLayout from '@/app/layouts/AuthenticatedLayout';
+import Board from "@/components/todo/Board";
 
-import DeployButton from "@/components/DeployButton";
-import AuthButton from "@/components/AuthButton";
-import React from "react";
-import Header from "@/components/Header";
-import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
-import AuthenticatedLayout from "@/app/layouts/AuthenticatedLayout";
-import TodoList from "@/components/todo/TodoList";
+interface Params {
+    id: string;
+}
 
-export default async function NewProtectedPage() {
-    const supabase = createClient();
+interface WorkboardPageProps {
+    params: Params;
+}
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-        return redirect("/login");
-    }
-
-    const todos = [
-        { title: "Todo 1", completed: false },
-        { title: "Todo 2", completed: true },
-        // Add more todos as needed
-    ];
-
+const WorkboardPage: React.FC<WorkboardPageProps> = ({ params }) => {
     return (
         <AuthenticatedLayout>
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-                <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-                    <TodoList todos={todos} />
-                </div>
-            </div>
+            <Board />
         </AuthenticatedLayout>
     );
-}
+};
+
+export default WorkboardPage;

@@ -1,24 +1,29 @@
-interface Todo {
-    title: string;
-    completed: boolean;
-}
+import { Todo as TodoType } from "@/app/types/todo"
 
 interface TodoProps {
-    todo: Todo;
+    todo: TodoType;
+    onToggle: () => void;
+    onDelete: () => void;
 }
 
-export default function Todo({ todo }: TodoProps) {
+export default function TodoItem({ todo, onToggle, onDelete }: TodoProps) {
     return (
-        <div className="flex items-center space-x-3 mb-2">
+        <li className="flex items-center space-x-3 bg-gray-800 p-3 rounded">
             <input
                 type="checkbox"
                 checked={todo.completed}
-                onChange={() => {/* Implement toggle logic */}}
-                className="form-checkbox h-5 w-5 text-blue-600"
+                onChange={onToggle}
+                className="form-checkbox h-5 w-5 text-blue-600 rounded bg-gray-700 border-gray-600"
             />
-            <span className={`${todo.completed ? 'line-through text-gray-500' : ''}`}>
+            <span className={`flex-grow ${todo.completed ? 'line-through text-gray-500' : 'text-white'}`}>
                 {todo.title}
             </span>
-        </div>
+            <button
+                onClick={onDelete}
+                className="text-red-500 hover:text-red-700 transition-colors"
+            >
+                Delete
+            </button>
+        </li>
     );
 }
