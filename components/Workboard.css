@@ -1,28 +1,31 @@
 .workboard-columns {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 20px 20px 20px 0; /* Adjusted padding */
+  width: 100%;
   overflow-x: auto;
+  min-width: min-content;
 }
 
 .workboard-column {
-  flex: 0 0 300px;
-  margin: 0 10px;
-  padding: 10px;
-  border-radius: 5px;
+  flex: 0 0 280px; /* Slightly reduced width */
+  min-width: 280px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #1e1e1e; /* Darker background for columns */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.column-0 {
-  background-color: #ffcccc; /* Light Red */
-}
+/* Adjust the colors to match the image */
+.column-0 { border-top: 4px solid #8a7cff; }
+.column-1 { border-top: 4px solid #20b2aa; }
+.column-2 { border-top: 4px solid #ff6347; }
+.column-3 { border-top: 4px solid #ffa500; }
 
-.column-1 {
-  background-color: #ccffcc; /* Light Green */
-}
-
-.column-2 {
-  background-color: #ccccff; /* Light Blue */
-}
-
-.column-3 {
-  background-color: #ffffcc; /* Light Yellow */
+/* You might need to add this to the parent container */
+.workboard-container {
+  padding-left: 20px; /* Add left padding to the container */
+  width: 100%;
+  box-sizing: border-box;
 }
