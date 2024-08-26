@@ -1,13 +1,13 @@
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import SignOutButton from "@/components/SignOutButton";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  const supabase = createClientComponentClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
