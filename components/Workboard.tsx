@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Worklist from './Worklist';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import './Workboard.css'; // Import the CSS file
 
 interface Worklist {
   id: number;
@@ -39,9 +40,9 @@ const Workboard: React.FC<{ workboardId: number }> = ({ workboardId }) => {
   return (
     <div>
       <h2 style={{ color: 'var(--foreground)' }}>Workboard</h2>
-      <div style={{ display: 'flex', justifyContent: 'space-between', overflowX: 'auto' }}>
-        {worklists.map(worklist => (
-          <div key={worklist.id} style={{ flex: '0 0 300px', margin: '0 10px', backgroundColor: 'var(--btn-background)', padding: '10px', borderRadius: '5px' }}>
+      <div className="workboard-columns">
+        {worklists.map((worklist, index) => (
+          <div key={worklist.id} className={`workboard-column column-${index % 4}`}>
             <Worklist worklistId={worklist.id} />
           </div>
         ))}

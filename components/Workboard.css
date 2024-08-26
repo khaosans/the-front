@@ -1,0 +1,28 @@
+.workboard-columns {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+
+.workboard-column {
+  flex: 0 0 300px;
+  margin: 0 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.column-0 {
+  background-color: #ffcccc; /* Light Red */
+}
+
+.column-1 {
+  background-color: #ccffcc; /* Light Green */
+}
+
+.column-2 {
+  background-color: #ccccff; /* Light Blue */
+}
+
+.column-3 {
+  background-color: #ffffcc; /* Light Yellow */
+}
