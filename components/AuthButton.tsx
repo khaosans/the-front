@@ -28,7 +28,8 @@ const AuthButton: React.FC = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    // Optionally, you can redirect or update the UI here
+    setUser(null);
+    router.push('/');
   };
 
   // Rest of your component code...
