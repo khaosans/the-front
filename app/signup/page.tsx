@@ -6,21 +6,21 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from 'next/link';
 import { useTheme } from '../contexts/ThemeContext';
 import Image from 'next/image';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const supabase = createClientComponentClient();
   const { theme } = useTheme();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
+    setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({ 
+      const { error } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
@@ -28,15 +28,12 @@ export default function SignUpPage() {
         },
       });
       if (error) throw error;
-      if (data.user && data.user.identities && data.user.identities.length === 0) {
-        setError('The email address is already registered.');
-      } else {
-        toast.success('Signup successful! Please check your email for confirmation.');
-        router.push('/login?message=Please check your email to confirm your account');
-      }
+      toast.success('Signup successful! Please check your email for confirmation.');
+      router.push('/login?message=Please check your email to confirm your account');
     } catch (error: any) {
-      setError(error.message);
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,8 +60,7 @@ export default function SignUpPage() {
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="email-address" className="sr-only">
                 Email address
@@ -75,7 +71,7 @@ export default function SignUpPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${
+                className={`appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
                   theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
                 }`}
                 placeholder="Email address"
@@ -93,7 +89,7 @@ export default function SignUpPage() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${
+                className={`appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
                   theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
                 }`}
                 placeholder="Password"
@@ -103,16 +99,15 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {error && <div className="text-red-500 text-sm">{error}</div>}
-
           <div>
             <button
               type="submit"
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-                theme === 'dark' ? 'bg-indigo-800 hover:bg-indigo-900' : ''
+              disabled={isLoading}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                theme === 'dark' ? 'bg-blue-800 hover:bg-blue-900' : ''
               }`}
             >
-              Sign up
+              {isLoading ? 'Signing up...' : 'Sign up'}
             </button>
           </div>
         </form>
@@ -150,7 +145,7 @@ export default function SignUpPage() {
         <div className="text-center">
           <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
               Log in
             </Link>
           </p>
