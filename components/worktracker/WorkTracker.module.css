@@ -1,0 +1,26 @@
+.workTracker {
+    width: 100%;
+    height: calc(100vh - 64px); /* Adjust based on your header height */
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.columnsContainer {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .workTracker {
+        padding: 0.5rem;
+    }
+    
+    .columnsContainer {
+        flex-direction: column;
+        height: auto;
+    }
+}

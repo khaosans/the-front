@@ -1,0 +1,157 @@
+.column {
+    flex: 1;
+    min-width: 300px;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.columnTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #dfe1e6;
+}
+
+.tasksContainer {
+    flex-grow: 1;
+    min-height: 100px;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.taskCard {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    cursor: move; /* Changed cursor to 'move' */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; /* Added transform to transition */
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+.taskCard:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.taskCard:active {
+    transform: scale(1.02); /* Slight scale effect when dragging */
+}
+
+.taskCard h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #172b4d;
+    margin-bottom: 0.5rem;
+}
+
+.taskCard p {
+    font-size: 0.8rem;
+    color: #5e6c84;
+}
+
+.emptyState {
+    color: #5e6c84;
+    font-size: 0.875rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.createTaskButton {
+    width: 100%;
+    padding: 8px;
+    background-color: #0052cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.createTaskButton:hover {
+    background-color: #0043a6;
+}
+
+.addTaskForm {
+    margin-top: auto;
+}
+
+.addTaskInput {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #dfe1e6;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    color: #172b4d; /* Explicitly set text color */
+}
+
+.addTaskInput::placeholder {
+    color: #5e6c84;
+}
+
+.addTaskInput:focus {
+    outline: 2px solid #0079BF;
+}
+
+.addTaskButton {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #0079BF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.addTaskButton:hover {
+    background-color: #026AA7;
+}
+
+.removeTaskButton {
+    background-color: #EF5350;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.removeTaskButton:hover {
+    background-color: #D32F2F;
+}
+
+.tasksContainer.draggingOver {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.taskCard.dragging {
+    opacity: 0.7;
+    transform: scale(1.05);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .column {
+        min-width: auto;
+        max-height: none;
+    }
+}
