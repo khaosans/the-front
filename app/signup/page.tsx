@@ -1,99 +1,161 @@
-import { createClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
-import Link from "next/link";
-import { SubmitButton } from "../../components/forms/submit-button";
-import { Input } from "@/components/forms/input";
-import { Label } from "@/components/forms/label";
-import { FormMessage, Message } from "@/components/forms/form-message";
-import { encodedRedirect } from "@/utils/utils";
+'use client';
 
-export default function Signup({ searchParams }: { searchParams: Message }) {
-    const signUp = async (formData: FormData) => {
-        "use server";
-        const email = formData.get("email")?.toString();
-        const password = formData.get("password")?.toString();
-        const supabase = createClient();
-        const origin = headers().get("origin");
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from 'next/link';
+import { useTheme } from '../contexts/ThemeContext';
+import Image from 'next/image';
+import toast from 'react-hot-toast';
 
-        if (!email || !password) {
-            return { error: "Email and password are required" };
-        }
+export default function SignUpPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+  const { theme } = useTheme();
 
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                emailRedirectTo: `${origin}/auth/callback`,
-            },
-        });
-
-        if (error) {
-            console.error(error.code + " " + error.message);
-            return encodedRedirect("error", "/signup", "Error trying to sign up");
-        } else {
-            return encodedRedirect(
-                "success",
-                "/signup",
-                "Thanks for signing up! Please check your email for a verification link.",
-            );
-        }
-    };
-
-    if ("message" in searchParams) {
-        return (
-            <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-                <FormMessage message={searchParams} />
-            </div>
-        );
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      const { data, error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+      if (data.user && data.user.identities && data.user.identities.length === 0) {
+        setError('The email address is already registered.');
+      } else {
+        toast.success('Signup successful! Please check your email for confirmation.');
+        router.push('/login?message=Please check your email to confirm your account');
+      }
+    } catch (error: any) {
+      setError(error.message);
+      toast.error(error.message);
     }
+  };
 
-    return (
-        <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-            <Link
-                href="/"
-                className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
-                >
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>{" "}
-                Back
-            </Link>
+  const handleGoogleSignUp = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
-            <form className="flex flex-col w-full justify-center gap-2 text-foreground [&>input]:mb-6 max-w-md">
-                <h1 className="text-2xl font-medium">Sign up</h1>
-                <p className="text-sm text text-foreground/60">
-                    Already have an account?{" "}
-                    <Link className="text-blue-600 font-medium underline" href="/login">
-                        Log in
-                    </Link>
-                </p>
-                <div className="mt-8 flex flex-col gap-2 [&>input]:mb-3">
-                    <Label htmlFor="email">Email</Label>
-                    <Input name="email" placeholder="you@example.com" required />
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                        type="password"
-                        name="password"
-                        placeholder="••••••••"
-                        required
-                    />
-                    <SubmitButton formAction={signUp} pendingText="Signing up...">
-                        Sign up
-                    </SubmitButton>
-                </div>
-                <FormMessage message={searchParams} />
-            </form>
+  return (
+    <div className={`min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className={`mt-6 text-center text-3xl font-extrabold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            Create your account
+          </h2>
         </div>
-    );
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <input type="hidden" name="remember" defaultValue="true" />
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${
+                  theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
+                }`}
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${
+                  theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
+                }`}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+
+          <div>
+            <button
+              type="submit"
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                theme === 'dark' ? 'bg-indigo-800 hover:bg-indigo-900' : ''
+              }`}
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className={`px-2 ${theme === 'dark' ? 'bg-gray-900 text-gray-300' : 'bg-gray-50 text-gray-500'}`}>
+                Or continue with
+              </span>
+            </div>
+          </div>
+          
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleSignUp}
+              className={`w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 ${
+                theme === 'dark' ? 'bg-gray-800 text-white hover:bg-gray-700' : ''
+              }`}
+            >
+              <Image
+                src="/images/google.svg"
+                alt="Google logo"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Sign up with Google
+            </button>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            Already have an account?{' '}
+            <Link href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Log in
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
 }

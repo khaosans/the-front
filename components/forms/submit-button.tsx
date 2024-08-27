@@ -1,29 +1,20 @@
-"use client";
+import { useFormContext } from 'react-hook-form';
 
-import { useFormStatus } from "react-dom";
-import { type ComponentProps } from "react";
+interface SubmitButtonProps {
+  children: React.ReactNode;
+  isLoading: boolean;
+}
 
-type Props = ComponentProps<"button"> & {
-  pendingText?: string;
-};
-
-export function SubmitButton({
-  children,
-  pendingText = "Submitting...",
-  ...props
-}: Props) {
-  const { pending, action } = useFormStatus();
-
-  const isPending = pending && action === props.formAction;
+export const SubmitButton = ({ children, isLoading }: SubmitButtonProps) => {
+  const { formState: { isValid } } = useFormContext();
 
   return (
     <button
-      {...props}
-      className="bg-black h-8 flex items-center justify-center font-medium text-sm hover:bg-slate-800 transition-colors text-white rounded-md text-foreground"
       type="submit"
-      aria-disabled={pending}
+      disabled={!isValid || isLoading}
+      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400"
     >
-      {isPending ? pendingText : children}
+      {isLoading ? 'Loading...' : children}
     </button>
   );
-}
+};

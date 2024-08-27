@@ -1,35 +1,22 @@
-import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from "next/server";
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? '/';
+  const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get('code');
 
   if (code) {
-    const supabase = createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      // ... existing redirect logic ...
+    const supabase = createRouteHandlerClient({ cookies });
+    try {
+      await supabase.auth.exchangeCodeForSession(code);
+      console.log('Successfully exchanged code for session');
+    } catch (error) {
+      console.error('Error exchanging code for session:', error);
+      // You might want to redirect to an error page here
+      return NextResponse.redirect(`${requestUrl.origin}/auth-error`);
     }
   }
 
-  // Add this new route for Google sign-in
-  if (searchParams.get("provider") === "google") {
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${origin}/auth/callback`
-      }
-    });
-
-    if (error) {
-      return NextResponse.redirect(`${origin}/auth/auth-code-error`);
-    }
-
-    return NextResponse.redirect(data.url);
-  }
-
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  return NextResponse.redirect(`${requestUrl.origin}/taskboard`);
 }
