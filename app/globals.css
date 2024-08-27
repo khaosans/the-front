@@ -81,3 +81,51 @@ body {
   cursor: move;
   user-select: none;
 }
+
+/* Dark mode styles */
+.dark {
+  --primary-color: #4C9AFF;
+  --secondary-color: #2C5282;
+  --text-color: #E2E8F0;
+  --background-color: #1A202C;
+}
+
+.dark body {
+  @apply bg-gray-900 text-gray-200;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  @apply bg-gray-700 text-gray-200 border-gray-600;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  @apply border-blue-500;
+}
+
+.dark button {
+  @apply bg-blue-600 hover:bg-blue-700 text-white;
+}
+
+.dark button:disabled {
+  @apply bg-gray-600 text-gray-400;
+}
+
+.dark a {
+  @apply text-blue-400 hover:text-blue-300;
+}
+
+.dark .card {
+  @apply bg-gray-800 shadow-lg;
+}
+
+.dark .btn {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+
+.dark .text-primary {
+  @apply text-blue-400;
+}

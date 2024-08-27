@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import AuthLayout from '../components/AuthLayout';
 import Link from 'next/link';
+import { useTheme } from '../contexts/ThemeContext';
 
 const SettingsPage = () => {
   const [settings, setSettings] = useState<any>(null);
   const supabase = createClientComponentClient();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -35,6 +37,7 @@ const SettingsPage = () => {
         console.error('Error updating settings:', error);
       } else {
         alert('Settings updated successfully!');
+        toggleTheme(); // This will update the theme if it was changed
       }
     }
   };
