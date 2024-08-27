@@ -4,12 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { SubmitButton } from "../../components/forms/submit-button";
-import { Label } from "@/components/forms/label";
-import { Input } from "@/components/forms/input";
-import { FormMessage, Message } from "@/components/forms/form-message";
+import styles from './Login.module.css';
 
-export default function Login({ searchParams }: { searchParams: Message }) {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -17,66 +14,61 @@ export default function Login({ searchParams }: { searchParams: Message }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       console.error("Error signing in:", error.message);
-      // Handle error (e.g., show error message to user)
     } else {
-      router.push('/board');
+      router.push('/dashboard');
     }
   };
 
   return (
-    <div className="page-container">
-      <div className="card">
-        <h2 className="page-title">Log in to your account</h2>
-        <p className="mb-8">
-          Or <Link href="/signup" className="text-primary hover:underline">sign up for a new account</Link>
+    <div className={styles.container}>
+      <div className={styles.formCard}>
+        <h1 className={styles.title}>Log in to your account</h1>
+        <p className={styles.subtitle}>
+          Or <Link href="/signup" className={styles.link}>sign up for a new account</Link>
         </p>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-2">Email address</label>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="email" className={styles.label}>Email address</label>
             <input
               id="email"
               name="email"
               type="email"
               required
-              className="input"
+              className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block mb-2">Password</label>
+          <div className={styles.inputGroup}>
+            <label htmlFor="password" className={styles.label}>Password</label>
             <input
               id="password"
               name="password"
               type="password"
               required
-              className="input"
+              className={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center">
+          <div className={styles.options}>
+            <div className={styles.rememberMe}>
               <input
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="mr-2"
+                className={styles.checkbox}
               />
-              <label htmlFor="remember-me">Remember me</label>
+              <label htmlFor="remember-me" className={styles.checkboxLabel}>Remember me</label>
             </div>
-            <Link href="/forgot-password" className="text-primary hover:underline">
+            <Link href="/forgot-password" className={styles.link}>
               Forgot your password?
             </Link>
           </div>
-          <button type="submit" className="btn">Sign in</button>
+          <button type="submit" className={styles.button}>Sign in</button>
         </form>
       </div>
     </div>
