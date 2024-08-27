@@ -302,24 +302,33 @@ const TaskBoard: React.FC = () => {
       {error && <p className={`text-red-500 mb-4 ${theme === 'dark' ? 'bg-red-900' : 'bg-red-100'} p-3 rounded`}>{error}</p>}
       
       <div className="flex justify-between items-center mb-4">
-        {isEditingBoardName ? (
-          <input
-            type="text"
-            value={boardName}
-            onChange={(e) => setBoardName(e.target.value)}
-            onBlur={saveBoardName}
-            onKeyPress={(e) => e.key === 'Enter' && saveBoardName()}
-            className="text-2xl font-bold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
-            autoFocus
-          />
-        ) : (
-          <h1 
-            className="text-2xl font-bold cursor-pointer" 
-            onClick={() => setIsEditingBoardName(true)}
-          >
-            {board?.name || 'Unnamed Board'}
-          </h1>
-        )}
+        <div className="flex items-center">
+          {isEditingBoardName ? (
+            <input
+              type="text"
+              value={boardName}
+              onChange={(e) => setBoardName(e.target.value)}
+              onBlur={saveBoardName}
+              onKeyPress={(e) => e.key === 'Enter' && saveBoardName()}
+              className="text-2xl font-bold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 mr-2"
+              autoFocus
+            />
+          ) : (
+            <>
+              <h1 className="text-2xl font-bold mr-2">
+                {board?.name || 'Unnamed Board'}
+              </h1>
+              <button
+                onClick={() => setIsEditingBoardName(true)}
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
         <button
           onClick={() => setIsInviteModalOpen(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

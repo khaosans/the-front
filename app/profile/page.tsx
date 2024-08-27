@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import AuthLayout from '../components/AuthLayout';
+import AuthenticatedLayout from '../components/AuthenticatedLayout';
 import Link from 'next/link';
 
 const ProfilePage = () => {
@@ -42,7 +42,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <AuthLayout>
+    <AuthenticatedLayout>
       <div className="container mx-auto mt-8 p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Profile</h1>
@@ -81,7 +81,7 @@ const ProfilePage = () => {
           </div>
         )}
       </div>
-    </AuthLayout>
+    </AuthenticatedLayout>
   );
 };
 

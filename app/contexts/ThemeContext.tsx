@@ -7,7 +7,7 @@ type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -33,8 +33,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     fetchTheme();
   }, []);
 
-  const toggleTheme = async () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
+
+  const setThemeAndSave = async (newTheme: Theme) => {
     setTheme(newTheme);
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
@@ -45,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme: setThemeAndSave }}>
       {children}
     </ThemeContext.Provider>
   );

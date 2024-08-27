@@ -1,5 +1,4 @@
 import './globals.css'
-import Header from './components/Header'
 import { ThemeProvider } from './contexts/ThemeContext'
 
 export default function RootLayout({
@@ -11,7 +10,6 @@ export default function RootLayout({
     <html lang="en">
       <ThemeProvider>
         <body>
-          <Header />
           {children}
         </body>
       </ThemeProvider>

@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import AuthLayout from '../components/AuthLayout';
+import AuthenticatedLayout from '../components/AuthenticatedLayout';
 import Link from 'next/link';
 import { useTheme } from '../contexts/ThemeContext';
 
 const SettingsPage = () => {
   const [settings, setSettings] = useState<any>(null);
   const supabase = createClientComponentClient();
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -20,11 +20,11 @@ const SettingsPage = () => {
           .select('*')
           .eq('user_id', user.id)
           .single();
-        setSettings(data || { theme: 'light', language: 'en', notifications_enabled: true });
+        setSettings(data || { theme: theme, language: 'en', notifications_enabled: true });
       }
     };
     fetchSettings();
-  }, []);
+  }, [theme]);
 
   const updateSettings = async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -37,7 +37,7 @@ const SettingsPage = () => {
         console.error('Error updating settings:', error);
       } else {
         alert('Settings updated successfully!');
-        toggleTheme(); // This will update the theme if it was changed
+        setTheme(settings.theme);
       }
     }
   };
@@ -45,7 +45,7 @@ const SettingsPage = () => {
   if (!settings) return <div>Loading...</div>;
 
   return (
-    <AuthLayout>
+    <AuthenticatedLayout>
       <div className="container mx-auto mt-8 p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Settings</h1>
@@ -57,7 +57,10 @@ const SettingsPage = () => {
           <label className="block mb-2">Theme:</label>
           <select
             value={settings.theme}
-            onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
+            onChange={(e) => {
+              setSettings({ ...settings, theme: e.target.value });
+              setTheme(e.target.value as 'light' | 'dark');
+            }}
             className="w-full p-2 border rounded"
           >
             <option value="light">Light</option>
@@ -94,7 +97,7 @@ const SettingsPage = () => {
           Save Settings
         </button>
       </div>
-    </AuthLayout>
+    </AuthenticatedLayout>
   );
 };
 
