@@ -1,4 +1,4 @@
-import AuthenticatedLayout from '@/app/layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/app/AuthenticatedLayout';
 import WorkTracker from "@/components/worktracker/WorkTracker";
 import styles from './page.module.css';
 

@@ -1,7 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import AuthenticatedLayout from '@/components/AuthenticatedLayout'; // Ensure this import is correct
+import AuthenticatedLayout from '@/app/components/AuthenticatedLayout'; // Ensure this import is correct
+import TaskBoard from "@/app/components/TaskBoard"; // Example import
 
 const DynamicTaskBoard = dynamic(() => import('../components/TaskBoard').then(mod => mod.default), {
   ssr: false,

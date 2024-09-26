@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card } from "./ui/card";
 import { CardDescription } from "./ui/card-description";
-import {Label} from "@/components/forms/label"; // Import CardDescription
+import {Label} from "@/app/components/forms/label"; // Import CardDescription
 
 function Textarea(props: { defaultValue: string, id: string }) {
     return null;

@@ -4,42 +4,16 @@ import React, { FC, ReactNode } from 'react';
 
 interface CardProps {
     children: ReactNode;
+    className?: string;
 }
 
-interface CardHeaderProps {
-    children: ReactNode;
-}
-
-interface CardTitleProps {
-    children: ReactNode;
-}
-
-interface CardDescriptionProps {
-    children: ReactNode;
-}
-
-interface CardContentProps {
-    children: ReactNode;
-}
-
-interface CardFooterProps {
-    children: ReactNode;
-}
-
-const Card: FC<CardProps> & {
-    Header: FC<CardHeaderProps>;
-    Title: FC<CardTitleProps>;
-    Content: FC<CardContentProps>;
-    Description: FC<CardDescriptionProps>;
-    Footer: FC<CardFooterProps>;
-} = ({ children }) => {
-    return <div className="card">{children}</div>;
+const Card: FC<CardProps> = ({ children, className }) => {
+    return <div className={`bg-white shadow-md rounded-lg p-4 ${className}`}>{children}</div>;
 };
 
-Card.Header = ({ children }) => <div className="card-header">{children}</div>;
-Card.Title = ({ children }) => <h2 className="card-title">{children}</h2>;
-Card.Content = ({ children }) => <div className="card-content">{children}</div>;
-Card.Description = ({ children }) => <p className="card-description">{children}</p>;
-Card.Footer = ({ children }) => <div className="card-footer">{children}</div>;
-
 export { Card };
+export { CardHeader } from './cardHeader'; // Export CardHeader
+export { CardTitle } from './cardTitle'; // Export CardTitle
+export { CardDescription } from './cardDescription'; // Export CardDescription
+export { CardContent } from './cardContent'; // Export CardContent
+export { CardFooter } from './cardFooter'; // Export CardFooter
