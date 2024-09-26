@@ -36,7 +36,7 @@ export default function LoginPage() {
 			// Check session again after login
 			const { data: { session } } = await supabase.auth.getSession();
 			if (session) {
-				router.push('/taskboard'); // Redirect on successful login
+				router.push('/taskboard'); // Redirect to taskboard if login is successful
 			}
 		}
 	};
