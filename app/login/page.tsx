@@ -7,18 +7,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {createClient} from "@/utils/supabase/client";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
-	const handleEmailLogin = (e: React.FormEvent) => {
+	// Display ASCII art in the console when the component mounts
+
+	const handleEmailLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
-		// Here you would typically handle the email/password login logic
-		console.log('Login attempted with:', email, password);
-		// After successful login, redirect to dashboard
-		router.push('/dashboard');
+		const supabase = createClient();
+		const { error } = await supabase.auth.signInWithPassword({ email, password });
+		if (error) {
+			console.error('Login error:', error.message);
+			// Handle error (e.g., show a notification)
+		} else {
+			router.push('/dashboard'); // Redirect to dashboard on successful login
+		}
 	};
 
 	return (
@@ -29,10 +36,6 @@ export default function LoginPage() {
 					<p className="text-gray-600">Choose your login method</p>
 				</CardHeader>
 				<CardContent>
-					<div className="flex mb-4">
-						<button className="flex-1 py-2 bg-white text-black font-semibold border border-gray-300 rounded-l-md">Email</button>
-						<button className="flex-1 py-2 bg-gray-100 text-gray-600 font-semibold border border-gray-300 rounded-r-md">Google</button>
-					</div>
 					<form onSubmit={handleEmailLogin} className="space-y-4">
 						<div className="space-y-2">
 							<Label htmlFor="email">Email</Label>
