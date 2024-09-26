@@ -6,8 +6,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { PlusCircle, ListTodo, Settings } from 'lucide-react';
 
 export default function DashboardPage() {
-	const router = useRouter();
-
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="text-2xl font-bold mb-6">Dashboard</h1>
@@ -21,9 +19,7 @@ export default function DashboardPage() {
 						<ListTodo className="w-12 h-12 mb-4" />
 						<p>You have 5 tasks in progress</p>
 					</CardContent>
-					<CardFooter>
-						<Button onClick={() => router.push('/board')}>View Board</Button>
-					</CardFooter>
+
 				</Card>
 				<Card>
 					<CardHeader>

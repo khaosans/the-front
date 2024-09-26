@@ -1,7 +1,11 @@
-'use client';
+import { createClient } from '@/utils/supabase/server';
 
-import { redirect } from 'next/navigation';
-
-export default function Home() {
-  redirect('/login');
+export default async function Page() {
+    const supabase = createClient();
+    // Use supabase to fetch data or perform actions
+    return (
+        <div>
+            {/* Your component JSX */}
+        </div>
+    );
 }
