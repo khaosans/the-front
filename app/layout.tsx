@@ -1,24 +1,19 @@
 'use client'; // Ensure this is a Client Component
 
-import React from 'react';
-import { SessionProvider } from 'next-auth/react'; // Import SessionProvider
+import React, { useState } from 'react'; // Import useState for local state management
 import './globals.css'; // Update this line
-import { useSession } from 'next-auth/react';
 import { Header } from "@/components/header"; // Update this import
 import Footer from "@/app/footer"; // Example for session management
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { data: session, status } = useSession();
-
-    if (status === 'loading') {
-        return <div>Loading...</div>;
-    }
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Local state for login status
 
     return (
         <div>
-            {session ? (
+            {isLoggedIn ? ( // Check local state instead of session
                 <>
                     <Header /> {/* Use the new Header component */}
+
                     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">{children}</main>
                     <Footer />
                 </>
@@ -29,16 +24,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
 };
 
-// Wrap the Layout component with SessionProvider
+// Wrap the Layout component without SessionProvider
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <SessionProvider>
             <html lang="en">
                 <body>
                     <Layout>{children}</Layout>
                 </body>
             </html>
-        </SessionProvider>
     );
 };
 
