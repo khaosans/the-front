@@ -12,6 +12,7 @@
   --secondary-color: #6B7280;
   --background-color: #F3F4F6;
   --text-color: #111827;
+  --theme-color: #3b82f6; /* Default blue color */
 }
 
 body {
@@ -123,4 +124,13 @@ body {
 .tab.active {
   background-color: white;
   border-bottom: none;
+}
+
+/* Use the theme color in your styles */
+.text-primary {
+  color: var(--theme-color);
+}
+
+.bg-primary {
+  background-color: var(--theme-color);
 }

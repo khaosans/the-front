@@ -9,8 +9,9 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import toast from "react-hot-toast";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Switch} from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { ThemeColor, setTheme, getStoredTheme, themeColors } from '@/lib/theme';
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -18,7 +19,8 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState({
     theme: 'light',
     language: 'en',
-    notifications_enabled: true
+    notifications_enabled: true,
+    themeColor: 'blue' as ThemeColor,
   })
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function SettingsPage() {
           .eq('user_id', user.id)
           .single()
         if (data) {
-          setSettings(data)
+          setSettings({ ...data, themeColor: getStoredTheme() })
         }
       }
     }
@@ -49,6 +51,7 @@ export default function SettingsPage() {
         console.error('Error updating settings:', error)
         toast.error("Failed to update settings. Please try again.")
       } else {
+        setTheme(settings.themeColor)
         toast.success("Your general settings have been updated.")
       }
     }
@@ -116,6 +119,24 @@ export default function SettingsPage() {
                   onCheckedChange={(checked: boolean) => setSettings({ ...settings, notifications_enabled: checked })}
                 />
                 <Label htmlFor="notifications">Enable notifications</Label>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="themeColor">Theme Color</Label>
+                <Select value={settings.themeColor} onValueChange={(value: ThemeColor) => setSettings({ ...settings, themeColor: value })}>
+                  <SelectTrigger id="themeColor">
+                    <SelectValue>{settings.themeColor}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(themeColors).map(([color, hex]) => (
+                      <SelectItem key={color} value={color}>
+                        <div className="flex items-center">
+                          <div className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: hex }}></div>
+                          {color.charAt(0).toUpperCase() + color.slice(1)}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
             <CardFooter>

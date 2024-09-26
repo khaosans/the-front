@@ -1,11 +1,17 @@
 'use client'; // Ensure this is a Client Component
 
-import React from 'react'; // Import React
+import React, { useEffect } from 'react'; // Import React
 import './globals.css'; // Global styles
 import { Header } from './header';
 import { Footer } from './footer'; // Import Footer component
+import { getStoredTheme, setTheme } from '@/lib/theme';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+    useEffect(() => {
+        const storedTheme = getStoredTheme();
+        setTheme(storedTheme);
+    }, []);
+
     return (
         <html lang="en">
             <body className="flex flex-col min-h-screen">
