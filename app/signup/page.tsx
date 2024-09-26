@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/utils/supabase/client";
+import supabase  from "@/utils/supabase/client"; // Ensure Supabase client is imported
 import Image from 'next/image'; // Ensure correct import
 
 export default function SignUpPage() {
@@ -18,7 +18,6 @@ export default function SignUpPage() {
 
 	const handleEmailSignUp = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const supabase = createClient();
 		const { error } = await supabase.auth.signUp({ email, password });
 		if (error) {
 			console.error('Sign up error:', error.message);
@@ -28,7 +27,6 @@ export default function SignUpPage() {
 	};
 
 	const handleGoogleSignUp = async () => {
-		const supabase = createClient();
 		const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
 		if (error) {
 			console.error('Google sign-up error:', error.message);
@@ -45,8 +43,8 @@ export default function SignUpPage() {
 					<p className="text-gray-600">Create your account</p>
 				</CardHeader>
 				<CardContent>
-					<form onSubmit={handleEmailSignUp} className="space-y-4"> {/* Reduced spacing */}
-						<div className="space-y-1"> {/* Reduced spacing */}
+					<form onSubmit={handleEmailSignUp} className="space-y-4">
+						<div className="space-y-1">
 							<Label htmlFor="name">Name</Label>
 							<Input
 								id="name"
@@ -57,7 +55,7 @@ export default function SignUpPage() {
 								required
 							/>
 						</div>
-						<div className="space-y-1"> {/* Reduced spacing */}
+						<div className="space-y-1">
 							<Label htmlFor="email">Email</Label>
 							<Input
 								id="email"
@@ -68,7 +66,7 @@ export default function SignUpPage() {
 								required
 							/>
 						</div>
-						<div className="space-y-1"> {/* Reduced spacing */}
+						<div className="space-y-1">
 							<Label htmlFor="password">Password</Label>
 							<Input
 								id="password"

@@ -7,32 +7,50 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@/utils/supabase/client";
-import Image from 'next/image'; // Import Image from Next.js
+import supabase from "@/utils/supabase/client"; // Corrected import statement
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
+	// Check session directly in the component body
+	const checkSession = async () => {
+		const { data: { session }, error } = await supabase.auth.getSession();
+		if (error) {
+			console.error('Error fetching session:', error.message);
+		} else if (session) {
+			router.push('/taskboard'); // Redirect to taskboard if already logged in
+		}
+	};
+
+	// Call checkSession when the component mounts
+	checkSession();
+
 	const handleEmailLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const supabase = createClient();
 		const { error } = await supabase.auth.signInWithPassword({ email, password });
 		if (error) {
 			console.error('Login error:', error.message);
 		} else {
-			router.push('/dashboard'); // Redirect to dashboard on successful login
+			// Check session again after login
+			const { data: { session } } = await supabase.auth.getSession();
+			if (session) {
+				router.push('/taskboard'); // Redirect on successful login
+			}
 		}
 	};
 
 	const handleGoogleLogin = async () => {
-		const supabase = createClient();
 		const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
 		if (error) {
 			console.error('Google login error:', error.message);
 		} else {
-			router.push('/dashboard'); // Redirect to dashboard on successful login
+			// Check session again after login
+			const { data: { session } } = await supabase.auth.getSession();
+			if (session) {
+				router.push('/taskboard'); // Redirect on successful login
+			}
 		}
 	};
 
@@ -44,8 +62,8 @@ export default function LoginPage() {
 					<p className="text-gray-600">Welcome back! Please log in.</p>
 				</CardHeader>
 				<CardContent>
-					<form onSubmit={handleEmailLogin} className="space-y-4"> {/* Reduced spacing */}
-						<div className="space-y-1"> {/* Reduced spacing */}
+					<form onSubmit={handleEmailLogin} className="space-y-4">
+						<div className="space-y-1">
 							<Label htmlFor="email">Email</Label>
 							<Input
 								id="email"
@@ -56,7 +74,7 @@ export default function LoginPage() {
 								required
 							/>
 						</div>
-						<div className="space-y-1"> {/* Reduced spacing */}
+						<div className="space-y-1">
 							<Label htmlFor="password">Password</Label>
 							<Input
 								id="password"
@@ -70,7 +88,6 @@ export default function LoginPage() {
 					</form>
 					<div className="mt-4">
 						<Button onClick={handleGoogleLogin} className="w-full bg-red-600 text-white flex items-center justify-center">
-							<Image src="/images/google.svg" alt="Google Logo" width={20} height={20} className="mr-2" />
 							Login with Google
 						</Button>
 					</div>
