@@ -2,29 +2,28 @@
 
 import React from 'react';
 import { SessionProvider } from 'next-auth/react'; // Import SessionProvider
-import '../styles/globals.css'; // Import global CSS
+import './globals.css'; // Update this line
 import { useSession } from 'next-auth/react';
-import {Header} from "@/app/header";
+import { Header } from "@/components/header"; // Update this import
 import Footer from "@/app/footer"; // Example for session management
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { data: session, status } = useSession();
 
-    // Optionally, you can add loading state or redirect logic here
     if (status === 'loading') {
         return <div>Loading...</div>;
     }
 
     return (
         <div>
-            {session ? ( // Check if the user is authenticated
+            {session ? (
                 <>
-                    <Header session={session} /> {/* Render Header for authenticated users */}
-                    <main>{children}</main>
-                    <Footer /> {/* Render Footer for authenticated users */}
+                    <Header /> {/* Use the new Header component */}
+                    <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">{children}</main>
+                    <Footer />
                 </>
             ) : (
-                <main>{children}</main> // Render only the main content for non-authenticated users
+                <main>{children}</main>
             )}
         </div>
     );
@@ -34,8 +33,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <SessionProvider>
-            <html lang="en"> {/* Add the <html> tag */}
-                <body> {/* Add the <body> tag */}
+            <html lang="en">
+                <body>
                     <Layout>{children}</Layout>
                 </body>
             </html>

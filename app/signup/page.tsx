@@ -1,16 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
-import {  CardContent, Card, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
-import { Separator } from "@/app/components/ui/separator";
-import CardDescription from "@/app/components/ui/card-description";
-import CardFooter from "@/app/components/ui/card-footer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
 export default function SignUpPage() {
 	const [name, setName] = useState('');
@@ -18,7 +16,7 @@ export default function SignUpPage() {
 	const [password, setPassword] = useState('');
 	const router = useRouter();
 
-	const handleEmailSignUp = async (e: React.FormEvent) => {
+	const handleEmailSignUp = (e: React.FormEvent) => {
 		e.preventDefault();
 		// Here you would typically handle the email/password sign-up logic
 		console.log('Sign-up attempted with:', name, email, password);

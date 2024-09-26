@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { useRouter } from 'next/navigation'
-import styles from './TaskBoard.module.css'
+import styles from './taskboard.module.css'
 
 interface Task {
   id: string
@@ -14,7 +14,7 @@ interface Task {
 
 const COLUMNS = ['TODO', 'IN_PROGRESS', 'DONE']
 
-export default function TaskBoard() {
+export default function Taskboard() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [user, setUser] = useState<any>(null)
@@ -82,7 +82,7 @@ export default function TaskBoard() {
     if (error) {
       console.error('Error updating task:', error)
     } else {
-      setTasks(tasks.map(task => 
+      setTasks(tasks.map(task =>
         task.id === taskId ? { ...task, status: newStatus } : task
       ))
     }

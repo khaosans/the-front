@@ -1,16 +1,14 @@
 'use client';
 
+import React from 'react';
 
-import React from "react";
-import TaskBoard from "@/app/TaskBoard";
-import ProtectedLayout from "@/app/protected/layout";
-
-const DashboardPage = () => {
+const Dashboard: React.FC = () => {
     return (
-        <ProtectedLayout>
-            <TaskBoard />
-        </ProtectedLayout>
+        <div>
+            <h1>Dashboard</h1>
+            {/* Dashboard content */}
+        </div>
     );
 };
 
-export default DashboardPage;
+export default Dashboard;

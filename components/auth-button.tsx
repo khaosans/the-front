@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { signOut } from '@/app/actions/auth';
+import { signOut } from '@/utils/auth';
 import { User } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 
