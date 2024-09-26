@@ -1,23 +1,45 @@
 'use client';
 
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 
-export const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
-  return (
-    <div className={`bg-white rounded-lg shadow-md ${className}`}>
-      {children}
-    </div>
-  );
+interface CardProps {
+    children: ReactNode;
+}
+
+interface CardHeaderProps {
+    children: ReactNode;
+}
+
+interface CardTitleProps {
+    children: ReactNode;
+}
+
+interface CardDescriptionProps {
+    children: ReactNode;
+}
+
+interface CardContentProps {
+    children: ReactNode;
+}
+
+interface CardFooterProps {
+    children: ReactNode;
+}
+
+const Card: FC<CardProps> & {
+    Header: FC<CardHeaderProps>;
+    Title: FC<CardTitleProps>;
+    Content: FC<CardContentProps>;
+    Description: FC<CardDescriptionProps>;
+    Footer: FC<CardFooterProps>;
+} = ({ children }) => {
+    return <div className="card">{children}</div>;
 };
 
-export const CardHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="border-b p-4">{children}</div>
-);
+Card.Header = ({ children }) => <div className="card-header">{children}</div>;
+Card.Title = ({ children }) => <h2 className="card-title">{children}</h2>;
+Card.Content = ({ children }) => <div className="card-content">{children}</div>;
+Card.Description = ({ children }) => <p className="card-description">{children}</p>;
+Card.Footer = ({ children }) => <div className="card-footer">{children}</div>;
 
-export const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="p-4">{children}</div>
-);
-
-export const CardTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <h2 className="text-lg font-semibold">{children}</h2>
-);
+export { Card };
