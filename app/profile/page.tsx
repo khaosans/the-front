@@ -75,7 +75,7 @@ export default function ProfilePage() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button>Save changes</Button>
+                <Button size="sm" variant="default">Save changes</Button>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -98,7 +98,7 @@ export default function ProfilePage() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button>Save password</Button>
+                <Button size="sm" variant="default">Save password</Button>
               </CardFooter>
             </Card>
           </TabsContent>

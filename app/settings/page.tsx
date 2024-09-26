@@ -88,7 +88,7 @@ export default function SettingsPage() {
                 <Label htmlFor="theme">Theme</Label>
                 <Select value={settings.theme} onValueChange={(value) => setSettings({ ...settings, theme: value })}>
                   <SelectTrigger id="theme">
-                    <SelectValue placeholder="Select a theme" />
+                    <SelectValue>{settings.theme}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="light">Light</SelectItem>
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                 <Label htmlFor="language">Language</Label>
                 <Select value={settings.language} onValueChange={(value) => setSettings({ ...settings, language: value })}>
                   <SelectTrigger id="language">
-                    <SelectValue placeholder="Select a language" />
+                    <SelectValue>{settings.language}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="en">English</SelectItem>
@@ -119,7 +119,7 @@ export default function SettingsPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleSaveGeneral}>Save Changes</Button>
+              <Button size="sm" variant="default" onClick={handleSaveGeneral}>Save Changes</Button>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -143,7 +143,7 @@ export default function SettingsPage() {
                   <Label htmlFor="confirm-password">Confirm New Password</Label>
                   <Input id="confirm-password" type="password" required />
                 </div>
-                <Button type="submit">Change Password</Button>
+                <Button size="sm" variant="default" type="submit">Change Password</Button>
               </form>
             </CardContent>
           </Card>
@@ -161,7 +161,7 @@ export default function SettingsPage() {
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
               </div>
-              <Button onClick={handleDeleteAccount}>Delete Account</Button>
+              <Button size="sm" variant="destructive" onClick={handleDeleteAccount}>Delete Account</Button>
             </CardContent>
           </Card>
         </TabsContent>

@@ -31,7 +31,7 @@ export default function DashboardPage() {
 						<p>Create a new project to organize your tasks</p>
 					</CardContent>
 					<CardFooter>
-						<Button>Create Project</Button>
+						<Button size="sm" variant="default">Create Project</Button>
 					</CardFooter>
 				</Card>
 				<Card>
@@ -44,7 +44,7 @@ export default function DashboardPage() {
 						<p>Update your profile and preferences</p>
 					</CardContent>
 					<CardFooter>
-						<Button>Open Settings</Button>
+						<Button size="sm" variant="default">Open Settings</Button>
 					</CardFooter>
 				</Card>
 			</div>

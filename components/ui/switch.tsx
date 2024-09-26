@@ -8,20 +8,21 @@ interface SwitchProps {
   onCheckedChange: (checked: boolean) => void;
 }
 
-export const Switch: React.FC<SwitchProps> = ({ id, checked, onCheckedChange }) => {
-  return (
-    <label htmlFor={id} className="flex items-center cursor-pointer">
-      <div className="relative">
-        <input
-          type="checkbox"
-          id={id}
-          className="sr-only"
-          checked={checked}
-          onChange={(e) => onCheckedChange(e.target.checked)}
-        />
-        <div className={`block w-14 h-8 rounded-full ${checked ? 'bg-indigo-600' : 'bg-gray-300'}`}></div>
-        <div className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${checked ? 'transform translate-x-6' : ''}`}></div>
-      </div>
-    </label>
-  );
-};
+const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
+  ({ className, ...props }, ref) => (
+    <SwitchPrimitive.Root
+      className={cn(
+        "peer inline-flex h-[24px] w-[44px] shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-input",
+        className
+      )}
+      {...props}
+      ref={ref}
+    >
+      <SwitchPrimitive.Thumb
+        className={cn(
+          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        )}
+      />
+    </SwitchPrimitive.Root>
+  )
+)
