@@ -3,14 +3,14 @@
 import React from 'react'; // Import React
 import './globals.css'; // Global styles
 import { Header } from './header';
-import Footer from "@/app/footer"; // Import Header component
+import { Footer } from './footer'; // Import Footer component
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body>
+            <body className="flex flex-col min-h-screen">
                 <Header /> {/* Include Header */}
-                <main>{children}</main> {/* Render child components */}
+                <main className="flex-grow">{children}</main> {/* Render child components */}
                 <Footer /> {/* Include Footer */}
             </body>
         </html>
