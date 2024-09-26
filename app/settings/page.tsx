@@ -113,7 +113,7 @@ export default function SettingsPage() {
                 <Switch
                   id="notifications"
                   checked={settings.notifications_enabled}
-                  onCheckedChange={(checked) => setSettings({ ...settings, notifications_enabled: checked })}
+                  onCheckedChange={(checked: boolean) => setSettings({ ...settings, notifications_enabled: checked })}
                 />
                 <Label htmlFor="notifications">Enable notifications</Label>
               </div>
