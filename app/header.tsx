@@ -15,8 +15,6 @@ import {
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar";
 import { Home, ClipboardList, PlusCircle, Settings, LogOut, User, Menu } from 'lucide-react';
 import { Sheet, SheetTrigger, SheetContent } from "@/app/components/ui/sheet"; // Ensure this path is correct
-import { CardDescription } from "@/app/components/ui/CardDescription"; // Ensure this matches the new filename
-import { CardFooter } from "@/app/components/ui/CardFooter"; // Ensure this matches the new filename
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -113,7 +111,7 @@ export function Header({ session }: { session: any }) { // Define session type a
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">
+                    <Link href="/app/profile">
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </Link>

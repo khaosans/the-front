@@ -1,15 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Card } from "./ui/card";
-import { CardDescription } from "./ui/card-description";
-import {Label} from "@/app/components/forms/label"; // Import CardDescription
+import { Button } from "@/app/components/ui/button"; // Corrected import path
+import { Input } from "@/app/components/ui/input"; // Corrected import path
+import { Avatar, AvatarFallback, AvatarImage } from "@/app/components/ui/avatar"; // Corrected import path
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"; // Corrected import path
+import CardDescription from "@/app/components/ui/card-description"; // Ensure correct import
+import CardFooter from "@/app/components/ui/card-footer"; // Ensure correct import
+import { Label } from "@/app/components/forms/label";
+import Link from "next/link"; // Corrected import path
 
-function Textarea(props: { defaultValue: string, id: string }) {
-    return null;
+function Textarea(props: { defaultValue: string; id: string }) {
+    return <textarea id={props.id} defaultValue={props.defaultValue} className="textarea-class" />; // Added textarea implementation
 }
 
 export default function Profile() {
@@ -22,11 +24,11 @@ export default function Profile() {
 
             <div className="grid gap-6 md:grid-cols-2">
                 <Card>
-                    <Card.Header>
-                        <Card.Title>Personal Information</Card.Title>
+                    <CardHeader>
+                        <CardTitle>Personal Information</CardTitle>
                         <CardDescription>Update your personal details here.</CardDescription>
-                    </Card.Header>
-                    <Card.Content>
+                    </CardHeader>
+                    <CardContent>
                         <div className="flex items-center space-x-4">
                             <Avatar className="h-20 w-20">
                                 <AvatarImage src="/avatars/user.png" alt="User" />
@@ -46,7 +48,15 @@ export default function Profile() {
                             <Label htmlFor="bio">Bio</Label>
                             <Textarea id="bio" defaultValue="Project manager with 5 years of experience in software development." />
                         </div>
-                    </Card.Content>
+                    </CardContent>
+                    <CardFooter className="flex justify-center">
+                        <p className="text-sm text-gray-600">
+                            Don't have an account?{" "}
+                            <Link href="/signup" className="text-primary hover:underline">
+                                Sign up
+                            </Link>
+                        </p>
+                    </CardFooter>
                 </Card>
 
                 {/* Additional cards for account settings, notifications, etc. */}

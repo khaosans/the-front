@@ -1,8 +1,9 @@
 'use client';
 
-import ProtectedLayout from "@/app/components/ProtectedLayout"; // Ensure this path is correct
-import Header from "@/app/components/Header";
-import TaskBoard from "@/app/components/TaskBoard";
+
+import React from "react";
+import TaskBoard from "@/app/TaskBoard";
+import ProtectedLayout from "@/app/protected/layout";
 
 const DashboardPage = () => {
     return (

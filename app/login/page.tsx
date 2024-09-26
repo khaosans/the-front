@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs";
 import { Separator } from "@/app/components/ui/separator";
+import {CardDescription} from "@/app/components/ui/card-description";
+import CardFooter from "@/app/components/ui/card-footer";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');

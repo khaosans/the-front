@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import AuthenticatedLayout from '../components/AuthenticatedLayout';
 import Link from 'next/link';
 import { useTheme } from '../contexts/ThemeContext';
+import ProtectedLayout from "@/app/protected/layout";
 
 const SettingsPage = () => {
   const [settings, setSettings] = useState<any>(null);
@@ -45,7 +45,7 @@ const SettingsPage = () => {
   if (!settings) return <div>Loading...</div>;
 
   return (
-    <AuthenticatedLayout>
+    <ProtectedLayout>
       <div className="container mx-auto mt-8 p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Settings</h1>
@@ -97,7 +97,7 @@ const SettingsPage = () => {
           Save Settings
         </button>
       </div>
-    </AuthenticatedLayout>
+    </ProtectedLayout>
   );
 };
 

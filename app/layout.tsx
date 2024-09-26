@@ -3,9 +3,9 @@
 import React from 'react';
 import { SessionProvider } from 'next-auth/react'; // Import SessionProvider
 import '../styles/globals.css'; // Import global CSS
-import { useSession } from 'next-auth/react'; // Example for session management
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/footer"; // Example import
+import { useSession } from 'next-auth/react';
+import {Header} from "@/app/header";
+import Footer from "@/app/footer"; // Example for session management
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { data: session, status } = useSession();
@@ -17,9 +17,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     return (
         <div>
-            {session && <Header session={session} />} {/* Render Header only if session exists */}
-            <main>{children}</main>
-            <Footer />
+            {session ? ( // Check if the user is authenticated
+                <>
+                    <Header session={session} /> {/* Render Header for authenticated users */}
+                    <main>{children}</main>
+                    <Footer /> {/* Render Footer for authenticated users */}
+                </>
+            ) : (
+                <main>{children}</main> // Render only the main content for non-authenticated users
+            )}
         </div>
     );
 };
