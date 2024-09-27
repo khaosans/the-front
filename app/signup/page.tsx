@@ -1,14 +1,17 @@
 'use client';
 
-import { useState } from "react";
+import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from 'next/link';
 import { useTheme } from '../contexts/ThemeContext';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function SignUpPage() {
+	const { isDark } = useTheme();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -103,8 +106,8 @@ export default function SignUpPage() {
 						<button
 							type="submit"
 							disabled={isLoading}
-							className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-								theme === 'dark' ? 'bg-blue-800 hover:bg-blue-900' : ''
+							className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+								theme === 'dark' ? 'bg-gray-800 text-white hover:bg-gray-700' : ''
 							}`}
 						>
 							{isLoading ? 'Signing up...' : 'Sign up'}
@@ -124,11 +127,9 @@ export default function SignUpPage() {
 					</div>
 
 					<div className="mt-6">
-						<button
+						<Button
 							onClick={handleGoogleSignUp}
-							className={`w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 ${
-								theme === 'dark' ? 'bg-gray-800 text-white hover:bg-gray-700' : ''
-							}`}
+							className={`w-full ${isDark ? 'bg-blue-800 hover:bg-purple-700' : 'bg-purple-500 hover:bg-purple-600'} text-white`}
 						>
 							<Image
 								src="/images/google.svg"
@@ -138,7 +139,7 @@ export default function SignUpPage() {
 								className="mr-2"
 							/>
 							Sign up with Google
-						</button>
+						</Button>
 					</div>
 				</div>
 

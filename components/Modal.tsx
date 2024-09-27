@@ -18,7 +18,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`sm:max-w-[425px] p-4 ${isDark ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
+      <DialogContent className={`sm:max-w-[425px] p-4 rounded-lg shadow-lg ${isDark ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
           <Button

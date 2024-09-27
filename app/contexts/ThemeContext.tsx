@@ -6,7 +6,7 @@ type Theme = 'light' | 'dark' | 'darker';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: () => void;aa
   getThemeClasses: () => string;
   isDark: boolean;
 }

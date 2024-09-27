@@ -10,14 +10,12 @@ import { useTheme } from '../app/contexts/ThemeContext';
 interface MonacoEditorProps {
   initialValue?: string;
   language?: string;
-  theme?: 'vs-dark' | 'light';
   onSave?: (value: string) => void;
 }
 
 export function MonacoEditor({
   initialValue = "// Type your code here",
   language = "javascript",
-  theme = "vs-dark",
   onSave
 }: MonacoEditorProps) {
   const [editorValue, setEditorValue] = useState(initialValue);
@@ -57,7 +55,7 @@ export function MonacoEditor({
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="border rounded-lg overflow-hidden">
+        <div className={`border rounded-lg overflow-hidden ${isDark ? 'bg-gray-800' : 'bg-white'}`}>
           <Editor
             height="500px"
             language={editorLanguage}
