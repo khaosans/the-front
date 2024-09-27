@@ -1,54 +1,57 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-type Theme = 'light' | 'dark';
+type Theme = 'light' | 'dark' | 'darker';
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
+  getThemeClasses: () => string;
+  isDark: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('light');
-  const supabase = createClientComponentClient();
+  const initialTheme = typeof window !== 'undefined' ? localStorage.getItem('theme') as Theme | null : 'light';
+  const [theme, setTheme] = useState<Theme>(initialTheme || 'light');
 
   useEffect(() => {
-    const fetchTheme = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('user_settings')
-          .select('theme')
-          .eq('user_id', user.id)
-          .single();
-        if (data && (data.theme === 'light' || data.theme === 'dark')) {
-          setTheme(data.theme);
-        }
-      }
-    };
-    fetchTheme();
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
-
-  const setThemeAndSave = async (newTheme: Theme) => {
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'darker' : 'light';
     setTheme(newTheme);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      await supabase
-        .from('user_settings')
-        .upsert({ user_id: user.id, theme: newTheme });
+    localStorage.setItem('theme', newTheme);
+  };
+
+  const getThemeClasses = () => {
+    switch (theme) {
+      case 'light':
+        return 'bg-white text-gray-900';
+      case 'dark':
+        return 'bg-gray-800 text-gray-100';
+      case 'darker':
+        return 'bg-gray-900 text-gray-50';
+      default:
+        return 'bg-white text-gray-900';
     }
   };
 
+  const value = {
+    theme,
+    toggleTheme,
+    getThemeClasses,
+    isDark: theme === 'dark' || theme === 'darker'
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme: setThemeAndSave }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

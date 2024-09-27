@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import AuthenticatedLayout from '../components/AuthenticatedLayout';
+import Layout from "@/app/layout";
 
 const MembersPage = () => {
   const [members, setMembers] = useState<any[]>([]);
@@ -56,7 +56,7 @@ const MembersPage = () => {
   };
 
   return (
-    <AuthenticatedLayout>
+    <Layout>
       <div className="container mx-auto mt-8 p-4">
         <h1 className="text-2xl font-bold mb-4">Team Members</h1>
         <form onSubmit={inviteMember} className="mb-4">
@@ -75,7 +75,7 @@ const MembersPage = () => {
           {members.map((member) => (
             <li key={member.id} className="mb-2 flex justify-between items-center">
               <span>{member.email} {member.full_name ? `(${member.full_name})` : ''}</span>
-              <button 
+              <button
                 onClick={() => removeMember(member.id)}
                 className="text-red-500 hover:underline"
               >
@@ -85,7 +85,7 @@ const MembersPage = () => {
           ))}
         </ul>
       </div>
-    </AuthenticatedLayout>
+    </Layout>
   );
 };
 
