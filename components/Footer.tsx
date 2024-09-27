@@ -1,14 +1,12 @@
 import Link from 'next/link'
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-gray-800 text-white py-4">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col sm:flex-row justify-between items-center">
-          <div className="mb-2 sm:mb-0">
-            <p>&copy; {currentYear} TaskMaster. All rights reserved.</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <p>&copy; 2023 Your App Name. All rights reserved.</p>
           </div>
           <div>
             <Link href="/privacy" className="mr-4 hover:text-gray-300">
