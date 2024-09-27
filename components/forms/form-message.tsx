@@ -1,24 +1,15 @@
-export type Message =
-  | { success: string }
-  | { error: string }
-  | { message: string };
+'use client';
 
-export function FormMessage({ message }: { message: Message }) {
+import React from 'react';
+
+interface FormMessageProps {
+  message: string;
+}
+
+export const FormMessage: React.FC<FormMessageProps> = ({ message }) => {
   return (
-    <div className="flex flex-col gap-2 w-full max-w-md text-sm">
-      {"success" in message && (
-        <div className="text-green-500 border-l-2 border-green-500 px-4">
-          {message.success}
-        </div>
-      )}
-      {"error" in message && (
-        <div className="text-red-500 border-l-2 border-red-500 px-4">
-          {message.error}
-        </div>
-      )}
-      {"message" in message && (
-        <div className="text-foreground border-l-2 px-4">{message.message}</div>
-      )}
+    <div className="text-red-500 text-sm mt-2">
+      {message}
     </div>
   );
-}
+};
