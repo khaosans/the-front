@@ -10,7 +10,7 @@ import CodeEditorIcon from '../components/CodeEditorIcon';
 import { MonacoEditor } from '@/components/MonacoEditor';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import Footer from "@/components/Footer";
+import Footer from "@/components/footer";
 
 const ThemedLayout = ({ children }: { children: React.ReactNode }) => {
 	const { getThemeClasses } = useTheme();

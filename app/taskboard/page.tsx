@@ -1,30 +1,29 @@
 'use client';
 
-import React, { useState } from 'react'
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { PlusCircle, MoreHorizontal, Calendar, MessageSquare } from 'lucide-react'
-import { useTheme } from '../contexts/ThemeContext';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import React, { useState } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { PlusCircle, MoreHorizontal, Calendar, MessageSquare } from 'lucide-react';
+import {ThemeProvider, useTheme} from '../contexts/ThemeContext';
 
 interface Task {
-  id: string
-  title: string
-  description: string
-  priority: 'low' | 'medium' | 'high'
-  dueDate?: string
-  comments: number
+  id: string;
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: string;
+  comments: number;
 }
 
 interface Column {
-  id: string
-  title: string
-  tasks: Task[]
+  id: string;
+  title: string;
+  tasks: Task[];
 }
 
 const initialColumns: Column[] = [
@@ -50,10 +49,10 @@ const initialColumns: Column[] = [
       { id: '4', title: 'Project kickoff', description: 'Initial team meeting and project setup', priority: 'low', dueDate: '2023-06-01', comments: 1 },
     ],
   },
-]
+];
 
 const TaskCard: React.FC<{ task: Task; columnId: string }> = ({ task, columnId }) => {
-  const { theme, isDark } = useTheme();
+  const { isDark } = useTheme();
   const [{ isDragging }, drag] = useDrag({
     type: 'TASK',
     item: { id: task.id, columnId },
@@ -75,20 +74,20 @@ const TaskCard: React.FC<{ task: Task; columnId: string }> = ({ task, columnId }
           <CardTitle>{task.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'} mb-2`}>{task.description}</p>
+          <p className={`text-xs ${isDark ? 'text-gray-300' : 'text-gray-500'} mb-2`}>{task.description}</p>
           <div className="flex justify-between items-center">
             <Badge variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'default' : 'secondary'}>
               {task.priority}
             </Badge>
             <div className="flex items-center space-x-2">
               {task.dueDate && (
-                <div className={`flex items-center text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}>
+                <div className={`flex items-center text-xs ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>
                   <Calendar className="w-3 h-3 mr-1" />
                   {task.dueDate}
                 </div>
               )}
               {task.comments > 0 && (
-                <div className={`flex items-center text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-300'}`}>
+                <div className={`flex items-center text-xs ${isDark ? 'text-gray-300' : 'text-gray-500'}`}>
                   <MessageSquare className="w-3 h-3 mr-1" />
                   {task.comments}
                 </div>
@@ -144,19 +143,19 @@ export default function BoardPage() {
 
   const moveTask = (taskId: string, sourceColumnId: string, targetColumnId: string) => {
     setColumns((prevColumns) => {
-      const newColumns = prevColumns.map((column) => ({ ...column, tasks: [...column.tasks] }))
-      const sourceColumn = newColumns.find((col) => col.id === sourceColumnId)
-      const targetColumn = newColumns.find((col) => col.id === targetColumnId)
-      const taskToMove = sourceColumn?.tasks.find((task) => task.id === taskId)
+      const newColumns = prevColumns.map((column) => ({ ...column, tasks: [...column.tasks] }));
+      const sourceColumn = newColumns.find((col) => col.id === sourceColumnId);
+      const targetColumn = newColumns.find((col) => col.id === targetColumnId);
+      const taskToMove = sourceColumn?.tasks.find((task) => task.id === taskId);
 
       if (sourceColumn && targetColumn && taskToMove) {
-        sourceColumn.tasks = sourceColumn.tasks.filter((task) => task.id !== taskId)
-        targetColumn.tasks.push(taskToMove)
+        sourceColumn.tasks = sourceColumn.tasks.filter((task) => task.id !== taskId);
+        targetColumn.tasks.push(taskToMove);
       }
 
-      return newColumns
-    })
-  }
+      return newColumns;
+    });
+  };
 
   return (
     <ThemeProvider>
