@@ -1,4 +1,4 @@
-# Task Management Application
+# QuantumLabs Task Management Application
 
 ## Overview
 This application is a streamlined task management board that allows users to create, manage, and organize tasks efficiently. It features drag-and-drop functionality and task cards that include essential fields, making it easy to track progress and collaborate.
@@ -10,6 +10,16 @@ This application is a streamlined task management board that allows users to cre
 - **User Authentication**: Secure login and signup using Supabase Auth.
 - **Real-time Updates**: Changes are reflected in real-time across the application.
 - **Responsive Design**: Built with Tailwind CSS for a clean and intuitive user interface that works on all devices.
+
+## Backend Database
+
+- **Supabase**: The application uses Supabase as the backend database, which provides a PostgreSQL database and real-time capabilities.
+- **Database Setup**: Ensure that your Supabase project is configured with the necessary tables and schemas to support task management features.
+
+## To Do
+
+- **Fix Authentication**: Review and resolve any issues related to user authentication with Supabase.
+- **Set Up Database Tables**: Ensure that the required tables for tasks, users, and any other necessary entities are created in the Supabase database.
 
 ## Installation
 
@@ -31,10 +41,10 @@ To set up the project locally, follow these steps:
    - Obtain your Supabase URL and Anon Key from the API settings.
 
 4. **Configure environment variables**:
-   - Rename `.env.local.example` to `.env.local` and update the following:
-     ```
-     NEXT_PUBLIC_SUPABASE_URL=[YOUR_SUPABASE_URL]
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=[YOUR_SUPABASE_ANON_KEY]
+   - Create a `.env.local` file in the root directory and add the following:
+     ```plaintext
+     SUPABASE_URL=<your-supabase-url>
+     SUPABASE_ANON_KEY=<your-supabase-anon-key>
      ```
 
 ## Usage
