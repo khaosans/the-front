@@ -3,20 +3,20 @@ import { useTheme } from '../app/contexts/ThemeContext';
 import Modal from './Modal';
 
 const Footer: React.FC = () => {
-  const { theme } = useTheme();
+  const { isDark, getThemeClasses } = useTheme();
   const [showAbout, setShowAbout] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   return (
-    <footer className={`w-full py-3 ${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-gray-100 text-gray-800'}`}>
+    <footer className={`w-full py-3 ${getThemeClasses()}`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center text-sm">
-          <p>&copy; 2024 QuantumLabs</p>
+          <p>&copy; 2023 QuantumLabs</p>
           <div>
-            <button onClick={() => setShowAbout(true)} className="mx-2 hover:underline text-blue-600 dark:text-blue-400">About</button>
-            <button onClick={() => setShowContact(true)} className="mx-2 hover:underline text-blue-600 dark:text-blue-400">Contact</button>
-            <button onClick={() => setShowPrivacy(true)} className="mx-2 hover:underline text-blue-600 dark:text-blue-400">Privacy</button>
+            <button onClick={() => setShowAbout(true)} className={`mx-2 hover:underline ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>About</button>
+            <button onClick={() => setShowContact(true)} className={`mx-2 hover:underline ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>Contact</button>
+            <button onClick={() => setShowPrivacy(true)} className={`mx-2 hover:underline ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>Privacy</button>
           </div>
         </div>
       </div>

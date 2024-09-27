@@ -9,16 +9,16 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
-  const { theme } = useTheme();
+  const { isDark, getThemeClasses } = useTheme();
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-      <div className={`bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full mx-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+      <div className={`rounded-lg p-8 max-w-md w-full mx-4 ${getThemeClasses()}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{title}</h2>
-          <button onClick={onClose} className="text-2xl text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">&times;</button>
+          <button onClick={onClose} className={`text-2xl ${isDark ? 'hover:text-gray-300' : 'hover:text-gray-600'}`}>&times;</button>
         </div>
         <div className="mt-4">
           {children}
@@ -26,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
         <div className="mt-6 text-right">
           <button
             onClick={onClose}
-            className={`px-4 py-2 rounded text-white ${theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'}`}
+            className={`px-4 py-2 rounded text-white ${isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'}`}
           >
             Close
           </button>

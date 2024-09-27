@@ -2,11 +2,12 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'light' | 'dark' | 'darker';
 
 interface ThemeContextType {
   theme: Theme;
   toggleTheme: () => void;
+  getThemeClasses: () => string;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -22,13 +23,33 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === 'light' ? 'dark' : theme === 'dark' ? 'darker' : 'light';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
 
+  const getThemeClasses = () => {
+    switch (theme) {
+      case 'light':
+        return 'bg-white text-gray-900';
+      case 'dark':
+        return 'bg-gray-800 text-gray-100';
+      case 'darker':
+        return 'bg-gray-900 text-gray-50';
+      default:
+        return 'bg-white text-gray-900';
+    }
+  };
+
+  const value = {
+    theme,
+    toggleTheme,
+    getThemeClasses,
+    isDark: theme === 'dark' || theme === 'darker'
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
