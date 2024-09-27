@@ -1,33 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PlusCircle } from 'lucide-react'
-import Link from 'next/link'
-import { useTheme } from '../../contexts/ThemeContext'
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface Member {
-  id: string
-  name: string
-  email: string
-  role: 'Admin' | 'Editor' | 'Viewer'
+  id: string;
+  name: string;
+  email: string;
+  role: 'Admin' | 'Editor' | 'Viewer';
 }
 
 interface Board {
-  id: string
-  name: string
-  tasks: { total: number; completed: number }
+  id: string;
+  name: string;
+  tasks: { total: number; completed: number };
 }
 
 interface Team {
-  id: string
-  name: string
-  members: Member[]
-  boards: Board[]
+  id: string;
+  name: string;
+  members: Member[];
+  boards: Board[];
 }
 
 // This would typically come from an API or database
@@ -49,9 +49,9 @@ const fetchTeamData = async (teamId: string): Promise<Team> => {
 };
 
 export default function TeamPage({ params }: { params: { id: string } }) {
-  const [team, setTeam] = useState<Team | null>(null)
-  const [searchTerm, setSearchTerm] = useState('')
-  const { isDark, getThemeClasses } = useTheme()
+  const [team, setTeam] = useState<Team | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { isDark, getThemeClasses } = useTheme();
 
   useEffect(() => {
     fetchTeamData(params.id).then(setTeam);
@@ -62,11 +62,11 @@ export default function TeamPage({ params }: { params: { id: string } }) {
   const filteredMembers = team.members.filter(member => 
     member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.email.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   const filteredBoards = team.boards.filter(board => 
     board.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   return (
     <div className={`container mx-auto py-10 ${getThemeClasses()}`}>
@@ -104,7 +104,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
                     <TableCell className="font-medium">{member.name}</TableCell>
                     <TableCell>{member.email}</TableCell>
                     <TableCell>
-                      <Badge variant={member.role === 'Admin' ? 'default' : member.role === 'Editor' ? 'secondary' : 'outline'}>
+                      <Badge variant={member.role === 'Admin' ? 'default' : member.role === 'Editor' ? 'secondary' : 'default'}>
                         {member.role}
                       </Badge>
                     </TableCell>
@@ -148,5 +148,5 @@ export default function TeamPage({ params }: { params: { id: string } }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

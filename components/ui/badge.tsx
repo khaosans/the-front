@@ -1,13 +1,27 @@
 'use client';
 
 import React from 'react';
+import { cn } from "@/lib/utils";
 
-export const Badge: React.FC<{ children: React.ReactNode; variant?: 'default' | 'destructive' | 'secondary' }> = ({ children, variant }) => {
-  const variantStyles = variant === 'destructive' ? 'bg-red-500 text-white' : variant === 'secondary' ? 'bg-gray-300 text-black' : 'bg-gray-200 text-black';
+type BadgeVariant = 'default' | 'destructive' | 'secondary';
+
+interface BadgeProps {
+  variant?: BadgeVariant;
+  children: React.ReactNode;
+}
+
+const Badge: React.FC<BadgeProps> = ({ variant = 'default', children }) => {
+  const variantClasses = {
+    default: 'bg-blue-500 text-white',
+    destructive: 'bg-red-500 text-white',
+    secondary: 'bg-gray-300 text-gray-900',
+  };
 
   return (
-    <span className={`inline-block px-2 py-1 rounded ${variantStyles}`}>
+    <span className={cn("inline-flex items-center px-2 py-1 rounded", variantClasses[variant])}>
       {children}
     </span>
   );
 };
+
+export { Badge };

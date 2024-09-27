@@ -6,7 +6,7 @@ type Theme = 'light' | 'dark' | 'darker';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;aa
+  toggleTheme: () => void;
   getThemeClasses: () => string;
   isDark: boolean;
 }
@@ -14,7 +14,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const initialTheme = typeof window !== 'undefined' ? localStorage.getItem('theme') as Theme | null : 'light';
+  const [theme, setTheme] = useState<Theme>(initialTheme || 'light');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
