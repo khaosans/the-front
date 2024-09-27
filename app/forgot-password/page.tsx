@@ -5,7 +5,7 @@ import { Label } from "@/components/forms/label";
 import { Input } from "@/components/forms/input";
 import { FormMessage } from "@/components/forms/form-message";
 import React, { useState } from "react";
-import supabase from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 
 type MessageType = 'error' | 'success';
 
@@ -32,6 +32,7 @@ export default function ForgotPasswordPage() {
       return;
     }
 
+    const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/callback?next=/update-password`,
     });
