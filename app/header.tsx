@@ -1,57 +1,30 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useTheme } from './contexts/ThemeContext';
 
-export function Header() {
-	const pathname = usePathname();
-	const router = useRouter();
-	const supabase = createClientComponentClient();
-
-	const navItems = [
-		{ href: '/dashboard', label: 'Dashboard' },
-		{ href: '/settings', label: 'Settings' },
-		{ href: '/profile', label: 'Profile' },
-		{ href: '/taskboard', label: 'Taskboard' },
-	];
-
-	const handleLogout = async () => {
-		await supabase.auth.signOut();
-		router.push('/login');
-	};
+export const Header: React.FC = () => {
+	const { theme, toggleTheme } = useTheme();
 
 	return (
-		<header className="bg-white shadow-sm">
-			<nav className="container mx-auto px-4 py-3 flex justify-between items-center">
-				<div className="flex items-center">
-					<Link href="/dashboard" className="text-xl font-bold text-primary mr-8">
-						Quantumlabs
-					</Link>
-					<ul className="flex space-x-4">
-						{navItems.map((item) => (
-							<li key={item.href}>
-								<Link
-									href={item.href}
-									className={cn(
-										"text-sm font-medium transition-colors hover:text-primary",
-										pathname === item.href
-											? "text-primary"
-											: "text-muted-foreground"
-									)}
-								>
-									{item.label}
-								</Link>
-							</li>
-						))}
-					</ul>
+		<header className={`w-full py-4 ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800'}`}>
+			<div className="container mx-auto px-4">
+				<div className="flex justify-between items-center">
+					<div className="text-xl font-bold">
+						<Link href="/">QuantumLabs</Link>
+					</div>
+					<nav>
+						<ul className="flex space-x-4">
+							<li><Link href="/" className="hover:underline">Home</Link></li>
+							<li><Link href="/taskboard" className="hover:underline">Taskboard</Link></li>
+							<li><Link href="/settings" className="hover:underline">Settings</Link></li>
+							<li><Link href="/profile" className="hover:underline">Profile</Link></li>
+
+						</ul>
+					</nav>
 				</div>
-				<Button variant="ghost" size="sm" onClick={handleLogout} className="text-blue-600 hover:text-blue-700">
-					Logout
-				</Button>
-			</nav>
+			</div>
 		</header>
 	);
-}
+};

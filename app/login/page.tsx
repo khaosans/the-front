@@ -6,6 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import Image from 'next/image';  // Add this import
 import { useTheme } from '../contexts/ThemeContext';
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');

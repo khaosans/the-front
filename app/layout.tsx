@@ -3,7 +3,7 @@
 import React from 'react'; // Import React
 import '../styles/globals.css' // Adjust this path if your global styles are located elsewhere
 import { Header } from './header';
-import Footer from '../components/Footer'; // Import Footer component
+import Footer from '../components/footer'; // Import Footer component
 import { ThemeProvider } from './contexts/ThemeContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -11,9 +11,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html lang="en">
             <body>
                 <ThemeProvider>
-                    <Header /> {/* Include Header */}
-                    <main>{children}</main> {/* Render child components */}
-                    <Footer /> {/* Include Footer */}
+                    <div className="flex flex-col min-h-screen">
+                        <Header /> {/* Include Header */}
+                        <main className="flex-grow">{children}</main> {/* Render child components */}
+                        <Footer /> {/* Include Footer */}
+                    </div>
                 </ThemeProvider>
             </body>
         </html>
