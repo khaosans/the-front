@@ -5,11 +5,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from '@/types/supabase';
 
 export function Header() {
 	const pathname = usePathname();
 	const router = useRouter();
-	const supabase = createClientComponentClient();
+	const supabase = createClientComponentClient<Database>();
 
 	const navItems = [
 		{ href: '/dashboard', label: 'Dashboard' },

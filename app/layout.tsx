@@ -1,23 +1,17 @@
-'use client'; // Ensure this is a Client Component
-
-import React, { useEffect } from 'react'; // Import React
-import './globals.css'; // Global styles
 import { Header } from './header';
-import { Footer } from './footer'; // Import Footer component
+import Footer from './footer'; // Changed to default import
 import { getStoredTheme, setTheme } from '@/lib/theme';
+import { ClientThemeWrapper } from './ClientThemeWrapper';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    useEffect(() => {
-        const storedTheme = getStoredTheme();
-        setTheme(storedTheme);
-    }, []);
-
     return (
         <html lang="en">
             <body className="flex flex-col min-h-screen">
-                <Header /> {/* Include Header */}
-                <main className="flex-grow">{children}</main> {/* Render child components */}
-                <Footer /> {/* Include Footer */}
+                <ClientThemeWrapper>
+                    <Header />
+                    <main className="flex-grow">{children}</main>
+                    <Footer />
+                </ClientThemeWrapper>
             </body>
         </html>
     );

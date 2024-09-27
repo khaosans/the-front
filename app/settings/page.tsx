@@ -8,14 +8,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { ThemeColor, setTheme, getStoredTheme, themeColors } from '@/lib/theme';
+import { Database } from '@/types/supabase';
 
 export default function SettingsPage() {
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = createClientComponentClient<Database>()
   const [settings, setSettings] = useState({
     theme: 'light',
     language: 'en',
@@ -122,7 +123,7 @@ export default function SettingsPage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="themeColor">Theme Color</Label>
-                <Select value={settings.themeColor} onValueChange={(value: ThemeColor) => setSettings({ ...settings, themeColor: value })}>
+                <Select value={settings.themeColor} onValueChange={(value) => setSettings({ ...settings, themeColor: value as ThemeColor })}>
                   <SelectTrigger id="themeColor">
                     <SelectValue>{settings.themeColor}</SelectValue>
                   </SelectTrigger>

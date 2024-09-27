@@ -1,70 +1,70 @@
 'use client';
 
 import { useState } from 'react';
-import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/modal';
-import { Button } from "@/components/ui/button";
 
-export function Footer() {
-    const [openModal, setOpenModal] = useState<string | null>(null);
+type ModalContent = {
+  [key: string]: { title: string; content: string };
+};
 
-    const footerItems = [
-        { href: 'privacy', label: 'Privacy Policy' },
-        { href: 'terms', label: 'Terms of Service' },
-        { href: 'contact', label: 'Contact Us' },
-    ];
+const modalContent: ModalContent = {
+  '/privacy': {
+    title: 'Privacy Policy',
+    content: 'This is our privacy policy...'
+  },
+  '/terms': {
+    title: 'Terms of Service',
+    content: 'These are our terms of service...'
+  },
+  '/contact': {
+    title: 'Contact Us',
+    content: 'Here\'s how to contact us...'
+  }
+};
 
-    const modalContent = {
-        privacy: {
-            title: 'Privacy Policy',
-            content: 'This is our privacy policy. We respect your privacy and are committed to protecting it.',
-        },
-        terms: {
-            title: 'Terms of Service',
-            content: 'These are our terms of service. By using our service, you agree to these terms.',
-        },
-        contact: {
-            title: 'Contact Us',
-            content: 'You can contact us at support@quantumlabs.com or call us at 1-800-QUANTUM.',
-        },
-    };
+const footerItems = [
+  { href: '/privacy', label: 'Privacy' },
+  { href: '/terms', label: 'Terms' },
+  { href: '/contact', label: 'Contact' },
+] as const;
 
-    const handleOpenChange = (open: boolean, href: string) => {
-        setOpenModal(open ? href : null);
-    };
+export default function Footer() {
+  const [openModal, setOpenModal] = useState<(typeof footerItems)[number]['href'] | null>(null);
 
-    return (
-        <footer className="bg-white shadow-sm mt-auto">
-            <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                    © 2023 Quantumlabs. All rights reserved.
-                </div>
-                <ul className="flex space-x-4">
-                    {footerItems.map((item) => (
-                        <li key={item.href}>
-                            <Dialog open={openModal === item.href} onOpenChange={(open) => handleOpenChange(open, item.href)}>
-                                <DialogTrigger asChild>
-                                    <Button
-                                        variant="link"
-                                        className="text-sm font-medium transition-colors hover:text-primary text-muted-foreground"
-                                    >
-                                        {item.label}
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>{modalContent[item.href].title}</DialogTitle>
-                                    </DialogHeader>
-                                    <p>{modalContent[item.href].content}</p>
-                                    <Button onClick={() => setOpenModal(null)} className="mt-4">Close</Button>
-                                </DialogContent>
-                            </Dialog>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </footer>
-    );
+  return (
+    <footer className="bg-gray-100 py-4">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center">
+          <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+          <nav>
+            <ul className="flex space-x-4">
+              {footerItems.map((item) => (
+                <li key={item.href}>
+                  <button
+                    className="text-blue-600 hover:text-blue-800"
+                    onClick={() => setOpenModal(item.href)}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </div>
+      {openModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">{modalContent[openModal].title}</h2>
+            <p className="mb-4">{modalContent[openModal].content}</p>
+            <button 
+              onClick={() => setOpenModal(null)}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </footer>
+  );
 }
-
-export default Footer;

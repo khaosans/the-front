@@ -1,24 +1,14 @@
-export type Message =
-  | { success: string }
-  | { error: string }
-  | { message: string };
+import React from 'react';
 
-export function FormMessage({ message }: { message: Message }) {
+interface Message {
+  type: 'error' | 'success';
+  text: string;
+}
+
+export function FormMessage({ type, children }: { type: Message['type']; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-2 w-full max-w-md text-sm">
-      {"success" in message && (
-        <div className="text-green-500 border-l-2 border-green-500 px-4">
-          {message.success}
-        </div>
-      )}
-      {"error" in message && (
-        <div className="text-red-500 border-l-2 border-red-500 px-4">
-          {message.error}
-        </div>
-      )}
-      {"message" in message && (
-        <div className="text-foreground border-l-2 px-4">{message.message}</div>
-      )}
+    <div className={`mt-4 p-2 rounded ${type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+      {children}
     </div>
   );
 }

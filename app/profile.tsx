@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
                     <Input label="Name" id="name" type="text" placeholder="Your name" />
                     <Input label="Email" id="email" type="email" placeholder="Your email" />
                     <Input label="Password" id="password" type="password" placeholder="New password" />
-                    <Button type="submit" fullWidth>Update Profile</Button>
+                    <Button type="submit" className="w-full">Update Profile</Button>
                 </form>
             </div>
         </div>
