@@ -18,7 +18,7 @@ const signOut = async () => {
 };
 
 export const Header: React.FC = () => {
-	const { theme, toggleTheme, isDark } = useTheme();
+	const { theme, toggleTheme } = useTheme();
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -30,9 +30,7 @@ export const Header: React.FC = () => {
 	const isAuthPage = pathname === '/login' || pathname === '/signup';
 
 	const getHeaderClasses = () => {
-		return isDark
-			? 'bg-gray-900 text-gray-100'
-			: 'bg-gray-100 text-gray-900';
+		return theme === 'light' ? 'bg-gray-100 text-gray-900' : 'bg-gray-900 text-gray-100';
 	};
 
 	return (
@@ -64,10 +62,11 @@ export const Header: React.FC = () => {
 												)}
 											</button>
 										</li>
-										<li><Link href="/" className="hover:underline">Home</Link></li>
-										<li><Link href="/taskboard" className="hover:underline">Taskboard</Link></li>
-										<li><Link href="/settings" className="hover:underline">Settings</Link></li>
-										<li><Link href="/profile" className="hover:underline">Profile</Link></li>
+										<li><Link href="/dashboard" className={`hover:underline ${pathname === '/dashboard' ? 'font-bold' : ''}`}>Dashboard</Link></li>
+										<li><Link href="/taskboard" className={`hover:underline ${pathname === '/taskboard' ? 'font-bold' : ''}`}>Taskboard</Link></li>
+										<li><Link href="/team/manage" className={`hover:underline ${pathname === '/team/manage' ? 'font-bold' : ''}`}>Manage Team</Link></li>
+										<li><Link href="/settings" className={`hover:underline ${pathname === '/settings' ? 'font-bold' : ''}`}>Settings</Link></li>
+										<li><Link href="/profile" className={`hover:underline ${pathname === '/profile' ? 'font-bold' : ''}`}>Profile</Link></li>
 										<li>
 											<button 
 												onClick={handleSignOut}
