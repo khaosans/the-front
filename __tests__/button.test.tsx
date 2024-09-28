@@ -1,21 +1,20 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Button from '../components/button';
-import { ThemeProvider } from '../__mocks__/themeContext';
-describe('Button component', () => {
-  it('renders the button with correct text and calls onClick when clicked', () => {
-    const mockOnClick = jest.fn();
-    render(
-      <ThemeProvider>
-        <Button onClick={mockOnClick}>Click me</Button>
-      </ThemeProvider>
-    );
+import {Button} from "@/components/ui/button";
 
+describe('Button Component', () => {
+  it('renders the button with children', () => {
+    render(<Button onClick={() => {}}>Click Me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
     expect(button).toBeInTheDocument();
+  });
 
+  it('calls onClick when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    const button = screen.getByRole('button', { name: /click me/i });
     fireEvent.click(button);
-    expect(mockOnClick).toHaveBeenCalledTimes(1);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
