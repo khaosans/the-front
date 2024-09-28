@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useRouter } from 'next/navigation';
-import Taskboard from "@/app/taskboard";
+import Taskboard from "@/app/taskboard/taskboard";
 
 export default function Board() {
   return (
