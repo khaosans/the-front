@@ -1,14 +1,14 @@
 "use client"
 
 import React, { useState } from 'react';
-import EditTaskModal from "@/components/EditTaskModal";
-import { TaskItem } from "@/components/Task"; // Ensure this type is correctly defined
+import {Task} from "@/components/Task";
+import {EditTaskModal} from "@/app/taskboard/edit-task-modal";
 
-const TaskList = ({ tasks }: { tasks: TaskItem[] }) => {
-  const [selectedTask, setSelectedTask] = useState<TaskItem | null>(null);
+const TaskList = ({ tasks }: { tasks: Task[] }) => {
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleTaskClick = (task: TaskItem) => {
+  const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
     setIsModalOpen(true);
   };
@@ -18,7 +18,7 @@ const TaskList = ({ tasks }: { tasks: TaskItem[] }) => {
     setSelectedTask(null);
   };
 
-  const handleSave = (updatedTask: TaskItem) => {
+  const handleSave = (updatedTask: Task) => {
     // Logic to save the updated task (e.g., API call)
     console.log('Updated Task:', updatedTask);
     handleModalClose();

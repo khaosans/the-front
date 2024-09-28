@@ -1,7 +1,6 @@
-import { Task } from "@react-dnd/asap";
 
 // Ensure Task type has id as string
-export interface TaskItem extends Task{
+export interface Task {
     id: string;
     title: string;
     description: string;
