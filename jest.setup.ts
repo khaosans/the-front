@@ -1,3 +1,10 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
 
-// You can add more global test setup here if needed
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveClass(className: string): R;
+    }
+  }
+}
