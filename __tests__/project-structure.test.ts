@@ -28,7 +28,7 @@ const expectedStructure: Record<string, string[]> = {
   'app': ['layout.tsx', 'page.tsx', 'globals.css', 'favicon.ico', 'header.tsx', 'opengraph-image.png', 'taskboard.module.css', 'twitter-image.png'],
   'app/login': ['page.tsx'],
   'app/dashboard': ['page.tsx'],
-  'utils': ['auth.ts', 'cn.ts', 'supabaseClient.ts', 'utils.ts'],
+  'utils': ['auth.ts', 'cn.ts', 'supabaseClient.ts', 'utils.ts','ai.ts'],
   'public': [], // Remove 'favicon.ico' from here
 };
 

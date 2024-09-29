@@ -68,6 +68,13 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a pull request.
 
+## Testing
+
+Output only failing tests:
+```
+npx jest 2>&1 | grep 'FAIL'
+```
+
 ## License
 
 This project is licensed under the MIT License.
