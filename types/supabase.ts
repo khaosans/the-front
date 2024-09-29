@@ -6,10 +6,55 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   public: {
     Tables: {
-      [_ in never]: never
+      projects: {
+        Row: {
+          id: string
+          name: string
+          description: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string
+          created_at?: string
+        }
+      }
+      tasks: {
+        Row: {
+          id: string
+          title: string
+          description: string
+          due_date: string
+          status: 'todo' | 'inprogress' | 'done'
+          project_id: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          description: string
+          due_date: string
+          status: 'todo' | 'inprogress' | 'done'
+          project_id: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          description?: string
+          due_date?: string
+          status?: 'todo' | 'inprogress' | 'done'
+          project_id?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
