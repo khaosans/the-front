@@ -1,13 +1,14 @@
-import { cn } from "@/utils/cn";
+import React, { InputHTMLAttributes } from 'react';
 
-export function Input({ ...props }: React.JSX.IntrinsicElements["input"]) {
-  return (
-    <input
-      className={cn(
-        "rounded-md h-8 text-sm px-4 py-2 bg-inherit border",
-        props.className,
-      )}
-      {...props}
-    />
-  );
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  // Add any additional props specific to your Input component here
 }
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  return <input ref={ref} {...props} />;
+});
+
+Input.displayName = 'Input';
+
+export default Input;
+export { Input };
