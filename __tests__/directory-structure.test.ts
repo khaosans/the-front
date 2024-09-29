@@ -1,8 +1,25 @@
 import fs from 'fs';
 import path from 'path';
+import ignore from 'ignore';
 
 describe('Project Directory Structure', () => {
   const rootDir = path.resolve(__dirname, '..');
+
+  // Read .gitignore and create an ignore function
+  const gitignorePath = path.join(rootDir, '.gitignore');
+  const ig = ignore();
+  if (fs.existsSync(gitignorePath)) {
+    const gitignoreContent = fs.readFileSync(gitignorePath, 'utf8');
+    ig.add(gitignoreContent);
+  }
+  // Always ignore node_modules and .git
+  ig.add(['node_modules', '.git']);
+
+  // Helper function to check if a path should be ignored
+  const shouldIgnore = (itemPath: string): boolean => {
+    const relativePath = path.relative(rootDir, itemPath).replace(/\\/g, '/');
+    return ig.ignores(relativePath);
+  };
 
   test('pages directory should not exist', () => {
     const pagesDir = path.join(rootDir, 'pages');
@@ -38,25 +55,37 @@ describe('Project Directory Structure', () => {
     });
   });
 
-  test('dynamic route segments should use PascalCase or lowercase', () => {
+  test('dynamic route segments should use PascalCase', () => {
+    const invalidSegments: string[] = [];
+
     const checkDynamicRoutes = (dir: string) => {
       const items = fs.readdirSync(dir);
       items.forEach(item => {
         const itemPath = path.join(dir, item);
         if (fs.statSync(itemPath).isDirectory()) {
           if (item.startsWith('[') && item.endsWith(']')) {
-            expect(item).toMatch(/^\[[a-zA-Z][a-zA-Z0-9]*\]$/);
+            if (!item.match(/^\[[A-Z][a-zA-Z0-9]*\]$/)) {
+              invalidSegments.push(path.relative(rootDir, itemPath));
+            }
           }
           checkDynamicRoutes(itemPath);
         }
       });
     };
+
     checkDynamicRoutes(path.join(rootDir, 'app'));
+
+    if (invalidSegments.length > 0) {
+      throw new Error('The following dynamic route segments do not use PascalCase:\n' +
+        invalidSegments.map(segment => `  ${segment}`).join('\n'));
+    }
+
+    expect(invalidSegments.length).toBe(0);
   });
 
   test('components directory should not exist in app directory or its subdirectories', () => {
     const appDir = path.join(rootDir, 'app');
-    
+
     const checkNoComponentsDir = (dir: string) => {
       const items = fs.readdirSync(dir);
       items.forEach(item => {
@@ -71,4 +100,5 @@ describe('Project Directory Structure', () => {
     expect(fs.existsSync(path.join(appDir, 'components'))).toBe(false);
     checkNoComponentsDir(appDir);
   });
+  
 });
