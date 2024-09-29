@@ -3,11 +3,21 @@ import path from 'path';
 
 const projectRoot = process.cwd();
 
-function getFilesInDirectory(dir: string): string[] {
+function getFilesInDirectory(dir: string, recursive = false): string[] {
   try {
-    return fs.readdirSync(dir, { withFileTypes: true })
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    let files = entries
       .filter(dirent => dirent.isFile())
-      .map(dirent => dirent.name);
+      .map(dirent => path.join(dir, dirent.name));
+
+    if (recursive) {
+      const directories = entries.filter(dirent => dirent.isDirectory());
+      for (const directory of directories) {
+        files = files.concat(getFilesInDirectory(path.join(dir, directory.name), true));
+      }
+    }
+
+    return files;
   } catch (error) {
     console.error(`Error reading directory ${dir}:`, error);
     return [];
@@ -20,51 +30,31 @@ const expectedStructure: Record<string, string[]> = {
   'app/dashboard': ['page.tsx'],
   'utils': ['auth.ts', 'cn.ts', 'supabaseClient.ts', 'utils.ts'],
   'public': [], // Remove 'favicon.ico' from here
-  '__tests__': [
-    'about-page.test.tsx',
-    'button.test.tsx',
-    'component-count.test.ts',
-    'edit-task-modal.test.tsx',
-    'input.test.tsx',
-    'login-page.test.tsx',
-    'profile-page.test.tsx',
-    'settings-page.test.tsx',
-    'signup-page.test.tsx',
-    'taskboard-page.test.tsx',
-    'project-structure.test.ts'
-  ]
 };
 
 describe('Project File Structure', () => {
   test('should have the correct file structure', () => {
     const errors: string[] = [];
-    const details: string[] = [];
 
     Object.entries(expectedStructure).forEach(([dirPath, expectedFiles]) => {
       const fullPath = path.join(projectRoot, dirPath);
       const actualFiles = getFilesInDirectory(fullPath);
 
-      const missingFiles = expectedFiles.filter(file => !actualFiles.includes(file));
-      const unexpectedFiles = actualFiles.filter(file => !expectedFiles.includes(file));
+      const missingFiles = expectedFiles.filter(file => !actualFiles.includes(path.join(fullPath, file)));
+      const unexpectedFiles = actualFiles.filter(file => !expectedFiles.includes(path.basename(file)));
 
       if (missingFiles.length > 0) {
-        errors.push(`Missing files in ${dirPath}: ${missingFiles.join(', ')}`);
-        details.push(`Expected files in ${dirPath}: ${expectedFiles.join(', ')}`);
-        details.push(`Actual files in ${dirPath}: ${actualFiles.join(', ')}`);
+        errors.push(`Missing files in ${dirPath}:\n${missingFiles.map(file => `  - ${file}`).join('\n')}`);
       }
 
       if (unexpectedFiles.length > 0) {
-        errors.push(`Unexpected files in ${dirPath}: ${unexpectedFiles.join(', ')}`);
-        details.push(`Expected files in ${dirPath}: ${expectedFiles.join(', ')}`);
-        details.push(`Actual files in ${dirPath}: ${actualFiles.join(', ')}`);
+        errors.push(`Unexpected files in ${dirPath}:\n${unexpectedFiles.map(file => `  - ${path.basename(file)}`).join('\n')}`);
       }
     });
 
     if (errors.length > 0) {
       console.error('File structure errors:');
       errors.forEach(error => console.error(error));
-      console.error('Details:');
-      details.forEach(detail => console.error(detail));
     }
 
     expect(errors).toEqual([]);

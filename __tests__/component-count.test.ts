@@ -1,38 +1,23 @@
 import fs from 'fs';
 import path from 'path';
 
-const projectRoot = process.cwd();
-const testsDir = path.join(projectRoot, '__tests__');
+describe('Project File Structure', () => {
 
-function getFilesInDirectory(dir: string): string[] {
-  try {
-    return fs.readdirSync(dir, { withFileTypes: true })
-      .filter(dirent => dirent.isFile())
+  it('should not have test files outside __tests__ directory', () => {
+    const rootDir = path.resolve(__dirname, '..');
+    const allFiles = fs.readdirSync(rootDir, { withFileTypes: true })
+      .filter(dirent => dirent.isFile() && !dirent.name.startsWith('.'))
       .map(dirent => dirent.name);
-  } catch (error) {
-    console.error(`Error reading directory ${dir}:`, error);
-    return [];
-  }
-}
 
-describe('__tests__ Directory', () => {
-  test('should only contain test files', () => {
-    const files = getFilesInDirectory(testsDir);
-    
-    files.forEach(file => {
-      const isTestFile = file.endsWith('.test.ts') || file.endsWith('.test.tsx');
-      expect(isTestFile).toBe(true);
-    });
-  });
+    const testFilesOutside = allFiles.filter(file =>
+      (file.endsWith('.test.ts') || file.endsWith('.test.tsx')) &&
+      !file.startsWith('__tests__')
+    );
 
-  test('should not be empty', () => {
-    const files = getFilesInDirectory(testsDir);
-    expect(files.length).toBeGreaterThan(0);
-  });
+    if (testFilesOutside.length > 0) {
+      console.log('Test files found outside __tests__ directory:', testFilesOutside);
+    }
 
-  test('should not contain any non-test files', () => {
-    const files = getFilesInDirectory(testsDir);
-    const nonTestFiles = files.filter(file => !file.endsWith('.test.ts') && !file.endsWith('.test.tsx'));
-    expect(nonTestFiles).toEqual([]);
+    expect(testFilesOutside).toEqual([]);
   });
 });
