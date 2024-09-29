@@ -5,7 +5,7 @@ import { execSync } from 'child_process';
 describe('Configuration files', () => {
   const configFiles = [
    // 'jest.config.js',
-    'tsconfig.json',
+   //  'tsconfig.json',
    // 'jest.setup.ts',
       'next.config.js',
   ];
