@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EditTaskModal from '../edit-task-modal';
+import EditTaskModal from '../components/edit-task-modal';
 
 describe('EditTaskModal', () => {
   const mockOnClose = jest.fn();
