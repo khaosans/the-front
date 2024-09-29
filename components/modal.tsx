@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"; // Updated import
 import { Button } from "@/components/ui/button";
 import { useTheme } from '../app/contexts/ThemeContext';
 import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
+import { DialogFooter, DialogHeader } from './ui/dialog';
 
 interface ModalProps {
   isOpen: boolean;
