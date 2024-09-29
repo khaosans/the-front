@@ -35,7 +35,8 @@
     "typeRoots": [
       "./node_modules/@types",
       "./types"
-    ]
+    ],
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
