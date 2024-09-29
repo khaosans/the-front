@@ -12,6 +12,51 @@ exports[`UI Component Snapshots edit-task-modal matches snapshot 1`] = `<Documen
 
 exports[`UI Component Snapshots invite-user-modal matches snapshot 1`] = `<DocumentFragment />`;
 
+exports[`UI Component Snapshots navigation matches snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="bg-gray-800 text-white p-4"
+  >
+    <ul
+      class="flex space-x-4"
+    >
+      <li>
+        <a
+          class="hover:text-gray-300 font-bold"
+          href="/"
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          class="hover:text-gray-300 "
+          href="/projects"
+        >
+          Projects
+        </a>
+      </li>
+      <li>
+        <a
+          class="hover:text-gray-300 "
+          href="/projects/new"
+        >
+          New Project
+        </a>
+      </li>
+      <li>
+        <a
+          class="hover:text-gray-300 "
+          href="/taskboard"
+        >
+          Taskboard
+        </a>
+      </li>
+    </ul>
+  </nav>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots next-logo matches snapshot 1`] = `
 <DocumentFragment>
   <svg
