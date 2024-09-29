@@ -13,7 +13,7 @@ interface MonacoEditorProps {
   onSave?: (value: string) => void;
 }
 
-export function MonacoEditor({
+export function MoncacoEditor({
   initialValue = "// Type your code here",
   language = "javascript",
   onSave

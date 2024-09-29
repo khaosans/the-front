@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../app/contexts/ThemeContext';
-import Modal from './Modal'; // Assuming Modal.tsx is in the same directory
+import Modal from './modal'; // Assuming modal.tsx is in the same directory
 
 const Footer: React.FC = () => {
   const { isDark, getThemeClasses } = useTheme();
