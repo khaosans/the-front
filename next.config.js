@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    metadataBase: new URL('http://localhost:3000'),
+    // Remove metadataBase from here
   },
 }
 
