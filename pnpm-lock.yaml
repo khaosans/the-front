@@ -175,7 +175,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.11.5)
       jest-environment-jsdom:
-        specifier: ^29.3.1
+        specifier: ^29.7.0
         version: 29.7.0
 
 packages:
