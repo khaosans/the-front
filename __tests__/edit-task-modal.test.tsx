@@ -1,7 +1,15 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import EditTaskModal from '../edit-task-modal';
+import EditTaskModal from '../components/edit-task-modal';
+
+// Mock the next/navigation module
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+  usePathname: () => '/',
+}));
 
 describe('EditTaskModal', () => {
   const mockOnClose = jest.fn();
