@@ -9,6 +9,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.25.4",
     "@hookform/resolvers": "^3.9.0",
     "@jest/globals": "^29.7.0",
     "@monaco-editor/react": "^4.6.0",
