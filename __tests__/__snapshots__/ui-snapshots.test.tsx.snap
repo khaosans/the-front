@@ -8,8 +8,6 @@ exports[`UI Component Snapshots button matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UI Component Snapshots edit-task-modal matches snapshot 1`] = `<DocumentFragment />`;
-
 exports[`UI Component Snapshots invite-user-modal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots navigation matches snapshot 1`] = `

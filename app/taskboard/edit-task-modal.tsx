@@ -23,7 +23,7 @@ function Textarea(props: {
   return null;
 }
 
-export function EditTaskModal({ task, isOpen, onClose, onSave }: EditTaskModalProps) {
+export function EditTaskModal({ isOpen, onClose, onSave, task }: EditTaskModalProps) {
   const [editedTask, setEditedTask] = useState<Task>(task)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
