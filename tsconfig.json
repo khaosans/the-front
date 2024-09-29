@@ -27,7 +27,8 @@
       "@/*": ["./*"]
     },
     "types": ["node", "jest"],
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
