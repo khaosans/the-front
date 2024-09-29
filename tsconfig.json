@@ -27,21 +27,12 @@
       "@/*": [
         "./*"
       ]
-    },
-    "types": [
-      "jest",
-      "@testing-library/jest-dom"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js",
     ".next/types/**/*.ts"
   ],
   "exclude": [
