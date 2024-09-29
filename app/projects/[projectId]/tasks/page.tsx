@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { supabase } from '@/database/supabase-client'
-import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
+import { Dialog as RadixDialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
 import { DialogHeader, DialogFooter } from '@/components/ui/dialog'
 
 interface Task {
@@ -131,7 +131,7 @@ export default function ProjectTasksPage() {
           </Card>
         ))}
       </ScrollArea>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <RadixDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{currentTask ? 'Edit Task' : 'Add New Task'}</DialogTitle>
@@ -154,7 +154,7 @@ export default function ProjectTasksPage() {
             </DialogFooter>
           </form>
         </DialogContent>
-      </Dialog>
+      </RadixDialog>
     </div>
   )
 }
