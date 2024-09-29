@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import supabase from '../../../supabase/client';
+import supabase from "@/utils/supabase/client";
 
 export default async function getNotifications(req: NextApiRequest, res: NextApiResponse) {
-    const { user } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
         return res.status(401).json({ error: 'Unauthorized' });

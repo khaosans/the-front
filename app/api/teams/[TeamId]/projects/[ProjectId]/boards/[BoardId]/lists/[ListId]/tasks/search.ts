@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import supabase from '../../../../../supabase/client';
+import supabase from '@/utils/supabase/client';
 
 export default async function searchTasks(req: NextApiRequest, res: NextApiResponse) {
     const { ListId } = req.query;

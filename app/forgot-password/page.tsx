@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Link from "next/link";
 
 // Create a client-side only version of the ForgotPassword component
-const ForgotPasswordForm = dynamic(() => import('@/components/ForgotPasswordForm'), {
+const ForgotPasswordForm = dynamic(() => import('@/components/forgot-password-form'), {
   ssr: false,
 });
 

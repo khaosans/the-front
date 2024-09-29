@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordian"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Search, Mail } from 'lucide-react'
@@ -39,7 +39,7 @@ export default function SupportPage() {
     },
   ])
 
-  const filteredFAQs = faqs.filter(faq => 
+  const filteredFAQs = faqs.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -59,8 +59,8 @@ export default function SupportPage() {
             </CardHeader>
             <CardContent>
               <div className="flex space-x-2 mb-4">
-                <Input 
-                  placeholder="Search FAQs..." 
+                <Input
+                  placeholder="Search FAQs..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1"

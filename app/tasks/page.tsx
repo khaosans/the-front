@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import supabase from '@/database/supabaseClient'
+import { supabase } from '@/database/supabase-client'
 
 interface Task {
   id: string
@@ -18,9 +18,10 @@ interface Task {
   description: string
   due_date: string
   status: 'todo' | 'inprogress' | 'done'
+  project_id: string
 }
 
-export default function TaskManagementPage() {
+export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentTask, setCurrentTask] = useState<Task | null>(null)
@@ -84,7 +85,7 @@ export default function TaskManagementPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Task Management</h1>
+      <h1 className="text-3xl font-bold mb-6">All Tasks</h1>
       <div className="flex justify-between items-center mb-6">
         <Input 
           className="w-64" 
@@ -138,29 +139,44 @@ export default function TaskManagementPage() {
               description: formData.get('description') as string,
               due_date: formData.get('due_date') as string,
               status: formData.get('status') as 'todo' | 'inprogress' | 'done',
+              project_id: formData.get('project_id') as string,
             }
             handleAddEditTask(task)
           }}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="title" className="text-right">Title</Label>
+                <Label htmlFor="title" >
+                  Title
+                </Label>
                 <Input id="title" name="title" defaultValue={currentTask?.title} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="description" className="text-right">Description</Label>
+                <Label htmlFor="description" >
+                  Description
+                </Label>
                 <Textarea id="description" name="description" defaultValue={currentTask?.description} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="due_date" className="text-right">Due Date</Label>
+                <Label htmlFor="due_date" >
+                  Due Date
+                </Label>
                 <Input id="due_date" name="due_date" type="date" defaultValue={currentTask?.due_date} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="status" className="text-right">Status</Label>
+                <Label htmlFor="status" >
+                  Status
+                </Label>
                 <select id="status" name="status" defaultValue={currentTask?.status} className="col-span-3">
                   <option value="todo">To Do</option>
                   <option value="inprogress">In Progress</option>
                   <option value="done">Done</option>
                 </select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="project_id" >
+                  Project ID
+                </Label>
+                <Input id="project_id" name="project_id" defaultValue={currentTask?.project_id} className="col-span-3" />
               </div>
             </div>
             <DialogFooter>

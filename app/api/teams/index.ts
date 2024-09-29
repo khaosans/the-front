@@ -1,12 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import supabase from '../../../supabase/client';
-
-export default async function getAllTeams(req: NextApiRequest, res: NextApiResponse) {
-    const { data, error } = await supabase.from('teams').select('*');
-
-    if (error) return res.status(400).json({ error: error.message });
-    return res.status(200).json(data);
-}
+import { supabase } from '../../../supabase/client';
 
 export default async function createTeam(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {

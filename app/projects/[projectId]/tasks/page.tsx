@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
-import supabase from '@/database/supabase-client'
+import { supabase } from '@/database/supabase-client'
 
 interface Task {
   id: string

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import supabase from '../../../../../supabase/client';
+import supabase from '@/utils/supabase/client';
 
 export default async function addComment(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
