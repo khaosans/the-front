@@ -1,5 +1,4 @@
-import React, { act } from 'react';
-import { render, screen } from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeProvider } from '../__mocks__/themeContext';
 
