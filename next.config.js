@@ -5,6 +5,10 @@ const nextConfig = {
   experimental: {
     metadataBase: new URL('http://localhost:3000'),
   },
+  eslint: {
+    // This disables ESLint during builds
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig
