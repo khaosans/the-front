@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react'; // Import act from react
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeProvider } from '../__mocks__/themeContext';
@@ -73,7 +73,7 @@ describe('LoginPage', () => {
   });
 
   it('renders the login page', () => {
-    const loginPage = screen.getByTestId('mock-login-page');
+    const loginPage = screen.getByText(/login/i);
     expect(loginPage).toBeInTheDocument();
   });
 

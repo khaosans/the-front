@@ -1,57 +1,52 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PlusCircle } from 'lucide-react';
-import Link from 'next/link';
-import { useTheme } from '../../contexts/ThemeContext';
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { toast } from "@/components/ui/use-toast";
+import { PlusCircle, UserMinus } from 'lucide-react';
 
 interface Member {
   id: string;
   name: string;
   email: string;
-  role: 'Admin' | 'Editor' | 'Viewer';
-}
-
-interface Board {
-  id: string;
-  name: string;
-  tasks: { total: number; completed: number };
+  role: string;
+  avatar: string;
 }
 
 interface Team {
   id: string;
   name: string;
+  description: string;
+  createdAt: string;
   members: Member[];
-  boards: Board[];
 }
 
-// This would typically come from an API or database
+// Simulated API call to fetch team data
 const fetchTeamData = async (teamId: string): Promise<Team> => {
   // Simulating API call
   return {
     id: teamId,
     name: `Team ${teamId}`,
+    description: `Description for Team ${teamId}`,
+    createdAt: '2023-06-01',
     members: [
-      { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-      { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
-      { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'Viewer' },
+      { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin', avatar: 'https://avatar.vercel.sh/john.png' },
+      { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Editor', avatar: 'https://avatar.vercel.sh/jane.png' },
     ],
-    boards: [
-      { id: '1', name: 'Project Alpha', tasks: { total: 20, completed: 8 } },
-      { id: '2', name: 'Website Redesign', tasks: { total: 15, completed: 3 } },
-    ]
   };
 };
 
 export default function TeamPage({ params }: { params: { id: string } }) {
   const [team, setTeam] = useState<Team | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const { isDark, getThemeClasses } = useTheme();
+  const [isAddMemberDialogOpen, setIsAddMemberDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchTeamData(params.id).then(setTeam);
@@ -64,89 +59,101 @@ export default function TeamPage({ params }: { params: { id: string } }) {
     member.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredBoards = team.boards.filter(board => 
-    board.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleAddMember = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const newMember: Member = {
+      id: Date.now().toString(),
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      role: formData.get('role') as string,
+      avatar: `https://avatar.vercel.sh/${formData.get('name')}.png`,
+    };
+    setTeam(prev => prev ? { ...prev, members: [...prev.members, newMember] } : prev);
+    setIsAddMemberDialogOpen(false);
+    toast({
+      title: "Success",
+      description: "Team member added successfully.",
+    });
+  };
+
+  const handleRemoveMember = (memberId: string) => {
+    if (team) {
+      const updatedMembers = team.members.filter(member => member.id !== memberId);
+      setTeam({ ...team, members: updatedMembers });
+      toast({
+        title: "Success",
+        description: "Team member removed successfully.",
+      });
+    }
+  };
 
   return (
-    <div className={`container mx-auto py-10 ${getThemeClasses()}`}>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Team: {team.name}</h1>
-        <div className="flex items-center space-x-2">
-          <Input
-            placeholder="Search members or boards..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-64"
-          />
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" /> Invite Member
-          </Button>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">Team: {team.name}</h1>
+      <div className="flex items-center mb-4">
+        <Input
+          placeholder="Search members..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-64"
+        />
+        <Button onClick={() => setIsAddMemberDialogOpen(true)} className="ml-2">
+          <PlusCircle className="mr-2 h-4 w-4" /> Invite Member
+        </Button>
       </div>
-      <div className="space-y-8">
-        <Card className={isDark ? 'bg-gray-800' : ''}>
-          <CardHeader>
-            <CardTitle>Team Members</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredMembers.map((member) => (
-                  <TableRow key={member.id}>
-                    <TableCell className="font-medium">{member.name}</TableCell>
-                    <TableCell>{member.email}</TableCell>
-                    <TableCell>
-                      <Badge variant={member.role === 'Admin' ? 'default' : member.role === 'Editor' ? 'secondary' : 'default'}>
-                        {member.role}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Team Boards</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredBoards.map((board) => (
-              <Link href={`/board/${board.id}`} key={board.id}>
-                <Card className={`hover:shadow-lg transition-shadow ${isDark ? 'bg-gray-800' : ''}`}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">{board.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground">
-                      <p>Tasks: {board.tasks.completed} / {board.tasks.total}</p>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                        <div 
-                          className="bg-blue-600 h-2.5 rounded-full" 
-                          style={{width: `${(board.tasks.completed / board.tasks.total) * 100}%`}}
-                        ></div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-            <Card className={`hover:shadow-lg transition-shadow cursor-pointer ${isDark ? 'bg-gray-800' : ''}`}>
-              <CardContent className="flex items-center justify-center h-full">
-                <Button variant="ghost">
-                  <PlusCircle className="mr-2 h-4 w-4" /> Create New Board
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Team Members</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea>
+            <ul>
+              {filteredMembers.map((member) => (
+                <li key={member.id} className="flex justify-between items-center py-2">
+                  <div className="flex items-center">
+                    <Avatar className="h-8 w-8 mr-2">
+                      <AvatarImage src={member.avatar} alt={member.name} />
+                      <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <span className="font-semibold">{member.name}</span> - {member.role}
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => handleRemoveMember(member.id)}>
+                    <UserMinus className="h-4 w-4" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      <Dialog open={isAddMemberDialogOpen} onOpenChange={setIsAddMemberDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Team Member</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleAddMember}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="member-name" className="text-right">Name</Label>
+                <Input id="member-name" name="name" className="col-span-3" required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="member-email" className="text-right">Email</Label>
+                <Input id="member-email" name="email" type="email" className="col-span-3" required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="member-role" className="text-right">Role</Label>
+                <Input id="member-role" name="role" className="col-span-3" required />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Add Member</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -7,18 +7,9 @@ import path from 'path';
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn(),
-    // Add other router methods you use
   }),
   usePathname: () => '/',
-  // Add other hooks you use from next/navigation
 }));
-
-// Add more mocks as needed, for example:
-// jest.mock('@/utils/supabaseClient', () => ({
-//   createClient: jest.fn(() => ({
-//     // Mock Supabase client methods
-//   })),
-// }));
 
 // Helper function to get all component files
 function getComponentFiles(dir: string): string[] {
@@ -47,7 +38,7 @@ describe('UI Component Snapshots', () => {
       test(`${componentName} matches snapshot`, () => {
         try {
           Component = require(path.join(componentDir, file)).default;
-        } catch (error) {
+        } catch (error: any) { // Explicitly typing error as 'any'
           console.warn(`Failed to import component ${componentName}: ${error.message}`);
           return; // Skip this test if component can't be imported
         }
@@ -61,7 +52,7 @@ describe('UI Component Snapshots', () => {
         try {
           const { asFragment } = render(<Component />);
           expect(asFragment()).toMatchSnapshot();
-        } catch (error) {
+        } catch (error: any) { // Explicitly typing error as 'any'
           console.warn(`Failed to render ${componentName}: ${error.message}`);
           // You might want to fail the test here instead of just warning
           // throw error;

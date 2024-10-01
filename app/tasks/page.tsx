@@ -1,164 +1,231 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
+import { toast } from "@/components/ui/use-toast"
+import { PlusCircle, Search } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { mockClient, Task } from '@/lib/mockClient'
+import Spinner from '@/app/components/Spinner'
 
-interface Task {
-  id: string
-  title: string
-  description: string
-  due_date: string
-  status: 'todo' | 'inprogress' | 'done'
-}
-
-// Mock data
-const mockTasks: Task[] = [
-  { id: '1', title: 'Task 1', description: 'Description 1', due_date: '2023-05-01', status: 'todo' },
-  { id: '2', title: 'Task 2', description: 'Description 2', due_date: '2023-05-02', status: 'inprogress' },
-  { id: '3', title: 'Task 3', description: 'Description 3', due_date: '2023-05-03', status: 'done' },
-]
-
-export default function TaskManagementPage() {
+const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([])
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentTask, setCurrentTask] = useState<Task | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [currentTask, setCurrentTask] = useState<Task | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchTasks()
-  }, [])
+    const fetchTasks = async () => {
+      setIsLoading(true)
+      try {
+        const fetchedTasks = await mockClient.fetchTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error('Failed to fetch tasks:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load tasks. Please try again.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false)
+      }
+    };
+    fetchTasks();
+  }, []);
 
-  async function fetchTasks() {
-    setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setTasks(mockTasks)
-      setIsLoading(false)
-    }, 500)
-  }
+  const handleCreateTask = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const newTask: Task = {
+      id: Date.now().toString(),
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      status: formData.get('status') as 'todo' | 'in-progress' | 'completed',
+      dueDate: formData.get('dueDate') as string,
+      assignee: formData.get('assignee') as string,
+    };
+    setTasks([...tasks, newTask]);
+    setIsCreateDialogOpen(false);
+    toast({
+      title: "Success",
+      description: "Task created successfully.",
+    });
+  };
 
-  const handleAddEditTask = async (task: Omit<Task, 'id'>) => {
-    if (currentTask?.id) {
-      // Update existing task
-      setTasks(tasks.map(t => t.id === currentTask.id ? { ...t, ...task } : t))
-    } else {
-      // Add new task
-      const newTask = { ...task, id: Date.now().toString() }
-      setTasks([...tasks, newTask])
-    }
-    setIsDialogOpen(false)
-    setCurrentTask(null)
-  }
-
-  const handleDeleteTask = async (id: string) => {
-    setTasks(tasks.filter(t => t.id !== id))
-  }
+  const handleEditTask = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!currentTask) return;
+    const formData = new FormData(event.currentTarget);
+    const updatedTask: Task = {
+      ...currentTask,
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      status: formData.get('status') as 'todo' | 'in-progress' | 'completed',
+      dueDate: formData.get('dueDate') as string,
+      assignee: formData.get('assignee') as string,
+    };
+    setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+    setIsEditDialogOpen(false);
+    setCurrentTask(null);
+    toast({
+      title: "Success",
+      description: "Task updated successfully.",
+    });
+  };
 
   const filteredTasks = tasks.filter(task => 
     task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     task.description.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
-  if (isLoading) {
-    return <div>Loading tasks...</div>
-  }
+  if (isLoading) return <Spinner />
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Task Management</h1>
       <div className="flex justify-between items-center mb-6">
-        <Input 
-          className="w-64" 
-          placeholder="Search tasks..." 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <Button onClick={() => setIsDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add Task
+        <h1 className="text-3xl font-bold">Tasks</h1>
+        <Button onClick={() => setIsCreateDialogOpen(true)}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          New Task
         </Button>
       </div>
+
+      <div className="flex justify-between items-center mb-6">
+        <div className="relative w-64">
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+          <Input 
+            className="pl-8" 
+            placeholder="Search tasks..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
       <ScrollArea className="h-[calc(100vh-200px)]">
-        {filteredTasks.map(task => (
-          <Card key={task.id} className="mb-4">
+        {filteredTasks.map((task) => (
+          <Card key={task.id} className="mb-4 cursor-pointer hover:shadow-md transition-shadow" onClick={() => {
+            setCurrentTask(task);
+            setIsEditDialogOpen(true);
+          }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-xl font-bold">
                 {task.title}
-                <Badge 
-                  variant={task.status === 'todo' ? 'default' : task.status === 'inprogress' ? 'secondary' : 'outline'}
-                  className="ml-2"
-                >
-                  {task.status}
-                </Badge>
               </CardTitle>
-              <div>
-                <Button variant="ghost" size="sm" onClick={() => { setCurrentTask(task); setIsDialogOpen(true); }}>
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={() => handleDeleteTask(task.id)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                task.status === 'completed' ? 'bg-green-100 text-green-800' :
+                task.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-red-100 text-red-800'
+              }`}>
+                {task.status}
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{task.description}</p>
-              <p className="text-sm text-muted-foreground mt-2">Due: {task.due_date}</p>
+              <p className="text-sm text-muted-foreground mb-2">{task.description}</p>
+              <p className="text-xs text-muted-foreground">Due: {task.dueDate}</p>
+              <p className="text-xs text-muted-foreground">Assignee: {task.assignee}</p>
             </CardContent>
           </Card>
         ))}
       </ScrollArea>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+
+      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{currentTask ? 'Edit Task' : 'Add New Task'}</DialogTitle>
+            <DialogTitle>Create New Task</DialogTitle>
           </DialogHeader>
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            const formData = new FormData(e.currentTarget)
-            const task = {
-              title: formData.get('title') as string,
-              description: formData.get('description') as string,
-              due_date: formData.get('due_date') as string,
-              status: formData.get('status') as 'todo' | 'inprogress' | 'done',
-            }
-            handleAddEditTask(task)
-          }}>
+          <form onSubmit={handleCreateTask}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" name="title" defaultValue={currentTask?.title} className="col-span-3" />
+                <Label htmlFor="title" className="text-right">Title</Label>
+                <Input id="title" name="title" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="description">Description</Label>
-                <Textarea id="description" name="description" defaultValue={currentTask?.description} className="col-span-3" />
+                <Label htmlFor="description" className="text-right">Description</Label>
+                <Input id="description" name="description" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="due_date">Due Date</Label>
-                <Input id="due_date" name="due_date" type="date" defaultValue={currentTask?.due_date} className="col-span-3" />
+                <Label htmlFor="status" className="text-right">Status</Label>
+                <Select name="status" defaultValue="todo">
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todo">To Do</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="status">Status</Label>
-                <select id="status" name="status" defaultValue={currentTask?.status} className="col-span-3">
-                  <option value="todo">To Do</option>
-                  <option value="inprogress">In Progress</option>
-                  <option value="done">Done</option>
-                </select>
+                <Label htmlFor="dueDate" className="text-right">Due Date</Label>
+                <Input id="dueDate" name="dueDate" type="date" className="col-span-3" required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="assignee" className="text-right">Assignee</Label>
+                <Input id="assignee" name="assignee" className="col-span-3" required />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">{currentTask ? 'Save Changes' : 'Add Task'}</Button>
+              <Button type="submit">Create Task</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Task</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleEditTask}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-title" className="text-right">Title</Label>
+                <Input id="edit-title" name="title" className="col-span-3" defaultValue={currentTask?.title} required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-description" className="text-right">Description</Label>
+                <Input id="edit-description" name="description" className="col-span-3" defaultValue={currentTask?.description} required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-status" className="text-right">Status</Label>
+                <Select name="status" defaultValue={currentTask?.status}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todo">To Do</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-dueDate" className="text-right">Due Date</Label>
+                <Input id="edit-dueDate" name="dueDate" type="date" className="col-span-3" defaultValue={currentTask?.dueDate} required />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-assignee" className="text-right">Assignee</Label>
+                <Input id="edit-assignee" name="assignee" className="col-span-3" defaultValue={currentTask?.assignee} required />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Update Task</Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
     </div>
-  )
-}
+  );
+};
+
+export default TasksPage;

@@ -1,7 +1,10 @@
 import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button" // Ensure Button is correctly defined
+import { Card } from "@/components/ui/card" // Ensure Card is correctly defined
 import { CheckCircle, Users, Folder, List } from 'lucide-react'
+import { CardContent } from '@/components/ui/card-content'
+import { CardHeader } from '@/components/ui/card-header'
+import { CardTitle } from '@/components/ui/card-title'
 
 export default function LandingPage() {
   return (
@@ -9,11 +12,11 @@ export default function LandingPage() {
       <header className="bg-white shadow-sm">
         <div className="container mx-auto py-4 px-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold text-primary">TaskMaster</Link>
+            <a href="/" className="text-2xl font-bold text-primary">TaskMaster</a>
             <div className="space-x-4">
-              <Link href="/login" className="text-sm hover:underline">Log in</Link>
-              <Button asChild variant="outline">
-                <Link href="/signup">Sign up</Link>
+              <a href="/login" className="text-sm hover:underline">Log in</a>
+              <Button asChild variant="outline"> // Ensure Button can accept children
+                <Link href="/signup">Sign up</Link> // Use Link directly
               </Button>
             </div>
           </div>
@@ -25,8 +28,8 @@ export default function LandingPage() {
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">Manage Your Tasks with Ease</h1>
             <p className="text-xl md:text-2xl mb-8">Streamline your workflow, collaborate with your team, and boost productivity.</p>
-            <Button size="lg" asChild>
-              <Link href="/signup">Get Started for Free</Link>
+            <Button size="lg" asChild> // Ensure Button can accept children
+              <Link href="/signup">Get Started for Free</Link> // Use Link directly
             </Button>
           </div>
         </section>
@@ -58,7 +61,7 @@ export default function LandingPage() {
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
   return (
-    <Card>
+    <Card> // Ensure Card can accept children
       <CardHeader>
         <CardTitle className="flex flex-col items-center text-center">
           <div className="h-12 w-12 mb-4 text-primary">{icon}</div>

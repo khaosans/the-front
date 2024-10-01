@@ -1,5 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`UI Component Snapshots ChatbotModal matches snapshot 1`] = `<DocumentFragment />`;
+
+exports[`UI Component Snapshots Header matches snapshot 1`] = `
+<DocumentFragment>
+  <header
+    class="flex justify-between items-center p-4 bg-gray-800 text-white"
+  >
+    <h1
+      class="text-xl"
+    >
+      My Application
+    </h1>
+    <div
+      class="relative"
+    >
+      <button>
+        <svg
+          class="lucide lucide-bell h-6 w-6"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+          />
+          <path
+            d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+          />
+        </svg>
+      </button>
+    </div>
+  </header>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots Notification matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="fixed top-4 right-4 bg-blue-500 text-white p-4 rounded shadow-lg"
+  >
+    <div
+      class="flex justify-between items-center"
+    >
+      <span />
+      <button
+        class="ml-4 text-white"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots SearchComponent matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <svg
+      class="lucide lucide-search h-6 w-6 cursor-pointer"
+      fill="none"
+      height="24"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="11"
+        cy="11"
+        r="8"
+      />
+      <path
+        d="m21 21-4.3-4.3"
+      />
+    </svg>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots Spinner matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex justify-center items-center h-full"
+  >
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"
+    />
+  </div>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots button matches snapshot 1`] = `
 <DocumentFragment>
   <button
@@ -175,6 +275,16 @@ exports[`UI Component Snapshots supabase-logo matches snapshot 1`] = `
       </clippath>
     </defs>
   </svg>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots support-form matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <p>
+      Support Form Placeholder
+    </p>
+  </div>
 </DocumentFragment>
 `;
 
