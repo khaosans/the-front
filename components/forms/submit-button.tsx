@@ -7,7 +7,7 @@ type SubmitButtonProps = {
     type?: string
 };
 
-export const SubmitButton = ({children, isLoading, type}: SubmitButtonProps) => {
+export const SubmitButton = ({children, isLoading}: SubmitButtonProps) => {
     const {formState: {isValid}} = useFormContext();
 
     return (

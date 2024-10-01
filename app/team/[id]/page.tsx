@@ -4,13 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { toast } from "@/components/ui/use-toast";
 import { PlusCircle, UserMinus } from 'lucide-react';
+import {Label} from "@/components/forms/label";
 
 interface Member {
   id: string;
@@ -54,7 +53,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
 
   if (!team) return <div>Loading...</div>;
 
-  const filteredMembers = team.members.filter(member => 
+  const filteredMembers = team.members.filter(member =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -71,20 +70,14 @@ export default function TeamPage({ params }: { params: { id: string } }) {
     };
     setTeam(prev => prev ? { ...prev, members: [...prev.members, newMember] } : prev);
     setIsAddMemberDialogOpen(false);
-    toast({
-      title: "Success",
-      description: "Team member added successfully.",
-    });
+
   };
 
   const handleRemoveMember = (memberId: string) => {
     if (team) {
       const updatedMembers = team.members.filter(member => member.id !== memberId);
       setTeam({ ...team, members: updatedMembers });
-      toast({
-        title: "Success",
-        description: "Team member removed successfully.",
-      });
+
     }
   };
 

@@ -1,27 +1,20 @@
 'use client';
 
 import React from 'react';
+import { Task } from './Task';
 
-interface Task {
-    id: string;
-    title: string;
-    description: string;
-    priority: 'low' | 'medium' | 'high';
-    dueDate?: string;
-    comments: number;
-}
-
-interface TaskCardProps {
-    task: Task;
-    columnId: string;
-}
-
-const TaskCard: React.FC<TaskCardProps> = ({ task, columnId }) => {
+const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
     return (
-        <div className="task-card">
-            <h3>{task.title}</h3>
+        <div>
+            <h2>{task.title}</h2>
             <p>{task.description}</p>
-            {/* Add more task details as needed */}
+            <p>Priority: {task.priority}</p>
+            {task.dueDate && <p>Due Date: {task.dueDate}</p>}
+            <div>
+                {task.comments.map((comment, index) => (
+                    <p key={index}>{comment}</p>
+                ))}
+            </div>
         </div>
     );
 };

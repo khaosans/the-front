@@ -24,7 +24,7 @@ interface SheetTriggerProps {
     children: ReactNode;
 }
 
-export const SheetTrigger: React.FC<SheetTriggerProps> = ({asChild, children}) => {
+export const SheetTrigger: React.FC<SheetTriggerProps> = ({children}) => {
     return <>{children}</>; // Render children directly, can be enhanced for more functionality
 };
 
@@ -34,6 +34,6 @@ interface SheetContentProps {
     className?: string
 }
 
-export const SheetContent: React.FC<SheetContentProps> = ({children, side, className}) => {
+export const SheetContent: React.FC<SheetContentProps> = ({children}) => {
     return <div className={`p-4`}>{children}</div>; // Add padding or styles as needed
 };

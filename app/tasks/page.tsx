@@ -4,14 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { toast } from "@/components/ui/use-toast"
 import { PlusCircle, Search } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { mockClient, Task } from '@/lib/mockClient'
-import Spinner from '@/app/components/Spinner'
+import Spinner from "@/components/ui/spinner";
+import {Label} from "@/components/forms/label";
 
 const TasksPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -29,11 +28,6 @@ const TasksPage: React.FC = () => {
         setTasks(fetchedTasks);
       } catch (error) {
         console.error('Failed to fetch tasks:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load tasks. Please try again.",
-          variant: "destructive",
-        });
       } finally {
         setIsLoading(false)
       }
@@ -54,10 +48,7 @@ const TasksPage: React.FC = () => {
     };
     setTasks([...tasks, newTask]);
     setIsCreateDialogOpen(false);
-    toast({
-      title: "Success",
-      description: "Task created successfully.",
-    });
+
   };
 
   const handleEditTask = (event: React.FormEvent<HTMLFormElement>) => {
@@ -75,13 +66,10 @@ const TasksPage: React.FC = () => {
     setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
     setIsEditDialogOpen(false);
     setCurrentTask(null);
-    toast({
-      title: "Success",
-      description: "Task updated successfully.",
-    });
+
   };
 
-  const filteredTasks = tasks.filter(task => 
+  const filteredTasks = tasks.filter(task =>
     task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     task.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -101,9 +89,9 @@ const TasksPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-64">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-          <Input 
-            className="pl-8" 
-            placeholder="Search tasks..." 
+          <Input
+            className="pl-8"
+            placeholder="Search tasks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

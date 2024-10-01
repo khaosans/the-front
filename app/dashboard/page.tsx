@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { mockClient, Task, Project, ActivityData } from '@/lib/mockClient';
+import { mockClient } from '@/lib/mockClient';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,11 +9,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { PlusCircle, Search, Bell, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Spinner from '@/app/components/Spinner';
+import { toast } from "react-hot-toast";
+import { Label } from '@/components/forms/label';
+import {Task} from "@/lib/task";
+import {Project} from "@/lib/project";
+import {ActivityData} from "@/lib/activityData";
+import Spinner from "@/components/ui/spinner";
 
 const DashboardPage: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -34,16 +37,12 @@ const DashboardPage: React.FC = () => {
           mockClient.fetchProjects(),
           mockClient.fetchWeeklyActivity()
         ]);
-        setTasks(fetchedTasks);
+        setTasks(fetchedTasks as Task[]);
         setProjects(fetchedProjects);
         setActivityData(fetchedActivityData);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load dashboard data. Please try again.",
-          variant: "destructive",
-        });
+        toast.error("Failed to load dashboard data. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -59,10 +58,7 @@ const DashboardPage: React.FC = () => {
       description: formData.get('description'),
     });
     setIsNewTeamDialogOpen(false);
-    toast({
-      title: "Success",
-      description: "New team created successfully.",
-    });
+    toast.success("New team created successfully.");
   };
 
   const handleCreateProject = (event: React.FormEvent<HTMLFormElement>) => {
@@ -71,14 +67,15 @@ const DashboardPage: React.FC = () => {
     const newProject: Project = {
       id: Date.now().toString(),
       name: formData.get('name') as string,
+      description: '',
       progress: 0,
+      startDate: new Date().toISOString(),
+      endDate: new Date().toISOString(),
+      teamId: '',
     };
     setProjects([...projects, newProject]);
     setIsNewProjectDialogOpen(false);
-    toast({
-      title: "Success",
-      description: "New project created successfully.",
-    });
+    toast.success("New project created successfully.");
   };
 
   const handleEditTask = (event: React.FormEvent<HTMLFormElement>) => {
@@ -94,14 +91,15 @@ const DashboardPage: React.FC = () => {
     setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
     setIsEditTaskDialogOpen(false);
     setCurrentTask(null);
-    toast({
-      title: "Success",
-      description: "Task updated successfully.",
-    });
+    toast.success("Task updated successfully.");
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50 z-50">
+        <Spinner size={80} color="#3B82F6" />
+      </div>
+    );
   }
 
   return (
@@ -170,8 +168,8 @@ const DashboardPage: React.FC = () => {
           <CardContent>
             <ScrollArea className="h-[200px]">
               {tasks.map((task) => (
-                <div 
-                  key={task.id} 
+                <div
+                  key={task.id}
                   className="mb-4 last:mb-0 cursor-pointer hover:bg-gray-100 p-2 rounded"
                   onClick={() => {
                     setCurrentTask(task);
@@ -209,8 +207,8 @@ const DashboardPage: React.FC = () => {
                     <div className="flex-1">
                       <p className="text-sm font-medium">{project.name}</p>
                       <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div 
-                          className="bg-blue-600 h-2.5 rounded-full" 
+                        <div
+                          className="bg-blue-600 h-2.5 rounded-full"
                           style={{ width: `${project.progress}%` }}
                         ></div>
                       </div>

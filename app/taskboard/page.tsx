@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react';
-import Taskboard from './taskboard';
+import Board from './board';
 
 export default function TaskboardPage() {
-  return <Taskboard />;
+  return <Board />;
 }

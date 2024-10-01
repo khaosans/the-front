@@ -25,6 +25,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
     "@reduxjs/toolkit": "^2.2.7",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "latest",
@@ -33,6 +34,7 @@
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.9.0",
     "geist": "^1.2.1",
     "helpers": "^0.0.6",
     "lucide-react": "^0.446.0",
@@ -71,5 +73,8 @@
     "encoding": "^0.1.13",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.3.1"
+  },
+  "resolutions": {
+    "punycode": "2.1.0"
   }
 }

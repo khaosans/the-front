@@ -57,7 +57,7 @@ const ProjectCard: React.FC<{ project: Project; isLoading: boolean }> = ({ proje
         <div className="flex items-center">
           <BarChart className="h-4 w-4 mr-2 text-muted-foreground" />
           <div className="flex-1 bg-gray-200 rounded-full h-2.5">
-            <div 
+            <div
               className={`h-2.5 rounded-full ${getProgressColor(project.progress)}`}
               style={{ width: `${project.progress}%` }}
             ></div>
@@ -116,7 +116,7 @@ const ProjectsPage: React.FC = () => {
     })
   }
 
-  const filteredProjects = projects.filter(project => 
+  const filteredProjects = projects.filter(project =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -136,9 +136,9 @@ const ProjectsPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-64">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-          <Input 
-            className="pl-8" 
-            placeholder="Search projects..." 
+          <Input
+            className="pl-8"
+            placeholder="Search projects..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
