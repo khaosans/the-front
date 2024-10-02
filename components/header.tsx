@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Settings } from 'lucide-react';
-import Notification from '@/components/notification';
+import Notification from '@/components/Notification';
 import SearchComponent from '@/components/SearchComponent';
 import { useRouter } from 'next/navigation';
 import Nav from './Nav'; // Import the Nav component
@@ -58,9 +58,9 @@ const Header: React.FC = () => {
               {showNotification && notifications.length > 0 && (
                 <div className="absolute right-0 mt-2 w-64 bg-white text-black rounded shadow-lg">
                   <Notification 
-                    message={notifications[notifications.length - 1]} type={'success'} onClose={function (): void {
-                      
-                    } }                  />
+                    message={notifications[notifications.length - 1]} 
+                    type={'success'} 
+                  />
                 </div>
               )}
             </div>
