@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`UI Component Snapshots AddTaskModal matches snapshot 1`] = `<DocumentFragment />`;
+
 exports[`UI Component Snapshots CenteredAtomSpinner matches snapshot 1`] = `
 <DocumentFragment>
   <div
@@ -261,6 +263,43 @@ exports[`UI Component Snapshots Nav matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`UI Component Snapshots NavBar matches snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="relative"
+  >
+    <ul
+      class="flex space-x-4"
+    >
+      <li>
+        <a
+          class="text-gray-700 hover:text-gray-900"
+          href="/dashboard"
+        >
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a
+          class="text-gray-700 hover:text-gray-900"
+          href="/profile"
+        >
+          Profile
+        </a>
+      </li>
+      <li>
+        <a
+          class="text-gray-700 hover:text-gray-900"
+          href="/settings"
+        >
+          Settings
+        </a>
+      </li>
+    </ul>
+  </nav>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots Notification matches snapshot 1`] = `
 <DocumentFragment>
   <div
@@ -499,8 +538,6 @@ exports[`UI Component Snapshots button matches snapshot 1`] = `
 `;
 
 exports[`UI Component Snapshots chatbot-modal matches snapshot 1`] = `<DocumentFragment />`;
-
-exports[`UI Component Snapshots edit-task-modal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots invite-user-modal matches snapshot 1`] = `<DocumentFragment />`;
 

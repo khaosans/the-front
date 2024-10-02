@@ -14,10 +14,12 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd }) =
     const [description, setDescription] = useState('');
 
     const handleAddTask = () => {
-        onAdd({ title, description });
-        setTitle('');
-        setDescription('');
-        onClose();
+        if (title.trim() && description.trim()) {
+            onAdd({ title, description });
+            setTitle('');
+            setDescription('');
+            onClose();
+        }
     };
 
     return (
