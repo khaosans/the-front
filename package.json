@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "your-project-name",
+  "name": "Task-Flow",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
