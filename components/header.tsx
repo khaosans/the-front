@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Settings } from 'lucide-react';
-import Notification from '@/components/Notification';
+import Notification from '@/components/Notification'; // Corrected import statement
 import SearchComponent from '@/components/SearchComponent';
 import { useRouter } from 'next/navigation';
 import Nav from './Nav'; // Import the Nav component
