@@ -28,7 +28,7 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
   const [persona, setPersona] = useState<Persona>('Engineering');
   const [modalSize, setModalSize] = useState({ width: 500, height: 600 });
   const resizeRef = useRef<HTMLDivElement>(null);
-  const { isDark } = useTheme();
+  const {   theme } = useTheme();
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
@@ -93,7 +93,7 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`sm:max-w-[500px] ${isDark ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
+      <DialogContent className={`sm:max-w-[500px] ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Chatbot Assistant</DialogTitle>
         </DialogHeader>
@@ -101,10 +101,10 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
           <div className="flex items-center space-x-2 mb-4">
             <span className="text-sm font-medium">Current Persona:</span>
             <Select value={persona} onValueChange={(value: Persona) => setPersona(value)}>
-              <SelectTrigger className={`w-[180px] ${isDark ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}>
+              <SelectTrigger className={`w-[180px] ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}>
                 <SelectValue placeholder="Select a persona" />
               </SelectTrigger>
-              <SelectContent className={isDark ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}>
+              <SelectContent className={theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}>
                 <SelectItem value="Engineering">Engineering</SelectItem>
                 <SelectItem value="QA">QA</SelectItem>
                 <SelectItem value="Product Manager">Product Manager</SelectItem>
@@ -112,7 +112,7 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
               </SelectContent>
             </Select>
           </div>
-          <ScrollArea className={`flex-grow border rounded-md p-4 ${isDark ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'}`}>
+          <ScrollArea className={`flex-grow border rounded-md p-4 ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'}`}>
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -135,8 +135,8 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
                   <div
                     className={`mx-2 p-3 rounded-lg ${
                       message.sender === 'user'
-                        ? isDark ? 'bg-blue-600 text-white' : 'bg-blue-100 text-gray-900'
-                        : isDark ? 'bg-gray-600 text-white' : 'bg-gray-200 text-gray-900'
+                        ? theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-gray-900'
+                        : theme === 'dark' ? 'bg-gray-600 text-white' : 'bg-gray-200 text-gray-900'
                     }`}
                   >
                     {message.content}
@@ -151,9 +151,9 @@ export function ChatBotModal({ isOpen, onClose }: ChatbotModalProps) {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Type your message here..."
-              className={`flex-grow ${isDark ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}
+                className={`flex-grow ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}
             />
-            <Button onClick={handleSendMessage} className={isDark ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}>Send</Button>
+            <Button onClick={handleSendMessage} className={theme === 'dark' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}>Send</Button>
           </div>
         </div>
       </DialogContent>

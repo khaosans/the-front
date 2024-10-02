@@ -11,12 +11,13 @@ import { X } from 'lucide-react'
 import Footer from "@/components/footer"
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
-  const { getThemeClasses } = useTheme()
+  const { theme } = useTheme()
+
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
 
   return (
-    <div className={`min-h-screen flex flex-col ${getThemeClasses()}`}>
+    <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-gray-900 text-white  ' : 'bg-white text-black'}`}>
       <main className="flex-grow pb-20">{children}</main>
       <Footer />
       <ChatIcon onClick={() => setIsChatOpen(true)} />

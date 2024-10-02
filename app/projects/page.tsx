@@ -1,16 +1,17 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { mockClient, Project } from '@/lib/mockClient'
+import { useState, useEffect } from 'react'
+import CenteredAtomSpinner from '@/components/CenteredAtomSpinner'
+import { mockClient } from '@/lib/dataProvider'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { toast } from "@/components/ui/use-toast"
 import { PlusCircle, Search, Calendar, Users, BarChart } from 'lucide-react'
-import Spinner from '@/app/components/Spinner'
+import { toast } from "react-hot-toast"
+import { Label } from '@/components/forms/label'
+import { Spinner } from '@geist-ui/react'
 
 interface Project {
   id: string
@@ -57,7 +58,7 @@ const ProjectCard: React.FC<{ project: Project; isLoading: boolean }> = ({ proje
         <div className="flex items-center">
           <BarChart className="h-4 w-4 mr-2 text-muted-foreground" />
           <div className="flex-1 bg-gray-200 rounded-full h-2.5">
-            <div
+            <div 
               className={`h-2.5 rounded-full ${getProgressColor(project.progress)}`}
               style={{ width: `${project.progress}%` }}
             ></div>
@@ -83,11 +84,7 @@ const ProjectsPage: React.FC = () => {
         setProjects(fetchedProjects)
       } catch (error) {
         console.error('Failed to fetch projects:', error)
-        toast({
-          title: "Error",
-          description: "Failed to load projects. Please try again.",
-          variant: "destructive",
-        })
+        toast.error("Failed to load projects. Please try again.")
       } finally {
         setIsLoading(false)
       }
@@ -110,18 +107,15 @@ const ProjectsPage: React.FC = () => {
     }
     setProjects([...projects, newProject])
     setIsCreateDialogOpen(false)
-    toast({
-      title: "Success",
-      description: "Project created successfully.",
-    })
+    toast.success("Project created successfully.")
   }
 
-  const filteredProjects = projects.filter(project =>
+  const filteredProjects = projects.filter(project => 
     project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
-  if (isLoading) return <Spinner />
+  if (isLoading) return <CenteredAtomSpinner />
 
   return (
     <div className="container mx-auto py-10">
@@ -136,9 +130,9 @@ const ProjectsPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-64">
           <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-          <Input
-            className="pl-8"
-            placeholder="Search projects..."
+          <Input 
+            className="pl-8" 
+            placeholder="Search projects..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -161,11 +155,11 @@ const ProjectsPage: React.FC = () => {
           <form onSubmit={handleCreateProject}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
+                <label htmlFor="name" className="text-right">Name</label>
                 <Input id="name" name="name" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="description" className="text-right">Description</Label>
+                <label htmlFor="description" className="text-right">Description</label>
                 <Input id="description" name="description" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">

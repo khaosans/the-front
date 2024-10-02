@@ -1,25 +1,332 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`UI Component Snapshots CenteredAtomSpinner matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50 z-50"
+  >
+    <div
+      class="flex justify-center items-center"
+    >
+      <div
+        class="animate-spin rounded-full border-t-2 border-b-2"
+        style="width: 40px; height: 40px; border-color: #3b82f6;"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots ChatbotModal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots Header matches snapshot 1`] = `
 <DocumentFragment>
   <header
-    class="flex justify-between items-center p-4 bg-gray-800 text-white"
+    class="bg-gray-800 text-white"
   >
-    <h1
-      class="text-xl"
-    >
-      My Application
-    </h1>
     <div
-      class="relative"
+      class="container mx-auto px-4 py-4"
     >
-      <button>
+      <div
+        class="flex justify-between items-center"
+      >
+        <h1
+          class="text-2xl font-bold"
+        >
+          QuantumLabs
+        </h1>
+        <nav>
+          <ul
+            class="flex space-x-4"
+          >
+            <li>
+              <a
+                class="hover:text-gray-300"
+                href="/dashboard"
+              >
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                class="hover:text-gray-300"
+                href="/tasks"
+              >
+                Tasks
+              </a>
+            </li>
+            <li>
+              <a
+                class="hover:text-gray-300"
+                href="/taskboard"
+              >
+                Taskboard
+              </a>
+            </li>
+            <li>
+              <a
+                class="hover:text-gray-300"
+                href="/projects"
+              >
+                Projects
+              </a>
+            </li>
+            <li>
+              <a
+                class="hover:text-gray-300"
+                href="/teams"
+              >
+                Teams
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div
+          class="flex items-center space-x-4"
+        >
+          <div>
+            <svg
+              class="lucide lucide-search h-6 w-6 cursor-pointer"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="8"
+              />
+              <path
+                d="m21 21-4.3-4.3"
+              />
+            </svg>
+          </div>
+          <div>
+            <button
+              aria-label="Notifications"
+            >
+              <svg
+                class="lucide lucide-bell h-6 w-6"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+                />
+                <path
+                  d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+                />
+              </svg>
+            </button>
+          </div>
+          <button
+            aria-label="Settings"
+          >
+            <svg
+              class="lucide lucide-settings h-6 w-6"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots InputWrapper matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="input-wrapper"
+  >
+    <label
+      class="block text-sm font-medium text-gray-700"
+    />
+    <input
+      class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots Layout matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="layout"
+  >
+    <nav>
+      <ul>
+        <li>
+          <svg
+            class="lucide lucide-link"
+            fill="none"
+            height="24"
+            href="/dashboard"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+            Dashboard
+          </svg>
+        </li>
+        <li>
+          <svg
+            class="lucide lucide-link"
+            fill="none"
+            height="24"
+            href="/tasks"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+            Taskboard
+          </svg>
+        </li>
+        <li>
+          <svg
+            class="lucide lucide-link"
+            fill="none"
+            height="24"
+            href="/profile"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+            Profile
+          </svg>
+        </li>
+        <li>
+          <svg
+            class="lucide lucide-link"
+            fill="none"
+            height="24"
+            href="/teams"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+            Teams
+          </svg>
+        </li>
+        <li>
+          <svg
+            class="lucide lucide-link"
+            fill="none"
+            height="24"
+            href="/other-page"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+            />
+            <path
+              d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+            />
+            Other Page
+          </svg>
+        </li>
+      </ul>
+    </nav>
+    <main
+      class="main-content"
+    />
+    <footer
+      class="footer"
+    >
+      <p>
+        © 2023 Your Company
+      </p>
+    </footer>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots Nav matches snapshot 1`] = `
+<DocumentFragment>
+  <nav>
+    <ul>
+      <li>
         <svg
-          class="lucide lucide-bell h-6 w-6"
+          class="lucide lucide-link"
           fill="none"
           height="24"
+          href="/dashboard"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -29,15 +336,108 @@ exports[`UI Component Snapshots Header matches snapshot 1`] = `
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
           />
           <path
-            d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
           />
+          Dashboard
         </svg>
-      </button>
-    </div>
-  </header>
+      </li>
+      <li>
+        <svg
+          class="lucide lucide-link"
+          fill="none"
+          height="24"
+          href="/tasks"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          />
+          <path
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          />
+          Taskboard
+        </svg>
+      </li>
+      <li>
+        <svg
+          class="lucide lucide-link"
+          fill="none"
+          height="24"
+          href="/profile"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          />
+          <path
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          />
+          Profile
+        </svg>
+      </li>
+      <li>
+        <svg
+          class="lucide lucide-link"
+          fill="none"
+          height="24"
+          href="/teams"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          />
+          <path
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          />
+          Teams
+        </svg>
+      </li>
+      <li>
+        <svg
+          class="lucide lucide-link"
+          fill="none"
+          height="24"
+          href="/other-page"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+          />
+          <path
+            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+          />
+          Other Page
+        </svg>
+      </li>
+    </ul>
+  </nav>
 </DocumentFragment>
 `;
 
@@ -88,14 +488,15 @@ exports[`UI Component Snapshots SearchComponent matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UI Component Snapshots Spinner matches snapshot 1`] = `
+exports[`UI Component Snapshots Taskboard matches snapshot 1`] = `
 <DocumentFragment>
-  <div
-    class="flex justify-center items-center h-full"
-  >
-    <div
-      class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"
-    />
+  <div>
+    <h1>
+      Taskboard
+    </h1>
+    <p>
+      No tasks available.
+    </p>
   </div>
 </DocumentFragment>
 `;
@@ -108,9 +509,34 @@ exports[`UI Component Snapshots button matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`UI Component Snapshots chatbot-modal matches snapshot 1`] = `<DocumentFragment />`;
+
 exports[`UI Component Snapshots edit-task-modal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots invite-user-modal matches snapshot 1`] = `<DocumentFragment />`;
+
+exports[`UI Component Snapshots login matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <h2>
+      Login
+    </h2>
+    <input
+      placeholder="Email"
+      type="email"
+      value=""
+    />
+    <input
+      placeholder="Password"
+      type="password"
+      value=""
+    />
+    <button>
+      Login
+    </button>
+  </div>
+</DocumentFragment>
+`;
 
 exports[`UI Component Snapshots next-logo matches snapshot 1`] = `
 <DocumentFragment>
@@ -156,6 +582,29 @@ exports[`UI Component Snapshots next-logo matches snapshot 1`] = `
       fill="currentColor"
     />
   </svg>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots sign-up matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <h2>
+      Sign Up
+    </h2>
+    <input
+      placeholder="Email"
+      type="email"
+      value=""
+    />
+    <input
+      placeholder="Password"
+      type="password"
+      value=""
+    />
+    <button>
+      Sign Up
+    </button>
+  </div>
 </DocumentFragment>
 `;
 

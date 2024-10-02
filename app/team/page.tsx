@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { mockClient, Member } from '@/lib/mockClient';
+import { mockClient, Member } from '@/lib/dataProvider';
 
 export default function TeamPage() {
   const [members, setMembers] = useState<Member[]>([]);

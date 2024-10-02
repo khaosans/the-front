@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlusCircle, UserMinus } from 'lucide-react';
-import {Label} from "@/components/forms/label";
+import toast from 'react-hot-toast';
 
 interface Member {
   id: string;
@@ -53,7 +54,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
 
   if (!team) return <div>Loading...</div>;
 
-  const filteredMembers = team.members.filter(member =>
+  const filteredMembers = team.members.filter(member => 
     member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -70,14 +71,14 @@ export default function TeamPage({ params }: { params: { id: string } }) {
     };
     setTeam(prev => prev ? { ...prev, members: [...prev.members, newMember] } : prev);
     setIsAddMemberDialogOpen(false);
-
+    toast.success("Team member added successfully.");
   };
 
   const handleRemoveMember = (memberId: string) => {
     if (team) {
       const updatedMembers = team.members.filter(member => member.id !== memberId);
       setTeam({ ...team, members: updatedMembers });
-
+        toast.success("Team member removed successfully.");
     }
   };
 
@@ -129,15 +130,15 @@ export default function TeamPage({ params }: { params: { id: string } }) {
           <form onSubmit={handleAddMember}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="member-name" className="text-right">Name</Label>
+                <Label htmlFor="member-name" >Name</Label>
                 <Input id="member-name" name="name" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="member-email" className="text-right">Email</Label>
+                <Label htmlFor="member-email" >Email</Label>
                 <Input id="member-email" name="email" type="email" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="member-role" className="text-right">Role</Label>
+                <Label htmlFor="member-role" >Role</Label>
                 <Input id="member-role" name="role" className="col-span-3" required />
               </div>
             </div>

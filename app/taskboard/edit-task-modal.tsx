@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Task } from "@/app/taskboard/taskboard";
+import { Task } from '@/types/types'
 
 interface EditTaskModalProps {
   task: Task
@@ -28,11 +28,11 @@ export function EditTaskModal({ task, isOpen, onClose, onSave }: EditTaskModalPr
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setEditedTask(prev => ({ ...prev, [name]: value }))
+    setEditedTask((prev: any) => ({ ...prev, [name]: value }))
   }
 
   const handlePriorityChange = (value: 'low' | 'medium' | 'high') => {
-    setEditedTask(prev => ({ ...prev, priority: value }))
+    setEditedTask((prev: any) => ({ ...prev, priority: value }))
   }
 
   const handleSave = () => {

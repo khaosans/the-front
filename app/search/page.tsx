@@ -55,7 +55,7 @@ export default function SearchPage() {
   )
 
   const filteredTeamMembers = teamMembers.filter(member => 
-    member.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.role.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -97,7 +97,7 @@ export default function SearchPage() {
                       <p className="text-sm text-muted-foreground">Project ID: {task.project_id}</p>
                     </div>
                     <Badge 
-                      variant={task.status === 'todo' ? 'default' : task.status === 'in_progress' ? 'secondary' : 'outline'}
+                      variant={task.status === 'pending' ? 'default' : task.status === 'in_progress' ? 'secondary' : 'outline'}
                     >
                       {task.status}
                     </Badge>
@@ -134,11 +134,11 @@ export default function SearchPage() {
                 {filteredTeamMembers.map((member) => (
                   <div key={member.id} className="flex items-center space-x-4 mb-4">
                     <Avatar>
-                      <AvatarImage src={member.avatar_url} alt={member.full_name} />
-                      <AvatarFallback>{member.full_name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
+                      <AvatarImage src={member.avatar_url} alt={member.name} />
+                      <AvatarFallback>{member.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-medium">{member.full_name}</p>
+                      <p className="font-medium">{member.name}</p>
                       <p className="text-sm text-muted-foreground">{member.role}</p>
                     </div>
                   </div>

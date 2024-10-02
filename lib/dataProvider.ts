@@ -1,11 +1,5 @@
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: 'todo' | 'in-progress' | 'completed';
-  dueDate: string;
-  assignee: string;
-}
+import { Task } from '../components/Task';
+
 
 export interface Project {
   id: string;
@@ -26,6 +20,7 @@ export interface Team {
 }
 
 export interface TeamMember {
+  [x: string]: any;
   id: string;
   name: string;
   email: string;
@@ -58,22 +53,22 @@ export interface ActivityData {
   tasks: number;
 }
 
+export interface Member {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string;
+  project_id: string;
+  team_id: string;
+  avatar_url: string;
+}
+
+// Mock data
 const mockTasks: Task[] = [
-  { id: '1', title: 'Design new logo', description: 'Create a modern logo for our brand', status: 'in-progress', dueDate: '2023-07-15', assignee: '1', priority: 'high', comments: 3 },
-  { id: '2', title: 'Update user documentation', description: 'Revise and update the user guide', status: 'todo', dueDate: '2023-07-20', assignee: '2', priority: 'medium', comments: 1 },
-  { id: '3', title: 'Fix login bug', description: 'Resolve the issue with user authentication', status: 'completed', dueDate: '2023-07-10', assignee: '1', priority: 'high', comments: 5 },
-  { id: '4', title: 'Implement new feature', description: 'Add the new messaging functionality', status: 'todo', dueDate: '2023-07-25', assignee: '3', priority: 'low', comments: 0 },
-  { id: '5', title: 'Optimize database queries', description: 'Improve performance of main database queries', status: 'in-progress', dueDate: '2023-07-18', assignee: '2', priority: 'medium', comments: 2 },
-  { id: '6', title: 'Write unit tests', description: 'Create comprehensive unit tests for the backend', status: 'todo', dueDate: '2023-07-30', assignee: '1', priority: 'high', comments: 1 },
-  { id: '7', title: 'Design mobile UI', description: 'Create mockups for the mobile app interface', status: 'in-progress', dueDate: '2023-07-22', assignee: '3', priority: 'medium', comments: 4 },
-  { id: '8', title: 'Refactor legacy code', description: 'Clean up and modernize old codebase', status: 'todo', dueDate: '2023-08-05', assignee: '2', priority: 'low', comments: 2 },
-  { id: '9', title: 'Implement user feedback', description: 'Address top user requests from last survey', status: 'completed', dueDate: '2023-07-12', assignee: '1', priority: 'high', comments: 7 },
 ];
 
 const mockProjects: Project[] = [
-  { id: '1', name: 'Website Redesign', description: 'Overhaul of company website', progress: 75, startDate: '2023-06-01', endDate: '2023-08-31', teamId: '1' },
-  { id: '2', name: 'Mobile App Development', description: 'Create a new mobile app for customers', progress: 30, startDate: '2023-07-01', endDate: '2023-12-31', teamId: '1' },
-  { id: '3', name: 'Customer Portal', description: 'Build a portal for customer account management', progress: 50, startDate: '2023-05-15', endDate: '2023-09-30', teamId: '2' },
 ];
 
 const mockTeams: Team[] = [
@@ -139,18 +134,7 @@ const mockWeeklyActivity: ActivityData[] = [
   { name: 'Sun', tasks: 0 },
 ];
 
-export interface Member {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  avatar: string;
-}
-
 const mockMembers: Member[] = [
-  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Developer', avatar: 'https://avatar.vercel.sh/john.png' },
-  { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Designer', avatar: 'https://avatar.vercel.sh/jane.png' },
-  { id: '3', name: 'Alice Johnson', email: 'alice@example.com', role: 'Manager', avatar: 'https://avatar.vercel.sh/alice.png' },
 ];
 
 export const mockClient = {

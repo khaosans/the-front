@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { toast } from "@/components/ui/use-toast"
+import toast from   'react-hot-toast';
 import { User, Mail, Lock, Bell, HelpCircle, Send } from 'lucide-react'
 
 export default function ProfilePage() {
@@ -36,38 +36,25 @@ export default function ProfilePage() {
       bio: formData.get('bio') as string,
     }
     setUser(updatedUser)
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    })
+    toast.success("Profile updated successfully.")
   }
 
   const handleChangePassword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // Implement password change logic here
-    toast({
-      title: "Password Changed",
-      description: "Your password has been successfully changed.",
-    })
+    toast.success("Password changed successfully.")
   }
 
   const handleDeleteAccount = () => {
     // Implement account deletion logic here
-    toast({
-      title: "Account Deleted",
-      description: "Your account has been successfully deleted.",
-      variant: "destructive",
-    })
+    toast.success("Account deleted successfully.")
     router.push('/')
   }
 
   const handleSupportSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // Implement support request submission logic here
-    toast({
-      title: "Support Request Submitted",
-      description: "Your support request has been successfully submitted.",
-    })
+    toast.success("Support request submitted successfully.")
   }
 
   return (

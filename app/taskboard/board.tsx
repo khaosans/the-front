@@ -15,8 +15,8 @@ import { CardHeader } from '@/components/ui/card-header'
 import { CardTitle } from '@/components/ui/card-title'
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import CenteredAtomSpinner from "@/components/CenteredAtomSpinner";
-import { Task, Taskboard, Column } from "@/types/types";
-import { mockClient } from '@/lib/mockClient'
+import { Task, Taskboard } from "@/types/types";
+import { mockClient } from '@/lib/dataProvider'
 
 interface Column {
   id: string
@@ -197,7 +197,7 @@ export default function Board() {
               </div>
             </div>
             <div className="flex space-x-4 overflow-x-auto pb-4">
-              {taskboard.columns.map((column: Column) => (
+              {taskboard.columns.map((column: any) => (
                   <Column key={column.id} column={column} tasks={tasks} moveTask={moveTask} onEditTask={handleEditTask} isLoading={isLoading} />
               ))}
               <Button variant="outline" className="h-[calc(100vh-160px)] w-80 flex-shrink-0">

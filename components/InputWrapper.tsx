@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Input } from '../ui/input'; // Adjust the import path to be outside of the app directory
+import { Input } from './ui/input'; // Adjust the import path to be outside of the app directory
 
 interface InputWrapperProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;

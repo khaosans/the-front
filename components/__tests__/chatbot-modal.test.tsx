@@ -4,15 +4,16 @@ import ChatbotModal from '../ChatbotModal';
 
 // Mock the dialog component
 jest.mock("@/components/ui/dialog", () => ({
-  Dialog: ({ children, open }) => open ? <div>{children}</div> : null,
-  DialogContent: ({ children }) => <div>{children}</div>,
-  DialogHeader: ({ children }) => <div>{children}</div>,
-  DialogTitle: ({ children }) => <h2>{children}</h2>,
+  Dialog: ({ children, open }: { children: React.ReactNode; open: boolean }) => open ? <div>{children}</div> : null,
+  DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogTitle: ({ children }: { children: React.ReactNode }) => <h2>{children}</h2>,
+  DialogFooter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 // Mock the scroll area component
 jest.mock("@/components/ui/scroll-area", () => ({
-  ScrollArea: ({ children }) => <div>{children}</div>,
+  ScrollArea: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 describe('ChatbotModal', () => {
