@@ -23,6 +23,8 @@ const Footer: React.FC = () => {
 
       <Modal isOpen={showAbout} onClose={() => setShowAbout(false)} title="About Us">
         <p>QuantumLabs is a cutting-edge technology company specializing in task management solutions. Our mission is to empower individuals and teams to achieve their full potential through innovative productivity tools.</p>
+        </Modal.Content>
+        <Modal passive onClick={() => setShowAbout(false)}>Close</Modal>
       </Modal>
 
       <Modal isOpen={showContact} onClose={() => setShowContact(false)} title="Contact Us">
