@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@geist-ui/core':
+        specifier: ^2.3.8
+        version: 2.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@geist-ui/react':
         specifier: ^2.2.5
         version: 2.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -912,6 +915,12 @@ packages:
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
+
+  '@geist-ui/core@2.3.8':
+    resolution: {integrity: sha512-OKwGgTA4+fBM41eQbqDoUj4XBycZbYH7Ynrn6LPO5yKX7zeWPu/R7HN3vB4/oHt34VTDQI5sDNb1SirHvNyB5w==}
+    peerDependencies:
+      react: '>=16.9.0'
+      react-dom: '>=16.9.0'
 
   '@geist-ui/react@2.2.5':
     resolution: {integrity: sha512-yPBAweYVh5HXXJ6W5ont/z6UObbfsjesg0/KTfcJzc64/zjGgp+wv2zLIdReGOTAj2R4XWoNSirNGGbQnwFe6w==}
@@ -5231,6 +5240,12 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.8': {}
+
+  '@geist-ui/core@2.3.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@babel/runtime': 7.25.6
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@geist-ui/react@2.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:

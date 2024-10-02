@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/app/contexts/ThemeContext';
 import Loading from './loading';
 import { GeistProvider } from '@geist-ui/react';
 import ToastContainer from '@/components/ToastContainer'; // Import ToastContainer
+import NavBar from '@/components/NavBar'; // Import NavBar
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
                 ) : (
                     <>
                         <TopBar onChatOpen={() => setIsChatbotOpen(true)} /> {/* Pass the function to open the chat */}
+                        {/* Removed the extra NavBar here */}
                         {children}
                         <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
                         <ToastContainer /> {/* Add the ToastContainer here */}

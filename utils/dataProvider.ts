@@ -4,8 +4,8 @@ import { TeamMember } from '../lib/teamMember';
 // Example data provider functions
 const getTasks = async (): Promise<Task[]> => { 
   return [
-    { id: '1', title: 'Design new logo', description: 'Create a modern logo for our brand', status: 'inprogress', dueDate: '2023-07-15', assignee: '1', priority: 'high', comments: [], project_id: '1' },
     // Add more tasks as needed
+    { id: '1', title: 'Task 1', description: 'Description of Task 1', status: 'todo', project_id: '1', team_id: '1', priority: 'low', assignee: '1', dueDate: '2023-07-15', comments: [], columnId: 1, columnName: 'Column 1' },
   ];
 };
 

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Task } from '@/lib/task'
+import { Textarea } from "@/components/ui/textarea" // Assuming Textarea is a component from your UI library
 
 interface EditTaskModalProps {
   task: Task
@@ -13,26 +14,16 @@ interface EditTaskModalProps {
   onSave: (updatedTask: Task) => void
 }
 
-function Textarea(props: {
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-  name: string,
-  className: string,
-  id: string,
-  value: string
-}) {
-  return null;
-}
-
 export function EditTaskModal({ task, isOpen, onClose, onSave }: EditTaskModalProps) {
   const [editedTask, setEditedTask] = useState<Task>(task)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setEditedTask((prev: any) => ({ ...prev, [name]: value }))
+    setEditedTask((prev) => ({ ...prev, [name]: value }))
   }
 
   const handlePriorityChange = (value: 'low' | 'medium' | 'high') => {
-    setEditedTask((prev: any) => ({ ...prev, priority: value }))
+    setEditedTask((prev) => ({ ...prev, priority: value }))
   }
 
   const handleSave = () => {
