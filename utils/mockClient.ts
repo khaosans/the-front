@@ -1,4 +1,5 @@
-import { Task, Project, TeamMember } from '../types/types';
+import { Task, Project } from '../lib/task';
+import { TeamMember } from '../lib/teamMember';
 
 // Remove mock data
 const mockTasks: Task[] = []; // No tasks available

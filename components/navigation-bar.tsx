@@ -11,8 +11,6 @@ export function NavigationBar() {
             <Link href="/dashboard" className="text-sm hover:underline">Dashboard</Link>
             <Link href="/search" className="text-sm hover:underline">Search</Link>
             <Link href="/progress" className="text-sm hover:underline">Progress</Link>
-            <Link href="/tasks" className="text-sm hover:underline">Tasks</Link>
-            <Link href="/taskboard" className="text-sm hover:underline">Taskboard</Link>
             <Link href="/projects" className="text-sm hover:underline">Projects</Link>
             <Link href="/teams" className="text-sm hover:underline">Teams</Link>
             <Link href="/members" className="text-sm hover:underline">Members</Link>

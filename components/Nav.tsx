@@ -9,13 +9,10 @@ const Nav: React.FC = () => {
           <Link href="/dashboard">Dashboard</Link>
         </li>
         <li>
-          <Link href="/tasks">Taskboard</Link>
-        </li>
-        <li>
           <Link href="/profile">Profile</Link>
         </li>
         <li>
-          <Link href="/teams">Teams</Link>
+          <Link href="/taskboard">Taskboard</Link>
         </li>
         <li>
           <Link href="/other-page">Other Page</Link>

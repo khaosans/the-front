@@ -4,4 +4,7 @@ export interface TeamMember {
     email: string;
     role: string;
     avatar: string;
+    project_id: string;
+    team_id: string;
 }
+

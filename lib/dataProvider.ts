@@ -1,5 +1,4 @@
-import { Task } from '../components/Task';
-
+import { Task } from './task';
 
 export interface Project {
   id: string;

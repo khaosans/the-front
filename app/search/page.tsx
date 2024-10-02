@@ -9,11 +9,12 @@ import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search } from 'lucide-react'
 import supabase from '@/utils/supabaseDbClient'
-import { Task, Project, TeamMember } from '@/types/types'
+import { Task, Project } from '@/lib/task'
 import { Card } from '@/components/ui/card'
 import { CardContent } from '@/components/ui/card-content'
 import { CardHeader } from '@/components/ui/card-header'
 import { CardTitle } from '@/components/ui/card-title'
+import { TeamMember } from '@/lib/teamMember'
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -97,7 +98,7 @@ export default function SearchPage() {
                       <p className="text-sm text-muted-foreground">Project ID: {task.project_id}</p>
                     </div>
                     <Badge 
-                      variant={task.status === 'pending' ? 'default' : task.status === 'in_progress' ? 'secondary' : 'outline'}
+                      variant={task.status === 'todo' ? 'default' : task.status === 'inprogress' ? 'secondary' : 'outline'}
                     >
                       {task.status}
                     </Badge>
@@ -134,7 +135,7 @@ export default function SearchPage() {
                 {filteredTeamMembers.map((member) => (
                   <div key={member.id} className="flex items-center space-x-4 mb-4">
                     <Avatar>
-                      <AvatarImage src={member.avatar_url} alt={member.name} />
+                      <AvatarImage src={member.avatar} alt={member.name} />
                       <AvatarFallback>{member.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div>

@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header'; // Updated import path
+import TopBar from '@/components/TopBar'; // Import TopBar
 import ChatbotModal from '@/components/ChatbotModal'; // Updated import path
 import { ThemeProvider } from '@/app/contexts/ThemeContext';
 import Loading from './loading';
+import { GeistProvider } from '@geist-ui/react';
+import ToastContainer from '@/components/ToastContainer'; // Import ToastContainer
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,29 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
     const [isChatbotOpen, setIsChatbotOpen] = useState(false);
-    const [lastShiftPress, setLastShiftPress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Shift') {
-                const now = Date.now();
-                if (now - lastShiftPress < 500) {  // 500ms threshold for double press
-                    setIsChatbotOpen(true);
-                }
-                setLastShiftPress(now);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
         // Simulate initial loading
         setTimeout(() => setIsLoading(false), 1000);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [lastShiftPress]);
+    }, []);
 
     return (
         <html lang="en">
@@ -47,15 +32,18 @@ export default function RootLayout({
         </head>
         <body className={inter.className}>
         <ThemeProvider>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <>
-                    <Header />
-                    {children}
-                    <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
-                </>
-            )}
+            <GeistProvider>
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <TopBar onChatOpen={() => setIsChatbotOpen(true)} /> {/* Pass the function to open the chat */}
+                        {children}
+                        <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
+                        <ToastContainer /> {/* Add the ToastContainer here */}
+                    </>
+                )}
+            </GeistProvider>
         </ThemeProvider>
         </body>
         </html>

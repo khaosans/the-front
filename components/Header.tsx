@@ -2,10 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Bell, Settings } from 'lucide-react';
-import Link from 'next/link';
 import Notification from './Notification';
-import SearchComponent from './SearchComponent';
+import SearchComponent from '@/components/SearchComponent';
 import { useRouter } from 'next/navigation';
+import Nav from './Nav'; // Import the Nav component
 
 const Header: React.FC = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -48,15 +48,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">QuantumLabs</h1>
-          <nav>
-            <ul className="flex space-x-4">
-              <li><Link href="/dashboard" className="hover:text-gray-300">Dashboard</Link></li>
-              <li><Link href="/tasks" className="hover:text-gray-300">Tasks</Link></li>
-              <li><Link href="/taskboard" className="hover:text-gray-300">Taskboard</Link></li>
-              <li><Link href="/projects" className="hover:text-gray-300">Projects</Link></li>
-              <li><Link href="/teams" className="hover:text-gray-300">Teams</Link></li>
-            </ul>
-          </nav>
+          <Nav /> {/* Include the Nav component */}
           <div className="flex items-center space-x-4">
             <SearchComponent />
             <div ref={notificationRef}>
@@ -66,9 +58,7 @@ const Header: React.FC = () => {
               {showNotification && notifications.length > 0 && (
                 <div className="absolute right-0 mt-2 w-64 bg-white text-black rounded shadow-lg">
                   <Notification 
-                    message={notifications[notifications.length - 1]} 
-                    onClose={handleCloseNotification} 
-                  />
+                    message={notifications[notifications.length - 1]} type={'success'}                  />
                 </div>
               )}
             </div>

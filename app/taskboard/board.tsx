@@ -15,8 +15,9 @@ import { CardHeader } from '@/components/ui/card-header'
 import { CardTitle } from '@/components/ui/card-title'
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import CenteredAtomSpinner from "@/components/CenteredAtomSpinner";
-import { Task, Taskboard } from "@/types/types";
+import { Task } from "@/lib/task";
 import { mockClient } from '@/lib/dataProvider'
+import { Taskboard } from '@/lib/taskboard'
 
 interface Column {
   id: string
@@ -160,9 +161,9 @@ export default function Board() {
 
   const moveTask = (taskId: string, sourceColumnId: string, targetColumnId: string) => {
     if (taskboard) {
-      const newColumns = taskboard.columns.map(column => {
+      const newColumns = taskboard.columns.map((column: any) => {
         if (column.id === sourceColumnId) {
-          return { ...column, taskIds: column.taskIds.filter(id => id !== taskId) }
+          return { ...column, taskIds: column.taskIds.filter((id: string) => id !== taskId) }
         }
         if (column.id === targetColumnId) {
           return { ...column, taskIds: [...column.taskIds, taskId] }

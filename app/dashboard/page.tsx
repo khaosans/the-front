@@ -1,334 +1,158 @@
-'use client'; // Ensure this is a Client Component
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import {PlusCircle, Search, Bell, CheckCircle, Clock, AlertTriangle, ListTodo, Settings} from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {Project} from "@/lib/project";
-import {ActivityData, Task} from "@/types/types";
-// @ts-ignore
-import mockClient from "@/utils/mockClient";
-import {Card, Input, Spinner} from "@geist-ui/react";
-import {CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CenteredAtomSpinner from "@/components/CenteredAtomSpinner"; // Import the spinner
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CheckCircle, Clock, Users, PlusCircle } from 'lucide-react';
+
+const taskStatusData = [
+  { name: 'Completed', value: 30, color: '#10B981' },
+  { name: 'In Progress', value: 45, color: '#3B82F6' },
+  { name: 'Todo', value: 25, color: '#EF4444' },
+];
+
+const weeklyProgressData = [
+  { name: 'Mon', tasks: 12 },
+  { name: 'Tue', tasks: 19 },
+  { name: 'Wed', tasks: 15 },
+  { name: 'Thu', tasks: 22 },
+  { name: 'Fri', tasks: 30 },
+  { name: 'Sat', tasks: 8 },
+  { name: 'Sun', tasks: 5 },
+];
 
 const DashboardPage: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [activityData, setActivityData] = useState<ActivityData[]>([]);
-    const [isNewTeamDialogOpen, setIsNewTeamDialogOpen] = useState(false);
-    const [isNewProjectDialogOpen, setIsNewProjectDialogOpen] = useState(false);
-    const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false);
-    const [currentTask, setCurrentTask] = useState<Task | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const [fetchedTasks, fetchedProjects, fetchedActivityData] = await Promise.all([
-                    mockClient.fetchTasks(),
-                    mockClient.fetchProjects(),
-                    mockClient.fetchWeeklyActivity()
-                ]);
-                setTasks(fetchedTasks);
-                setProjects(fetchedProjects);
-                setActivityData(fetchedActivityData);
-            } catch (error) {
-                console.error('Error fetching dashboard data:', error);
-                } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Simulate loading for 2 seconds
 
-    const handleCreateTeam = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        console.log('New Team:', {
-            name: formData.get('name'),
-            description: formData.get('description'),
-        });
-        setIsNewTeamDialogOpen(false);
+    return () => clearTimeout(timer);
+  }, []);
 
-    };
-
-    const handleCreateProject = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-
-        const newProject: Project = {
-            id: projects.length + 1,
-            name: formData.get('name') as string,
-            progress: 0,
-            description: '',
-            startDate: '',
-            endDate: '',
-            teamId: ''
-        };
-
-        newProject.description = formData.get('description') as string;
-        newProject.startDate = formData.get('startDate') as string;
-        newProject.endDate = formData.get('endDate') as string;
-        newProject.teamId = formData.get('teamId') as string;
-
-        setProjects([...projects, newProject]);
-        setIsNewProjectDialogOpen(false);
-
-
-    };
-
-    const handleEditTask = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!currentTask) return;
-        const formData = new FormData(event.currentTarget);
-        const updatedTask: Task = {
-            ...currentTask,
-            title: formData.get('title') as string,
-            dueDate: formData.get('dueDate') as string,
-        };
-        setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
-        setIsEditTaskDialogOpen(false);
-        setCurrentTask(null);
-    };
-
-    if (isLoading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50 z-50">
-        <Spinner />
-      </div>
-    );
+  if (loading) {
+    return <CenteredAtomSpinner />;
   }
 
-    if (isLoading) {
-        return <Spinner />;
-    }
+  return (
+    <div className="container mx-auto py-10">
+      <h1 className="text-4xl font-bold mb-8">Task Flow Dashboard</h1>
 
-    return (
-        <div className="container mx-auto p-4">
-            <header className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Dashboard</h1>
-                <div className="flex items-center space-x-4">
-                    <div className="relative">
-                        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                        <Input type="text" placeholder="Search..." className="pl-8" crossOrigin="" />
-                    </div>
-                    <Button variant="outline" size="icon">
-                        <Bell className="h-4 w-4" />
-                    </Button>
-                </div>
-            </header>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="agents">Agents</TabsTrigger>
+          <TabsTrigger value="projects">Projects</TabsTrigger>
+        </TabsList>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
-                        <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{tasks.length}</div>
-                        <p className="text-xs text-muted-foreground">
-                            +2 since last week
-                        </p>
-                    </CardContent>
+        <TabsContent value="overview">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            {[
+              { title: 'Total Tasks', value: '127', icon: PlusCircle, color: 'bg-blue-500' },
+              { title: 'In Progress', value: '45', icon: Clock, color: 'bg-yellow-500' },
+              { title: 'Completed', value: '38', icon: CheckCircle, color: 'bg-green-500' },
+              { title: 'Team Members', value: '12', icon: Users, color: 'bg-purple-500' },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-lg transition-shadow duration-300">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      {item.title}
+                    </CardTitle>
+                    <item.icon className={`h-4 w-4 text-white ${item.color} rounded-full p-2 box-content`} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{item.value}</div>
+                  </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Ongoing Projects</CardTitle>
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{projects.length}</div>
-                        <p className="text-xs text-muted-foreground">
-                            +1 since last month
-                        </p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Overdue Tasks</CardTitle>
-                        <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">2</div>
-                        <p className="text-xs text-muted-foreground">
-                            -1 since yesterday
-                        </p>
-                    </CardContent>
-                </Card>
-            </div>
+              </motion.div>
+            ))}
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <Card>
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle>Recent Tasks</CardTitle>
-            <Button onClick={() => setIsNewProjectDialogOpen(true)}>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              New Project
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[200px]">
-              {tasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="mb-4 last:mb-0 cursor-pointer hover:bg-gray-100 p-2 rounded"
-                  onClick={() => {
-                    setCurrentTask(task);
-                    setIsEditTaskDialogOpen(true);
-                  }}
-                >
-                  <div className="flex items-center">
-                    <div className={`w-2 h-2 rounded-full mr-2 ${
-                      task.status === 'completed' ? 'bg-green-500' :
-                      task.status === 'in_progress' ? 'bg-yellow-500' : 'bg-red-500'
-                    }`} />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{task.title}</p>
-                      <p className="text-xs text-muted-foreground">Due: {task.dueDate}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </ScrollArea>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex justify-between items-center">
-            <CardTitle>Project Progress</CardTitle>
-            <Button onClick={() => setIsNewTeamDialogOpen(true)}>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              New Team
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[200px]">
-              {projects.map((project) => (
-                <div key={project.id} className="mb-4 last:mb-0">
-                  <div className="flex items-center">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">{project.name}</p>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div
-                          className="bg-blue-600 h-2.5 rounded-full"
-                          style={{ width: `${project.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">
-                      {project.progress}%
-                    </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </ScrollArea>
-                    </CardContent>
-                </Card>
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
-                <CardHeader>
-                    <CardTitle>Weekly Activity</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={activityData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="tasks" fill="#8884d8" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </CardContent>
+              <CardHeader>
+                <CardTitle>Task Status Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={taskStatusData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {taskStatusData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
             </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Weekly Task Completion</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={weeklyProgressData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="tasks" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
 
-            <Dialog open={isNewTeamDialogOpen} onOpenChange={setIsNewTeamDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Create New Team</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleCreateTeam}>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right">Name</Label>
-                                <Input id="name" name="name" className="col-span-3" required crossOrigin="" />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="description" className="text-right">Description</Label>
-                                <Textarea id="description" name="description" className="col-span-3" required />
-                            </div>
-                        </div>
-                        <DialogFooter>
-                            <Button type="submit">Create Team</Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
+        <TabsContent value="agents">
+          <Card>
+            <CardHeader>
+              <CardTitle>Agent Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Add agent management content here */}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            <Dialog open={isNewProjectDialogOpen} onOpenChange={setIsNewProjectDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Create New Project</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleCreateProject}>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="project-name" className="text-right">Name</Label>
-                                <Input id="project-name" name="name" className="col-span-3" required crossOrigin="" />
-                            </div>
-                        </div>
-                        <DialogFooter>
-                            <Button type="submit">Create Project</Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
-
-            <Dialog open={isEditTaskDialogOpen} onOpenChange={setIsEditTaskDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Edit Task</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleEditTask}>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="task-title" className="text-right">Title</Label>
-                                <Input id="task-title" name="title" className="col-span-3" defaultValue={currentTask?.title} required crossOrigin="" />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="task-status" className="text-right">Status</Label>
-                                <Select name="status" defaultValue={currentTask?.status}>
-                                    <SelectTrigger className="col-span-3">
-                                        <SelectValue placeholder="Select status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="todo">To Do</SelectItem>
-                                        <SelectItem value="in-progress">In Progress</SelectItem>
-                                        <SelectItem value="completed">Completed</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="task-due-date" className="text-right">Due Date</Label>
-                                <Input id="task-due-date" name="dueDate" type="date" className="col-span-3" defaultValue={currentTask?.dueDate} required crossOrigin="" />
-                            </div>  
-                        </div>
-                        <DialogFooter>  
-                            <Button type="submit">Update Task</Button>
-                        </DialogFooter>
-                    </form>
-                </DialogContent>
-            </Dialog>
-        </div>
-    );
+        <TabsContent value="projects">
+          <Card>
+            <CardHeader>
+              <CardTitle>Project Progress</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Add project progress content here */}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 };
 
 export default DashboardPage;

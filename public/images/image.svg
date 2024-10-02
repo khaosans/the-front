@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <g fill="none" stroke="#000" stroke-width="3">
+    <!-- Outer brain shape -->
+    <path d="M50,100 C50,70 70,50 100,50 C130,50 150,70 150,100 C150,130 130,150 100,150 C70,150 50,130 50,100 Z"/>
+    
+    <!-- Circuit lines -->
+    <line x1="75" y1="75" x2="75" y2="50" />
+    <line x1="125" y1="75" x2="125" y2="50" />
+    <line x1="75" y1="125" x2="75" y2="150" />
+    <line x1="125" y1="125" x2="125" y2="150" />
+    <circle cx="75" cy="75" r="5" fill="#000"/>
+    <circle cx="125" cy="75" r="5" fill="#000"/>
+    <circle cx="75" cy="125" r="5" fill="#000"/>
+    <circle cx="125" cy="125" r="5" fill="#000"/>
+
+    <line x1="75" y1="75" x2="100" y2="100" />
+    <line x1="125" y1="75" x2="100" y2="100" />
+    <line x1="75" y1="125" x2="100" y2="100" />
+    <line x1="125" y1="125" x2="100" y2="100" />
+  </g>
+</svg>

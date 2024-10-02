@@ -1,7 +1,7 @@
 'use client';
 
+import { Task } from '@/lib/task';
 import React from 'react';
-import { Task } from './Task';
 
 const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
     return (
