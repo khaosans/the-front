@@ -88,25 +88,6 @@ const AnalyticsPage: React.FC = () => {
                 </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Crypto Price Graph</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CryptoPriceGraph /> {/* Add the Crypto Price Graph here */}
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Market Cap Graph</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <MarketCapGraph /> {/* Add the Market Cap Graph here */}
-                    </CardContent>
-                </Card>
-            </div>
         </div>
     );
 };

@@ -2,17 +2,12 @@ export interface Task {
     id: string;
     title: string;
     description: string;
+    status: 'todo' | 'inprogress' | 'done'; // This can be used for filtering
     priority: 'low' | 'medium' | 'high';
-    dueDate?: string;
+    assignee: string;
+    dueDate: string;
     comments: string[];
-    status: 'todo' | 'inprogress' | 'done';
-    assignee?: string; // Add if needed
-    project_id?: string; // Add if needed
-    team_id?: string; // Add if needed
-    created_at?: string; // Add if needed
-    updated_at?: string; // Add if needed
-    tags?: string[]; // Add if needed
-    
+    columnId: string; // New property to reference the column
 }
 export interface Project {
     id: string;
