@@ -12,7 +12,8 @@
     "clean": "rm -rf .next",
     "clean:build": "npm run clean && npm run build",
     "test:e2e": "playwright test",
-    "test:all": "pnpm install && pnpm build && pnpm test && concurrently \"pnpm run dev\" \"npx playwright test\" --kill-others --success first"
+    "test:all": "pnpm install && pnpm build && pnpm test && concurrently \"pnpm run dev\" \"npx playwright test\" --kill-others --success first",
+    "test:playwright": "npx playwright test"
   },
   "dependencies": {
     "@geist-ui/core": "^2.3.8",
