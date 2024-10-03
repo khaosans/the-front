@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/app/contexts/ThemeContext'; // Corrected import
 import '@/styles/globals.css'; // Adjust this path if needed
 import TopBar from '@/components/TopBar'; // Import the TopBar component
 
+
 interface LayoutProps {
     children: ReactNode;
 }
@@ -14,7 +15,10 @@ const RootLayout: React.FC<LayoutProps> = ({ children }) => {
         <html lang="en">
             <body>
                 <ThemeProvider>
+
                     <TopBar />
+
+
                     {children}
                 </ThemeProvider>
             </body>
