@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { NextResponse } from 'next/server';
 
-import { handleLogin } from './session'; 
+import { handleLogin } from '@/components/session';
 
 export async function POST(request: Request) {
     console.log('Received login request'); // Debug log
