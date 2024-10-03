@@ -26,9 +26,9 @@ export const DropdownMenuContent: React.FC<{ children: React.ReactNode; classNam
   );
 };
 
-export const DropdownMenuItem: React.FC<{ children: React.ReactNode, asChild?: boolean }> = ({children}) => {
+export const DropdownMenuItem: React.FC<{ children: React.ReactNode, asChild?: boolean, onClick?: () => void }> = ({children, onClick}) => {
   return (
-    <div className="cursor-pointer hover:bg-gray-100 px-4 py-2 text-sm text-gray-700">
+    <div className="cursor-pointer hover:bg-gray-100 px-4 py-2 text-sm text-gray-700" onClick={onClick}>
       {children}
     </div>
   );

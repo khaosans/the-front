@@ -6,7 +6,6 @@ import {Label} from "@/components/ui/label"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Task} from '@/lib/task'
 import {Textarea} from "@/components/ui/textarea"
-import {boolean, string} from "yup"; // Assuming Textarea is a component from your UI library
 
 interface EditTaskModalProps {
     task: Task,

@@ -1,17 +1,17 @@
 "use client"
 
-import { useState } from 'react';
-import Dropdown from './Dropdown'; // Ensure the path is correct
+import React from 'react';
+import Dropdown from '@/components/Dropdown';
 
 const MenuPopover = () => {
     const dropdownItems = [
-        { label: 'Dashboard', href: '/dashboard' },
-        { label: 'Profile', href: '/profile' },
-        { label: 'Settings', href: '/settings' },
+        { label: 'Dashboard', onClick: () => window.location.href = '/dashboard' },
+        { label: 'Profile', onClick: () => window.location.href = '/profile' },
+        { label: 'Settings', onClick: () => window.location.href = '/settings' },
     ];
 
     return (
-        <Dropdown items={dropdownItems} buttonLabel="Menu" />
+        <Dropdown label="Menu" items={dropdownItems} />
     );
 };
 

@@ -68,7 +68,11 @@ const TaskCard: React.FC<{ task: Task; columnId: string; moveTask: (taskId: stri
                 {task.comments.length > 0 && (
                   <div className="flex items-center text-xs text-gray-500">
                     <MessageSquare className="w-3 h-3 mr-1" />
-                    {task.comments}
+                    {task.comments.map((comment) => (
+                      <div key={comment.content}>{comment.content}</div>
+
+                      
+                    ))}
                   </div>
                 )}
               </div>

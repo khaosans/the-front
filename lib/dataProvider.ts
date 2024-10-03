@@ -65,6 +65,7 @@ export interface Member {
 
 // Mock data
 const mockTasks: Task[] = [
+  // Add mock tasks here if needed
 ];
 
 const mockProjects: Project[] = [
@@ -134,6 +135,7 @@ const mockWeeklyActivity: ActivityData[] = [
 ];
 
 const mockMembers: Member[] = [
+  // Add mock members here if needed
 ];
 
 export const mockClient = {

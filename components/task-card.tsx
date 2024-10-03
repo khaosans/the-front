@@ -12,7 +12,12 @@ const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
             {task.dueDate && <p>Due Date: {task.dueDate}</p>}
             <div>
                 {task.comments.map((comment, index) => (
-                    <p key={index}>{comment}</p>
+                    <div key={index}>
+                        <p>{comment.content}</p>
+                        <p>{comment.author || 'Anonymous'   }</p>
+                        <p>{comment.createdAt}</p>
+                        
+                    </div>
                 ))}
             </div>
         </div>

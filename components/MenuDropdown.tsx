@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import Dropdown from './Dropdown'; // Ensure the path is correct
+import Dropdown from '@/components/Dropdown';
 
 const MenuDropdown = () => {
     const dropdownItems = [
@@ -10,9 +10,18 @@ const MenuDropdown = () => {
         { label: 'Settings', href: '/settings' },
     ];
 
+    const handleItemClick = (href: string) => {
+        window.location.href = href;
+    };
+
+    const items = dropdownItems.map(item => ({
+        label: item.label,
+        onClick: () => handleItemClick(item.href)
+    }));
+
     return (
-        <Dropdown items={dropdownItems} buttonLabel="Menu" />
+        <Dropdown label="Menu" items={items} />
     );
 };
 
-export default MenuDropdown;
+export { MenuDropdown };

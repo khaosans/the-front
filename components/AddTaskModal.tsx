@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Modal, Button, Input } from '@geist-ui/core';
+import { Modal, Button } from '@geist-ui/core';
+import { Input } from './ui/input';
 
 interface AddTaskModalProps {
     isOpen: boolean;
@@ -21,9 +22,8 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd }) =
             onClose();
         }
     };
-
     return (
-        <Modal open={isOpen} onClose={onClose}>
+        <Modal visible={isOpen} onClose={onClose}>
             <Modal.Title>Add New Task</Modal.Title>
             <Modal.Content>
                 <Input
@@ -37,8 +37,8 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd }) =
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </Modal.Content>
-            <Modal.Action passive onClick={onClose}>Cancel</Modal.Action>
-            <Modal.Action onClick={handleAddTask}>Add Task</Modal.Action>
+            <Modal.Action passive onClick={onClose} placeholder="Cancel">Cancel</Modal.Action>
+            <Modal.Action onClick={handleAddTask} placeholder="Add Task">Add Task</Modal.Action>
         </Modal>
     );
 };
