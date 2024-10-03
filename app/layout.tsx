@@ -15,9 +15,7 @@ const RootLayout: React.FC<LayoutProps> = ({ children }) => {
         <html lang="en">
             <body>
                 <ThemeProvider>
-
                     <TopBar />
-
 
                     {children}
                 </ThemeProvider>
