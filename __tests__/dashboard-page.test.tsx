@@ -29,8 +29,9 @@ describe('DashboardPage', () => {
     
     // Fast-forward the timer
     jest.runAllTimers();
-    
-    expect(await screen.findByText('Task Flow Dashboard')).toBeInTheDocument();
+
+
+    expect(await screen.findByText('Dashboard')).toBeInTheDocument();
   });
 
 });

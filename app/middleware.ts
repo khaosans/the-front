@@ -8,14 +8,13 @@ export async function middleware(request: NextRequest) {
 
     const { data: { session } } = await supabase.auth.getSession();
 
-    // Redirect to landing page if no session and accessing protected routes
     if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-        return NextResponse.redirect(new URL('/', request.url)); // Redirect to landing page
+        return NextResponse.redirect(new URL('/', request.url));
     }
 
     return response;
 }
 
 export const config = {
-    matcher: ['/dashboard', '/members', '/task-agent-analytics'], // Add more protected routes as needed
+    matcher: ['/dashboard', '/members', '/task-agent-analytics'],
 };
