@@ -3,46 +3,38 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Home, ClipboardList, BarChart2, Users, Bell, Settings } from 'lucide-react';
 
-const ConsoleHub: React.FC = () => {
+const pages = [
+    { title: 'Home', description: 'Go to the home page', icon: Home, href: '/' },
+    { title: 'Dashboard', description: 'View your dashboard', icon: ClipboardList, href: '/dashboard' },
+    { title: 'Notifications', description: 'View notifications', icon: Bell, href: '/notifications' },
+    { title: 'Settings', description: 'Manage your settings', icon: Settings, href: '/settings' },
+];
+
+const ConsolePage: React.FC = () => {
     return (
-        <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6">Welcome to Your Console Hub</h1>
-            <p className="text-lg text-gray-600 mb-8">Manage your tasks, projects, and teams efficiently.</p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Dashboard</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-gray-600">Overview of tasks and projects.</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Teams</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-gray-600">Manage your teams and their members.</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Members</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-gray-600">View and manage all members.</p>
-                    </CardContent>
-                </Card>
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-6">Console</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {pages.map((page, index) => (
+                    <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+                        <CardHeader>
+                            <CardTitle>{page.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <page.icon className="w-12 h-12 mb-4" />
+                            <p>{page.description}</p>
+                        </CardContent>
+                        <Link href={page.href}>
+                            <Button className="mt-4">Go to {page.title}</Button>
+                        </Link>
+                    </Card>
+                ))}
             </div>
-
-            <Button variant="outline" className="mt-6">
-                <PlusCircle className="mr-2 h-4 w-4" /> Add New Item
-            </Button>
         </div>
     );
 };
 
-export default ConsoleHub;
+export default ConsolePage;

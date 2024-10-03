@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/utils/supabase/client';
+import { handleLogin } from './session'; // Import the handleLogin function
 
 export async function POST(request: Request) {
+    console.log('Received login request'); // Debug log
     const { email, password } = await request.json();
-
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 401 });
-    }
-
-    return NextResponse.json({ data });
+    console.log('Email:', email); // Log the email for debugging
+    return handleLogin(email, password);
 }
