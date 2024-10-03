@@ -806,6 +806,14 @@ exports[`UI Component Snapshots next-logo matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`UI Component Snapshots project-board matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    Project Board
+  </div>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots sign-up matches snapshot 1`] = `
 <DocumentFragment>
   <div>
@@ -954,6 +962,14 @@ exports[`UI Component Snapshots support-form matches snapshot 1`] = `
     <p>
       Support Form Placeholder
     </p>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`UI Component Snapshots task matches snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    Task ID: 
   </div>
 </DocumentFragment>
 `;
