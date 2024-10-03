@@ -9,10 +9,19 @@ const options = [
 describe('Dropdown Component', () => {
     test('renders the dropdown with the correct label', () => {
         render(<Dropdown label="Select an Option" items={options} />);
+        
+        // Check if the dropdown label is rendered
         const dropdownLabels = screen.getAllByText('Select an Option'); // Updated query
         expect(dropdownLabels.length).toBeGreaterThan(0); // Check if at least one element is found
         expect(dropdownLabels[0]).toBeInTheDocument(); // Check the first element
     });
 
-    // Additional tests can be added here
+    test('renders dropdown items', () => {
+        render(<Dropdown label="Select an Option" items={options} />);
+        
+        // Check if dropdown items are rendered
+        options.forEach(option => {
+            expect(screen.getByText(option.label)).toBeInTheDocument();
+        });
+    });
 });
