@@ -1,11 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import Link from 'next/link'
+import { Button } from "@/components/ui/button"
+import { CheckCircle, Users, Folder, List } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import { CardContent } from '@/components/ui/card-content'
+import { CardHeader } from '@/components/ui/card-header'
+import { CardTitle } from '@/components/ui/card-title'
 
 interface Project {
   id: string
@@ -30,49 +36,69 @@ export default function ProgressPage() {
   }))
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Project Progress Overview</h1>
-      
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Overall Progress</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="progress" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+    <div className="flex flex-col min-h-screen">
+      <header className="bg-white shadow-sm">
+        <div className="container mx-auto py-4 px-4">
+          <div className="flex justify-between items-center">
+            <a href="/" className="text-2xl font-bold text-primary">TaskMaster</a>
+            <div className="space-x-4">
+              <a href="/login" className="text-sm hover:underline">Log in</a>
+              <Button asChild variant="outline">
+                <Link href="/signup">Sign up</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[400px]">
-            {projects.map((project) => (
-              <div key={project.id} className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold">{project.name}</h3>
-                  <Badge variant={project.progress < 30 ? 'destructive' : project.progress < 70 ? 'default' : 'secondary'}>
-                    {project.progress}%
-                  </Badge>
-                </div>
-                <Progress value={project.progress} className="mb-2" />
-                <p className="text-sm text-muted-foreground">
-                  Tasks completed: {project.tasksCompleted} / {project.totalTasks}
-                </p>
-              </div>
-            ))}
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      <main className="flex-grow">
+        <section className="bg-gradient-to-b from-primary to-primary/50 text-primary-foreground py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">Track Your Progress</h1>
+            <p className="text-xl md:text-2xl mb-8">Monitor your tasks and projects in real-time.</p>
+            <Button size="lg" asChild>
+              <Link href="/signup">Get Started for Free</Link>
+            </Button>
+          </div>
+        </section>
+
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { icon: <Users />, title: "Team Collaboration", description: "Work seamlessly with your team members, assign tasks, and track progress together." },
+                { icon: <Folder />, title: "Project Management", description: "Organize your work into projects, set milestones, and manage resources effectively." },
+                { icon: <List />, title: "Task Tracking", description: "Create, assign, and monitor tasks with ease. Set priorities and deadlines to stay on top of your work." },
+              ].map((feature, index) => (
+                <FeatureCard key={index} {...feature} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-secondary text-secondary-foreground py-8">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-sm">&copy; {new Date().getFullYear()} TaskMaster. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
+  )
+}
+
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex flex-col items-center text-center">
+          <div className="h-12 w-12 mb-4 text-primary">{icon}</div>
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-center text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
   )
 }

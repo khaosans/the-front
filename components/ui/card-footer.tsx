@@ -1,18 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
-interface CardFooterProps {
-    children: React.ReactNode;
-    className?: string; // Optional className for additional styling
+interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
 }
 
-const CardFooter: React.FC<CardFooterProps> = ({ children, className }) => {
-    return (
-        <div className={`p-4 border-t border-gray-200 ${className}`}>
+export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
+    ({ children, ...props }, ref) => (
+        <div ref={ref} {...props}>
             {children}
         </div>
-    );
-};
+    )
+);
 
-export default CardFooter;
+CardFooter.displayName = 'CardFooter';

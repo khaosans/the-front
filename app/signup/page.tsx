@@ -1,61 +1,67 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
-import { useTheme } from '../contexts/ThemeContext';
 import Image from 'next/image';
-import { toast } from 'react-hot-toast';
+import { useTheme } from '../contexts/ThemeContext';
+import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import logger from '@/lib/logger'; // Import the logger
 
-export default function SignUpPage() {
-	const { isDark } = useTheme();
+export default function SignupPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 	const supabase = createClientComponentClient();
-	const { theme } = useTheme();
+	const themeContext = useTheme();
+	const theme = themeContext?.theme ?? 'light';
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setIsLoading(true);
+		setError(null);
 		try {
-			const { error } = await supabase.auth.signUp({
-				email,
-				password,
-				options: {
-					emailRedirectTo: `${window.location.origin}/auth/callback`,
-				},
-			});
+			const { error } = await supabase.auth.signUp({ email, password });
 			if (error) throw error;
-			toast.success('Signup successful! Please check your email for confirmation.');
-			router.push('/login?message=Please check your email to confirm your account');
-		} catch (error: any) {
-			toast.error(error.message);
-		} finally {
-			setIsLoading(false);
+			toast.success('Account created successfully');
+			router.push('/login'); // Redirect to login after signup
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				setError(error.message);
+				toast.error(error.message);
+				logger.error('Signup error'); // Use logger instead of console
+			} else {
+				setError('An unknown error occurred');
+				toast.error('An unknown error occurred');
+				logger.error('Signup error: An unknown error occurred'); // Use logger instead of console
+			}
 		}
 	};
 
-	const handleGoogleSignUp = async () => {
+	const handleGoogleSignIn = async () => {
 		try {
 			const { error } = await supabase.auth.signInWithOAuth({
 				provider: 'google',
 				options: {
-					redirectTo: `${window.location.origin}/auth/callback`,
+					redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
 				},
 			});
 			if (error) throw error;
-		} catch (error: any) {
-			toast.error(error.message);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				toast.error(error.message);
+				logger.error('Google sign-in error'); // Use logger instead of console
+			} else {
+				toast.error('An unknown error occurred');
+				logger.error('Google sign-in error: An unknown error occurred'); // Use logger instead of console
+			}
 		}
 	};
 
 	return (
-		<div className={`min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+		<div className={`min-h-screen flex items-center justify-center ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-black'} py-12 px-4 sm:px-6 lg:px-8`}>
 			<div className="max-w-md w-full space-y-8">
 				<div>
 					<h2 className={`mt-6 text-center text-3xl font-extrabold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -63,7 +69,8 @@ export default function SignUpPage() {
 					</h2>
 				</div>
 				<form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-					<div className="rounded-md shadow-sm space-y-4">
+					<input type="hidden" name="remember" defaultValue="true" />
+					<div className="rounded-md shadow-sm -space-y-px">
 						<div>
 							<label htmlFor="email-address" className="sr-only">
 								Email address
@@ -74,9 +81,7 @@ export default function SignUpPage() {
 								type="email"
 								autoComplete="email"
 								required
-								className={`appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-									theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
-								}`}
+								className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${theme === 'dark' ? 'bg-gray-800 text-white border-gray-700 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'} rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
 								placeholder="Email address"
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
@@ -90,11 +95,9 @@ export default function SignUpPage() {
 								id="password"
 								name="password"
 								type="password"
-								autoComplete="new-password"
+								autoComplete="current-password"
 								required
-								className={`appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm ${
-									theme === 'dark' ? 'bg-gray-800 text-white border-gray-700' : ''
-								}`}
+								className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${theme === 'dark' ? 'bg-gray-800 text-white border-gray-700 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'} rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
 								placeholder="Password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
@@ -102,15 +105,14 @@ export default function SignUpPage() {
 						</div>
 					</div>
 
+					{error && <div className="text-red-500 text-sm">{error}</div>}
+
 					<div>
 						<button
 							type="submit"
-							disabled={isLoading}
-							className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
-								theme === 'dark' ? 'bg-gray-800 text-white hover:bg-gray-700' : ''
-							}`}
+							className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
 						>
-							{isLoading ? 'Signing up...' : 'Sign up'}
+							Sign up
 						</button>
 					</div>
 				</form>
@@ -128,8 +130,8 @@ export default function SignUpPage() {
 
 					<div className="mt-6">
 						<Button
-							onClick={handleGoogleSignUp}
-							className={`w-full ${isDark ? 'bg-blue-800 hover:bg-purple-700' : 'bg-purple-500 hover:bg-purple-600'} text-white`}
+							onClick={handleGoogleSignIn}
+							className={`w-full bg-blue-600 hover:bg-blue-700 text-white`}
 						>
 							<Image
 								src="/images/google.svg"

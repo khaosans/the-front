@@ -3,51 +3,18 @@
 import { useState, useEffect } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search } from 'lucide-react'
-
-interface Task {
-  id: string
-  title: string
-  status: 'todo' | 'inprogress' | 'done'
-  project: string
-}
-
-interface Project {
-  id: string
-  name: string
-  description: string
-}
-
-interface TeamMember {
-  id: string
-  name: string
-  role: string
-  avatar: string
-}
-
-// Mock data
-const mockTasks: Task[] = [
-  { id: '1', title: 'Task 1', status: 'todo', project: 'Project A' },
-  { id: '2', title: 'Task 2', status: 'inprogress', project: 'Project B' },
-  { id: '3', title: 'Task 3', status: 'done', project: 'Project C' },
-]
-
-const mockProjects: Project[] = [
-  { id: '1', name: 'Project A', description: 'Description of Project A' },
-  { id: '2', name: 'Project B', description: 'Description of Project B' },
-  { id: '3', name: 'Project C', description: 'Description of Project C' },
-]
-
-const mockTeamMembers: TeamMember[] = [
-  { id: '1', name: 'John Doe', role: 'Developer', avatar: '/avatars/john.jpg' },
-  { id: '2', name: 'Jane Smith', role: 'Designer', avatar: '/avatars/jane.jpg' },
-  { id: '3', name: 'Bob Johnson', role: 'Manager', avatar: '/avatars/bob.jpg' },
-]
+import supabase from '@/utils/supabaseDbClient'
+import { Task, Project } from '@/lib/task'
+import { Card } from '@/components/ui/card'
+import { CardContent } from '@/components/ui/card-content'
+import { CardHeader } from '@/components/ui/card-header'
+import { CardTitle } from '@/components/ui/card-title'
+import { TeamMember } from '@/lib/teamMember'
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -62,18 +29,25 @@ export default function SearchPage() {
 
   async function fetchData() {
     setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
-      setTasks(mockTasks)
-      setProjects(mockProjects)
-      setTeamMembers(mockTeamMembers)
+    try {
+      const [{ data: tasksData }, { data: projectsData }, { data: teamMembersData }] = await Promise.all([
+        supabase.from('tasks').select('*'),
+        supabase.from('projects').select('*'),
+        supabase.from('team_members').select('*')
+      ])
+
+      if (tasksData) setTasks(tasksData)
+      if (projectsData) setProjects(projectsData)
+      if (teamMembersData) setTeamMembers(teamMembersData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
       setIsLoading(false)
-    }, 500)
+    }
   }
 
   const filteredTasks = tasks.filter(task => 
-    task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.project.toLowerCase().includes(searchTerm.toLowerCase())
+    task.title.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const filteredProjects = projects.filter(project => 
@@ -121,7 +95,7 @@ export default function SearchPage() {
                   <div key={task.id} className="flex justify-between items-center mb-4 p-2 bg-secondary rounded-lg">
                     <div>
                       <p className="font-medium">{task.title}</p>
-                      <p className="text-sm text-muted-foreground">Project: {task.project}</p>
+                      <p className="text-sm text-muted-foreground">Project ID: {task.project_id}</p>
                     </div>
                     <Badge 
                       variant={task.status === 'todo' ? 'default' : task.status === 'inprogress' ? 'secondary' : 'outline'}
@@ -162,7 +136,7 @@ export default function SearchPage() {
                   <div key={member.id} className="flex items-center space-x-4 mb-4">
                     <Avatar>
                       <AvatarImage src={member.avatar} alt={member.name} />
-                      <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      <AvatarFallback>{member.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="font-medium">{member.name}</p>

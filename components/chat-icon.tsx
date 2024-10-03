@@ -9,12 +9,12 @@ interface ChatIconProps {
 }
 
 const ChatIcon: React.FC<ChatIconProps> = ({ onClick }) => {
-  const { isDark } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <div
       className={`fixed bottom-16 right-4 p-3 rounded-full cursor-pointer transition-colors duration-200 shadow-lg ${
-        isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'
+        theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'
       }`}
       onClick={onClick}
     >

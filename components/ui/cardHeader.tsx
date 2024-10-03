@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 
-interface CardHeaderProps {
-    children: React.ReactNode;
+interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
 }
 
-export const CardHeader: React.FC<CardHeaderProps> = ({ children }) => {
-    return <div className="border-b border-gray-200 pb-2">{children}</div>;
-};
+export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
+  ({ children, ...props }, ref) => (
+    <div ref={ref} {...props}>
+      {children}
+    </div>
+  )
+);
+
+CardHeader.displayName = 'CardHeader';
