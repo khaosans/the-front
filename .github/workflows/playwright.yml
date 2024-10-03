@@ -12,6 +12,6 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
       - name: Run Playwright tests
-        run: pnpm run test:playwright
+        run: npm run test:playwright
