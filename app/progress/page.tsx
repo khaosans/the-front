@@ -40,7 +40,7 @@ export default function ProgressPage() {
       <header className="bg-white shadow-sm">
         <div className="container mx-auto py-4 px-4">
           <div className="flex justify-between items-center">
-            <a href="/" className="text-2xl font-bold text-primary">TaskMaster</a>
+            <a href="/" className="text-2xl font-bold text-primary">QuantumLabs</a>
             <div className="space-x-4">
               <a href="/login" className="text-sm hover:underline">Log in</a>
               <Button asChild variant="outline">
@@ -80,7 +80,7 @@ export default function ProgressPage() {
 
       <footer className="bg-secondary text-secondary-foreground py-8">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm">&copy; {new Date().getFullYear()} TaskMaster. All rights reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} QuantumLabs. All rights reserved.</p>
         </div>
       </footer>
     </div>
