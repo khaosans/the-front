@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PlusCircle } from 'lucide-react';
 import Link from 'next/link';
-import { useTheme } from '../../contexts/ThemeContext';
 
 interface Member {
   id: string;
@@ -23,55 +24,35 @@ interface Board {
   tasks: { total: number; completed: number };
 }
 
-interface Team {
-  id: string;
-  name: string;
-  members: Member[];
-  boards: Board[];
-}
+const initialMembers: Member[] = [
+  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+  { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
+  { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'Viewer' },
+];
 
-// This would typically come from an API or database
-const fetchTeamData = async (teamId: string): Promise<Team> => {
-  // Simulating API call
-  return {
-    id: teamId,
-    name: `Team ${teamId}`,
-    members: [
-      { id: '1', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-      { id: '2', name: 'Jane Smith', email: 'jane@example.com', role: 'Editor' },
-      { id: '3', name: 'Bob Johnson', email: 'bob@example.com', role: 'Viewer' },
-    ],
-    boards: [
-      { id: '1', name: 'Project Alpha', tasks: { total: 20, completed: 8 } },
-      { id: '2', name: 'Website Redesign', tasks: { total: 15, completed: 3 } },
-    ]
-  };
-};
+const initialBoards: Board[] = [
+  { id: '1', name: 'Project Alpha', tasks: { total: 20, completed: 8 } },
+  { id: '2', name: 'Website Redesign', tasks: { total: 15, completed: 3 } },
+];
 
 export default function TeamPage({ params }: { params: { id: string } }) {
-  const [team, setTeam] = useState<Team | null>(null);
+  const [members, setMembers] = useState<Member[]>(initialMembers);
+  const [boards, setBoards] = useState<Board[]>(initialBoards);
   const [searchTerm, setSearchTerm] = useState('');
-  const { isDark, getThemeClasses } = useTheme();
 
-  useEffect(() => {
-    fetchTeamData(params.id).then(setTeam);
-  }, [params.id]);
-
-  if (!team) return <div>Loading...</div>;
-
-  const filteredMembers = team.members.filter(member => 
+  const filteredMembers = members.filter(member => 
     member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     member.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredBoards = team.boards.filter(board => 
+  const filteredBoards = boards.filter(board => 
     board.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className={`container mx-auto py-10 ${getThemeClasses()}`}>
+    <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Team: {team.name}</h1>
+        <h1 className="text-3xl font-bold">Team: {params.id}</h1>
         <div className="flex items-center space-x-2">
           <Input
             placeholder="Search members or boards..."
@@ -85,7 +66,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="space-y-8">
-        <Card className={isDark ? 'bg-gray-800' : ''}>
+        <Card>
           <CardHeader>
             <CardTitle>Team Members</CardTitle>
           </CardHeader>
@@ -104,7 +85,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
                     <TableCell className="font-medium">{member.name}</TableCell>
                     <TableCell>{member.email}</TableCell>
                     <TableCell>
-                      <Badge variant={member.role === 'Admin' ? 'default' : member.role === 'Editor' ? 'secondary' : 'default'}>
+                      <Badge variant={member.role === 'Admin' ? 'default' : member.role === 'Editor' ? 'secondary' : 'outline'}>
                         {member.role}
                       </Badge>
                     </TableCell>
@@ -118,10 +99,10 @@ export default function TeamPage({ params }: { params: { id: string } }) {
           <h2 className="text-2xl font-bold mb-4">Team Boards</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredBoards.map((board) => (
-              <Link href={`/board/${board.id}`} key={board.id}>
-                <Card className={`hover:shadow-lg transition-shadow ${isDark ? 'bg-gray-800' : ''}`}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">{board.name}</CardTitle>
+              <Link href={`/teams/${params.id}/projects/${board.id}`} key={board.id}>
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle>{board.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="text-sm text-muted-foreground">
@@ -129,7 +110,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
                       <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                         <div 
                           className="bg-blue-600 h-2.5 rounded-full" 
-                          style={{width: `${(board.tasks.completed / board.tasks.total) * 100}%`}}
+                          style={{ width: `${(board.tasks.completed / board.tasks.total) * 100}%` }}
                         ></div>
                       </div>
                     </div>
@@ -137,7 +118,7 @@ export default function TeamPage({ params }: { params: { id: string } }) {
                 </Card>
               </Link>
             ))}
-            <Card className={`hover:shadow-lg transition-shadow cursor-pointer ${isDark ? 'bg-gray-800' : ''}`}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardContent className="flex items-center justify-center h-full">
                 <Button variant="ghost">
                   <PlusCircle className="mr-2 h-4 w-4" /> Create New Board

@@ -21,5 +21,7 @@ module.exports = {
   },
   rules: {
     // Add any custom rules here
+    "jsx-a11y/anchor-is-valid": "off"
+
   },
 };

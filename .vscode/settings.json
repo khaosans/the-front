@@ -6,7 +6,21 @@
     "supabase/functions"
   ],
   "deno.lint": true,
-  "deno.unstable": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
+  ],
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "../../node_modules/typescript/lib"
 }

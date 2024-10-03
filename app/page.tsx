@@ -1,11 +1,20 @@
-import { createClient } from '@/utils/supabase/server';
-import DashboardPage from "@/app/dashboard/page";
+'use client';
 
+import React from 'react';
+import Dropdown from '../components/Dropdown'; // Adjust the import path as necessary
 
-export default async function Page() {
+const options = [
+    { label: 'Option 1', onClick: () => console.log('Option 1 selected') },
+    { label: 'Option 2', onClick: () => console.log('Option 2 selected') },
+];
+
+const Page = () => {
     return (
         <div>
-            <DashboardPage/>
+            <h1>Welcome to the Home Page</h1>
+            <Dropdown label="Select an Option" items={options} />
         </div>
     );
-}
+};
+
+export default Page;
