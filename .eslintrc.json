@@ -1,0 +1,6 @@
+{
+    "extends": "next/core-web-vitals",
+    // Remove invalid options
+    // "useEslintrc": false,
+    // "extensions": [".ts", ".tsx"]
+}
