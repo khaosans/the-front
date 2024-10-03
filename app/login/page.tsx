@@ -14,6 +14,7 @@ const LoginPage: React.FC = () => {
             {/* Rest of your login form */}
         </div>
     );
+
 };
 
 export default LoginPage;
