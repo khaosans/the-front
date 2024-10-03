@@ -23,9 +23,9 @@ export default function LandingPage() {
   ];
 
   const testimonials = [
-    { name: "John Doe", role: "CEO, TechCorp", quote: "TaskMaster has revolutionized our workflow. The AI chatbot and blockchain features are game-changers!" },
+    { name: "John Doe", role: "CEO, TechCorp", quote: "QuantumLabs has revolutionized our workflow. The AI chatbot and blockchain features are game-changers!" },
     { name: "Jane Smith", role: "Project Manager, InnovateCo", quote: "The best task management tool I've used. The chatbot assistant saves us hours every week." },
-    { name: "Mike Johnson", role: "Team Lead, CreativeSolutions", quote: "TaskMaster's blockchain integration gives us unparalleled security and transparency." },
+    { name: "Mike Johnson", role: "Team Lead, CreativeSolutions", quote: "QuantumLabs's blockchain integration gives us unparalleled security and transparency." },
   ];
 
   return (
@@ -47,7 +47,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            TaskMaster: Revolutionizing team collaboration with AI chatbots and blockchain technology.
+            TaskFlow: Revolutionizing team collaboration with AI chatbots and blockchain technology.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -173,7 +173,7 @@ export default function LandingPage() {
         <section className="bg-blue-600 py-20 text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold mb-4">Ready to revolutionize your team's productivity?</h2>
-            <p className="text-xl mb-8">Join thousands of teams already using TaskMaster's AI and blockchain-powered platform.</p>
+            <p className="text-xl mb-8">Join thousands of teams already using QuantumLabs's AI and blockchain-powered platform.</p>
             <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg">
               <Link href="/signup">Start Your Free 14-Day Trial</Link>
             </Button>
@@ -183,7 +183,7 @@ export default function LandingPage() {
 
       <footer className="bg-gray-900 py-8 text-white">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2023 TaskMaster. All rights reserved.</p>
+          <p>&copy; 2023 QuantumLabs. All rights reserved.</p>
         </div>
       </footer>
     </div>
