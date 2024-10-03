@@ -1,37 +1,25 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import TopBar from '@/components/TopBar';
-import ChatbotModal from '@/components/ChatbotModal';
-import { ThemeProvider } from '@/app/contexts/ThemeContext';
-import Loading from './loading';
-import { GeistProvider } from '@geist-ui/react';
-import ToastContainer from '@/components/ToastContainer';
-import NavBar from '@/components/NavBar';
-import { Inter } from 'next/font/google'; // Updated import
+import React, { ReactNode } from 'react';
+import { ThemeProvider } from '@/app/contexts/ThemeContext'; // Corrected import path
+import '@/styles/globals.css'; // Adjust this path if needed
+import TopBar from '@/components/TopBar'; // Import the TopBar component
 
-const inter = Inter({ subsets: ['latin'] });
+interface LayoutProps {
+    children: ReactNode;
+}
 
-const Layout: React.FC = ({ children }) => {
-    const [isMounted, setIsMounted] = useState(false);
-    const router = useRouter();
-    const noTopBarRoutes = ['/login', '/signup', '/forgot-password'];
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) {
-        return null; // Prevent rendering until the component is mounted
-    }
-
+const RootLayout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <div className={inter.className}>
-            {!noTopBarRoutes.includes(router.pathname) && <TopBar onChatOpen={() => console.log('Chat opened')} />}
-            <main>{children}</main>
-        </div>
+        <html lang="en">
+            <body>
+                <ThemeProvider>
+                    <TopBar />
+                    {children}
+                </ThemeProvider>
+            </body>
+        </html>
     );
 };
 
-export default Layout;
+export default RootLayout;
