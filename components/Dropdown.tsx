@@ -10,12 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+interface DropdownOption {
+  label: string;
+  onClick: () => void;
+}
+
 interface DropdownProps {
   label: string;
-  items: {
-    label: string;
-    onClick: () => void;
-  }[];
+  items: DropdownOption[]; // Ensure this matches your usage
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {

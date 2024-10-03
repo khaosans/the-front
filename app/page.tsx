@@ -9,19 +9,22 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import React from 'react';
 import Dropdown from '../components/Dropdown';
 
-const options = ['Option 1', 'Option 2', 'Option 3'];
+const options = [
+    { label: 'Option 1', onClick: () => console.log('Option 1 selected') },
+    { label: 'Option 2', onClick: () => console.log('Option 2 selected') },
+];
 
-const HomePage: React.FC = () => {
-  const handleSelect = (option: string) => {
-    console.log('Selected option:', option);
-  };
+const Page = () => {
+    const handleSelect = (option: string) => {
+        console.log(option);
+    };
 
-  return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      <Dropdown options={options} onSelect={handleSelect} />
-    </div>
-  );
+    return (
+        <div>
+            <h1>Welcome to the Home Page</h1>
+            <Dropdown label="Select an Option" items={options} />
+        </div>
+    );
 };
 
-export default HomePage;
+export default Page;
