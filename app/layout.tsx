@@ -1,53 +1,37 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import TopBar from '@/components/TopBar'; // Import TopBar
-import ChatbotModal from '@/components/ChatbotModal'; // Updated import path
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import TopBar from '@/components/TopBar';
+import ChatbotModal from '@/components/ChatbotModal';
 import { ThemeProvider } from '@/app/contexts/ThemeContext';
 import Loading from './loading';
 import { GeistProvider } from '@geist-ui/react';
-import ToastContainer from '@/components/ToastContainer'; // Import ToastContainer
-import NavBar from '@/components/NavBar'; // Import NavBar
+import ToastContainer from '@/components/ToastContainer';
+import NavBar from '@/components/NavBar';
+import { Inter } from 'next/font/google'; // Updated import
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-    const [isChatbotOpen, setIsChatbotOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+const Layout: React.FC = ({ children }) => {
+    const [isMounted, setIsMounted] = useState(false);
+    const router = useRouter();
+    const noTopBarRoutes = ['/login', '/signup', '/forgot-password'];
 
     useEffect(() => {
-        // Simulate initial loading
-        setTimeout(() => setIsLoading(false), 1000);
+        setIsMounted(true);
     }, []);
 
+    if (!isMounted) {
+        return null; // Prevent rendering until the component is mounted
+    }
+
     return (
-        <html lang="en">
-        <head>
-            <title>QuantumLabs</title>
-        </head>
-        <body className={inter.className}>
-        <ThemeProvider>
-            <GeistProvider>
-                {isLoading ? (
-                    <Loading />
-                ) : (
-                    <>
-                        <TopBar onChatOpen={() => setIsChatbotOpen(true)} /> {/* Pass the function to open the chat */}
-                        {/* Removed the extra NavBar here */}
-                        {children}
-                        <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
-                        <ToastContainer /> {/* Add the ToastContainer here */}
-                    </>
-                )}
-            </GeistProvider>
-        </ThemeProvider>
-        </body>
-        </html>
+        <div className={inter.className}>
+            {!noTopBarRoutes.includes(router.pathname) && <TopBar onChatOpen={() => console.log('Chat opened')} />}
+            <main>{children}</main>
+        </div>
     );
-}
+};
+
+export default Layout;
