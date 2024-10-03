@@ -17,7 +17,7 @@ interface DropdownOption {
 
 interface DropdownProps {
   label: string;
-  items: DropdownOption[]; // Ensure this matches your usage
+  items: DropdownOption[];
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {
@@ -33,10 +33,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {items.map((item, index) => (
-          <DropdownMenuItem
-            key={index}
-            onClick={item.onClick}
-          >
+          <DropdownMenuItem key={index} onClick={item.onClick}>
             {item.label}
           </DropdownMenuItem>
         ))}
