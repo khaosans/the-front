@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Unprotected Page Tests', () => {
     test('should navigate to the homepage and see content', async ({ page }) => {
-        await page.goto('/'); // Navigate to the homepage
+        await page.goto('/'); // This will use the baseURL set in the config
 
         // Check if the page contains any content
         const content = await page.content();
@@ -18,7 +18,7 @@ test.describe('Unprotected Page Tests', () => {
     });
 
     test('should navigate to the about page and see content', async ({ page }) => {
-        await page.goto('/about'); // Navigate to the about page
+        await page.goto('/about'); // This will use the baseURL set in the config
 
         // Check if the page contains any content
         const content = await page.content();
@@ -26,7 +26,7 @@ test.describe('Unprotected Page Tests', () => {
     });
 
     test('should navigate to the signup page and see content', async ({ page }) => {
-        await page.goto('/signup'); // Navigate to the signup page
+        await page.goto('/signup'); // This will use the baseURL set in the config
 
         // Check if the page contains any content
         const content = await page.content();
