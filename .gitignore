@@ -13,6 +13,8 @@
 /.next/
 /out/
 
+.env*
+
 # production
 /build
 
@@ -35,3 +37,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .aider*
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+package-lock.json
