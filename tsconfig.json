@@ -28,13 +28,15 @@
         "./*"
       ]
     },
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "types": ["jest", "node"]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.js",
+    "**/*.jsx"
   ],
   "exclude": [
     "node_modules"
