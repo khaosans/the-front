@@ -3,7 +3,7 @@ import Notification from '../components/Notification';
 
 describe('Notification Component', () => {
     it('renders the notification message', () => {
-        render(<Notification message="Test notification" />);
+        render(<Notification message="Test notification" type={'success'} />);
         expect(screen.getByText(/test notification/i)).toBeInTheDocument();
     });
 });
