@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import { test, expect } from '@playwright/test';
 
 const bypassSecret = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
