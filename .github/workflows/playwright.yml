@@ -25,4 +25,4 @@ jobs:
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
           BYPASS_TOKEN: ${{ secrets.BYPASS_TOKEN }}
-        run: pnpm exec playwright test --headed=false
+        run: pnpm exec playwright test --headless
