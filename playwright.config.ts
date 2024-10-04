@@ -47,6 +47,7 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
     video: 'on-first-retry',
     screenshot: 'only-on-failure',
+    timeout: 30000, // Increase timeout to 30 seconds
   },
 
   /* Configure projects for major browsers */

@@ -95,7 +95,8 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5"
+    "ts-jest": "^29.2.5",
+    "playwright": "^1.30.0"
   },
   "resolutions": {
     "punycode": "2.1.0"
