@@ -1,6 +1,7 @@
 import { createOllama } from 'ollama-ai-provider';
 
-const ollama = createOllama({
+// Create an instance of Ollama with the desired model
+export const ollama = createOllama({
     model: 'llama3.2', // Ensure this model is supported by the provider
 });
 

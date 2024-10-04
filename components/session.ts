@@ -7,7 +7,7 @@ interface LoginResponse {
 }
 
 export const handleLogin = async (email: string, password: string): Promise<LoginResponse> => {
-    const { user, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
     });
@@ -16,5 +16,5 @@ export const handleLogin = async (email: string, password: string): Promise<Logi
         return { success: false, message: error.message };
     }
 
-    return { success: true, message: 'Login successful', user };
+    return { success: true, message: 'Login successful', user: data.user }; // Access user from data
 };
