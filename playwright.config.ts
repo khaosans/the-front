@@ -1,13 +1,11 @@
+/// <reference types="node" />
+
 import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import path from 'path';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
 // Load environment variables from .env.local
-dotenv.config({ path: path.resolve(__dirname, '.env.local') });
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const bypassToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
 
@@ -15,7 +13,7 @@ const bypassToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: 'e2e', // Directory where your Playwright tests are located
+  testDir: './e2e', // Directory where your Playwright tests are located
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -27,8 +25,6 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html'],
-    ['list'],  // Add list reporter for console output
-    ['json', {  outputFile: 'test-results/test-results.json' }]  // JSON report for detailed logs
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -37,10 +33,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     headless: false, // Set to false for local development
-    extraHTTPHeaders: bypassToken ? {
-      'x-vercel-protection-bypass': bypassToken,
-      'x-vercel-set-bypass-cookie': 'true',
-    } : {},
+    extraHTTPHeaders: bypassToken ? { 'x-vercel-protection-bypass': bypassToken } : {},
     // Add these options for streaming websites
     viewport: { width: 1280, height: 720 },
     video: 'on-first-retry',
