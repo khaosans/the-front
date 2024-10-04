@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ollama from '../lib/ollama'; // Ensure this path is correct
 
-const ChatBotModal = ({ isOpen, onClose }) => {
+const ChatBotModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
     const [input, setInput] = useState<string>('');
 
@@ -10,7 +10,7 @@ const ChatBotModal = ({ isOpen, onClose }) => {
         const userMessage = { role: 'user', content: input };
         setMessages((prev) => [...prev, userMessage]);
 
-        const response = await getChatCompletion([input]); // Send the input to the local Ollama model
+        const response = await getChatCompletion([input]); // Ensure this function is defined or imported
         const aiMessage = { role: 'ai', content: response };
         setMessages((prev) => [...prev, aiMessage]);
         setInput(''); // Clear the input field
