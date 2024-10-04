@@ -15,4 +15,6 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps  # Install Playwright browsers
       - name: Run tests
+        env:
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}  # Set BASE_URL from deployment status
         run: npx playwright test  # Execute Playwright tests
