@@ -19,6 +19,8 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
+      - name: Echo BASE_URL
+        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
       - name: Run Playwright tests
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
