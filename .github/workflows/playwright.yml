@@ -1,25 +1,26 @@
-name: Playwright Tests
+name: End-to-end testing
 
 on:
-  deployment_status:  # Trigger on deployment status changes
+  deployment_status:
 
 jobs:
-  run-e2es:  # Job name for end-to-end tests
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'  # Run only if deployment is successful
+  e2e:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Install dependencies
-        run: pnpm ci && npx playwright install --with-deps  # Install dependencies and Playwright browsers
-      - name: Set BASE_URL
-        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}" >> $GITHUB_ENV  # Set BASE_URL from deployment status
-      - name: Set Bypass Token
-        run: echo "BYPASS_TOKEN=${{ secrets.BYPASS_TOKEN }}" >> $GITHUB_ENV  # Set Bypass Token from GitHub Secrets
-      - name: Run tests
-        run: npx playwright test  # Execute Playwright tests
+        run: pnpm install
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright tests
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
           BYPASS_TOKEN: ${{ secrets.BYPASS_TOKEN }}
+        run: pnpm exec playwright test
