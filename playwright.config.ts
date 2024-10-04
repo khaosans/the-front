@@ -41,7 +41,7 @@ export default defineConfig({
     baseURL: process.env.BASE_URL || 'https://the-front-9t3xn2sr4-dynamicprompt.vercel.app',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    headless: false, // Set to false for local development
+    headless: true, // Set to false for local development
     extraHTTPHeaders: bypassToken ? { 'x-vercel-protection-bypass': bypassToken } : {},
     // Add these options for streaming websites
     viewport: { width: 1280, height: 720 },
