@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test'; // Add devices import
+import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
