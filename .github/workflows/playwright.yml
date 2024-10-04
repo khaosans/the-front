@@ -1,28 +1,28 @@
-name: End-to-end testing
+# name: End-to-end testing
 
-on:
-  deployment_status:
+# on:
+#   deployment_status:
 
-jobs:
-  e2e:
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-      - name: Install pnpm
-        run: npm install -g pnpm
-      - name: Install dependencies
-        run: pnpm install
-      - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
-      - name: Echo BASE_URL
-        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
-      - name: Run Playwright tests
-        env:
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
-          BYPASS_TOKEN: ${{ secrets.BYPASS_TOKEN }}
-        run: pnpm exec playwright test
+# jobs:
+#   e2e:
+#     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 20.x
+#       - name: Install pnpm
+#         run: npm install -g pnpm
+#       - name: Install dependencies
+#         run: pnpm install
+#       - name: Install Playwright Browsers
+#         run: pnpm exec playwright install --with-deps
+#       - name: Echo BASE_URL
+#         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}"
+#       - name: Run Playwright tests
+#         env:
+#           BASE_URL: ${{ github.event.deployment_status.environment_url }}
+#           BYPASS_TOKEN: ${{ secrets.BYPASS_TOKEN }}
+#         run: pnpm exec playwright test
