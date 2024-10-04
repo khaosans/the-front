@@ -1,28 +1,18 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: 
-      - main
-      - development  # Add any other branches you want to trigger tests on
-  pull_request:
-    branches: 
-      - main
-      - development
+  deployment_status:  # Trigger on deployment status changes
 
 jobs:
   run-e2es:  # Job name for end-to-end tests
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'  # Run only if deployment is successful
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: Install dependencies
-        run: npm ci  # Using npm ci for clean installs
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps  # Install Playwright browsers
+        run: npm ci && npx playwright install --with-deps  # Install dependencies and Playwright browsers
       - name: Set BASE_URL
-        run: echo "BASE_URL=https://the-front-1.vercel.app" >> $GITHUB_ENV  # Set BASE_URL based on branch
-      - name: Set Bypass Token
-        run: echo "BYPASS_TOKEN=${{ secrets.BYPASS_TOKEN }}" >> $GITHUB_ENV  # Set Bypass Token from GitHub Secrets
+        run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}" >> $GITHUB_ENV  # Set BASE_URL from deployment status
       - name: Run tests
         run: npx playwright test  # Execute Playwright tests
