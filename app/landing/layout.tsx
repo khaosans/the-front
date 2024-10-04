@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@/app/contexts/ThemeContext';
 import '../globals.css';
-import ChatbotModal from "@/components/ChatbotModal"; // Corrected import path
+import ChatbotModal from "@/components/ChatBot"; // Corrected import path
+import ChatBot from '@/components/ChatBot';
 
 export default function LandingLayout({
                                           children,
@@ -48,7 +49,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     return (
         <>
             {children}
-            <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
+            <ChatBot />
         </>
     );
 }

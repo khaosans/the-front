@@ -2,9 +2,10 @@
 
 import { useSearchParams } from 'next/navigation'
 import ChatBot from '@/components/ui/ChatBot';
+
 const ChatPage = () => {
-    const searchParams = useSearchParams()
-    const id = searchParams.get('id')
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
 
     return (
         <div>

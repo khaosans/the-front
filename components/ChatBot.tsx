@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Message } from '@/types';
 import { Input } from '@/components/ui/input';
-import { Button } from './button';
-import { Card, CardContent } from './card';
-import ChatHistory from '../ChatHistory'; // Adjust the path as necessary
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ChatBot({ chatId }: { chatId?: string }) {
   const [input, setInput] = useState('');
@@ -69,7 +67,6 @@ export default function ChatBot({ chatId }: { chatId?: string }) {
   return (
     <Card className="h-full flex flex-col">
       <CardContent className="flex-grow overflow-auto p-4">
-        <ChatHistory chatId={chatId || ''} /> {/* Display chat history */}
         {messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
             <span className={`inline-block p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
@@ -86,9 +83,6 @@ export default function ChatBot({ chatId }: { chatId?: string }) {
             placeholder="Type your message..."
             className="flex-grow"
           />
-          <Button type="submit">Send</Button>
-          {/* Remove the ShareButton reference */}
-          {/* {chatId && <ShareButton chatId={chatId} />} */}
         </form>
       </div>
     </Card>
