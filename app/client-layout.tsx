@@ -1,14 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useTheme } from './contexts/ThemeContext'
-import ChatIcon from '../components/chat-icon'
-import { ChatBotModal } from '@/components/chat-bot-modal'
-import CodeEditorIcon from '../components/code-editor-icon'
-import { MoncacoEditor } from '@/components/moncaco-editor'
+import { useTheme } from '../contexts/ThemeContext'
+import ChatBot from '@/components/ui/ChatBot'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
-import Footer from "@/components/footer"
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
@@ -16,30 +11,21 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
 
+  const toggleChat = () => setIsChatOpen(!isChatOpen)
+
   return (
-    <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-gray-900 text-white  ' : 'bg-white text-black'}`}>
-      <main className="flex-grow pb-20">{children}</main>
-      <Footer />
-      <ChatIcon onClick={() => setIsChatOpen(true)} />
-      <CodeEditorIcon onClick={() => setIsEditorOpen(true)} />
-      <ChatBotModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
-      {isEditorOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="w-full max-w-4xl bg-gray-600 dark:bg-gray-800 p-3 rounded-lg relative">
-            <Button
-              className="absolute top-2 right-2 p-2"
-              variant="ghost"
-              onClick={() => setIsEditorOpen(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-            <MoncacoEditor
-              onSave={(value) => {
-                console.log('Saved:', value)
-                setIsEditorOpen(false)
-              }}
-            />
-          </div>
+    <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+      <header className="p-4 border-b">
+        <Button onClick={toggleChat}>
+          {isChatOpen ? 'Close Chat' : 'Open Chat'}
+        </Button>
+      </header>
+      <main className="flex-grow">
+        {children}
+      </main>
+      {isChatOpen && (
+        <div className="fixed bottom-0 right-0 m-4">
+          <ChatBot />
         </div>
       )}
     </div>

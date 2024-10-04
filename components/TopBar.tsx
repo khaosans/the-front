@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Import the necessary icons
 import { supabase } from '@/utils/supabase/client';
-import ChatModal from './ChatModal'; // Import the ChatModal component
-
+import { useTheme } from '@/contexts/ThemeContext';
+        
 const TopBar: React.FC = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const router = useRouter();
@@ -70,7 +70,6 @@ const TopBar: React.FC = () => {
                     </button>
                 </div>
             </header>
-            {isChatOpen && <ChatModal onClose={toggleChat} />}
         </>
     );
 }

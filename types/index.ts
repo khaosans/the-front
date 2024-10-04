@@ -8,7 +8,10 @@ export interface Project {
   assignees: string[];
   tags: string[];
 }
-
+export interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
 export interface Task {
   id: string;
   projectId: string;
