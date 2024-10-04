@@ -14,70 +14,49 @@ exports[`UI Component Snapshots CenteredAtomSpinner matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UI Component Snapshots ChatModal matches snapshot 1`] = `
+exports[`UI Component Snapshots ChatBot matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="rounded-lg border bg-card text-card-foreground shadow-sm h-full flex flex-col"
   >
     <div
-      class="bg-white rounded-lg w-96 h-[500px] flex flex-col"
+      class="flex-grow overflow-auto p-4"
+    />
+    <div
+      class="p-4 border-t"
     >
-      <div
-        class="flex justify-between items-center p-4 border-b"
-      >
-        <h2
-          class="text-xl font-bold"
-        >
-          Chat
-        </h2>
-        <button
-          class="text-gray-500 hover:text-gray-700"
-        >
-          <svg
-            class="lucide lucide-x h-6 w-6"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18 6 6 18"
-            />
-            <path
-              d="m6 6 12 12"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        class="flex-1 overflow-y-auto p-4"
-      />
-      <div
-        class="p-4 border-t flex"
+      <form
+        class="flex space-x-2"
       >
         <input
-          class="flex-1 border rounded-l px-2 py-1"
-          placeholder="Type a message..."
-          type="text"
+          class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex-grow"
+          placeholder="Type your message..."
           value=""
         />
-        <button
-          class="bg-blue-500 text-white px-4 py-1 rounded-r"
-        >
-          Send
-        </button>
-      </div>
+      </form>
     </div>
   </div>
 </DocumentFragment>
 `;
 
-exports[`UI Component Snapshots ChatbotModal matches snapshot 1`] = `<DocumentFragment />`;
+exports[`UI Component Snapshots ChatHistory matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="chat-history"
+  >
+    <h2>
+      Chat History
+    </h2>
+    <div
+      class="messages"
+    >
+      <p>
+        No messages found.
+      </p>
+    </div>
+  </div>
+</DocumentFragment>
+`;
 
 exports[`UI Component Snapshots CryptoPriceGraph matches snapshot 1`] = `
 <DocumentFragment>
@@ -1483,8 +1462,6 @@ exports[`UI Component Snapshots button matches snapshot 1`] = `
   />
 </DocumentFragment>
 `;
-
-exports[`UI Component Snapshots chatbot-modal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots invite-user-modal matches snapshot 1`] = `<DocumentFragment />`;
 
