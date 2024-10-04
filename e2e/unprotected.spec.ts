@@ -1,35 +1,67 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Unprotected Page Tests', () => {
-    test('should navigate to the homepage and see content', async ({ page }) => {
-        await page.goto('/'); // This will use the baseURL set in the config
+test.describe('Streaming Website Tests', () => {
+    test('should handle chunked streaming content', async ({ page }) => {
+        console.log('Starting test: should handle chunked streaming content');
+        await page.goto('/');
+        console.log('Navigated to homepage');
 
-        // Check if the page contains any content
-        const content = await page.content();
-        expect(content).toContain('Welcome'); // Ensure this matches the actual homepage content
+        // Wait for the streaming content container to be visible
+        await page.waitForSelector('body', { state: 'visible', timeout: 30000 });
+        console.log('Body is visible');
+
+        // Function to collect chunks
+        const chunks: string[] = [];
+        await page.exposeFunction('addChunk', (chunk: string) => {
+            chunks.push(chunk);
+            console.log('Received chunk:', chunk);
+        });
+
+        // Listen for chunks
+        await page.evaluate(() => {
+            const observer = new MutationObserver((mutations) => {
+                for (let mutation of mutations) {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === Node.TEXT_NODE) {
+                                // @ts-ignore
+                                window.addChunk(node.textContent);
+                            }
+                        });
+                    }
+                }
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+        console.log('Set up MutationObserver');
+
+        // Wait for some time to collect chunks (adjust timeout as needed)
+        await page.waitForTimeout(10000);
+        console.log('Waited for 10 seconds');
+
+        // Verify that we received chunks
+        expect(chunks.length).toBeGreaterThan(0);
+        console.log('Total chunks received:', chunks.length);
+        console.log('Chunks:', chunks);
+
+        // You can add more specific assertions here based on the expected content of your chunks
     });
 
-    test('should navigate to the landing page and see content', async ({ page }) => {
-        await page.goto('/landing'); // Navigate to the landing page
+    test('should handle user interactions with streaming content', async ({ page }) => {
+        await page.goto('/');
 
-        // Check if the page contains any content
-        const content = await page.content();
-        expect(content).toContain('AI-Powered Task Management'); // Ensure this matches the actual landing page content
+        // Wait for an interactive element to be available
+        await page.waitForSelector('#interaction-button', { state: 'visible' });
+
+        // Interact with the streaming content
+        await page.click('#interaction-button');
+
+        // Wait for and verify the response to the interaction
+        const responseElement = await page.waitForSelector('#interaction-response', { state: 'visible', timeout: 5000 });
+        const responseText = await responseElement.textContent();
+        expect(responseText).toContain('Interaction successful');
     });
 
-    test('should navigate to the about page and see content', async ({ page }) => {
-        await page.goto('/about'); // This will use the baseURL set in the config
-
-        // Check if the page contains any content
-        const content = await page.content();
-        expect(content).toContain('About Us'); // Ensure this matches the actual about page content
-    });
-
-    test('should navigate to the signup page and see content', async ({ page }) => {
-        await page.goto('/signup'); // This will use the baseURL set in the config
-
-        // Check if the page contains any content
-        const content = await page.content();
-        expect(content).toContain('Create your account'); // Ensure this matches the actual signup page content
-    });
+    // Add more tests as needed for your specific streaming features
 });

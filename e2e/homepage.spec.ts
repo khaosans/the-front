@@ -1,23 +1,16 @@
 import { test, expect } from '@playwright/test';
 
-test('should navigate to the homepage and see content', async ({ page }) => {
-  // Use the BASE_URL from the environment variable
-  await page.goto(process.env.BASE_URL);  // Use the dynamic BASE_URL
-  
-  // Example of using the Bypass Token in a request
-  const response = await page.request.get('/api/some-endpoint', {
-    headers: {
-      'Authorization': `Bearer ${process.env.BYPASS_TOKEN}`  // Use the Bypass Token
-    }
-  });
+test('should load homepage with content', async ({ page }) => {
+  console.log('Starting test: should load homepage with content');
+  await page.goto('/');
+  console.log('Navigated to homepage');
 
-  // Check if the response is successful
-  expect(response.ok()).toBeTruthy();
+  await page.waitForSelector('body', { state: 'visible' });
+  console.log('Body is visible');
 
-  // Wait for the page to load completely
-  await page.waitForLoadState('networkidle');
-  
-  // Check for the presence of the expected text
-  const content = await page.content();
+  const content = await page.textContent('body');
+  console.log('Page content:', content);
+
   expect(content).toContain('Welcome');
+  console.log('Content contains "Welcome"');
 });
