@@ -12,13 +12,13 @@ test.describe('Smoke Tests for Unprotected Pages', () => {
   test('should load the home page and check basic elements', async ({ page }) => {
     await page.goto('/login');
 
-    //expect text  'login
-    //anywhere on the page Sign in to your account
-
+    // Expect text 'Sign in to your account' to be visible anywhere on the page
     await expect(page.locator('text=Sign in to your account')).toBeVisible();
     
     // Check for main heading content
-    
+    // Add your assertions here
+
     // Check for page title
+    // Add your assertions here
   });
 });
