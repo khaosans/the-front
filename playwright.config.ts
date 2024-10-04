@@ -4,6 +4,15 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
+declare const process: {
+  env: {
+    VERCEL_AUTOMATION_BYPASS_SECRET?: string;
+    CI?: string;
+    BASE_URL?: string;
+  };
+  cwd: () => string;
+};
+
 // Load environment variables from .env.local
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
