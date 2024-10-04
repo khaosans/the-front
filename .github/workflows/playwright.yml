@@ -10,13 +10,15 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16'
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Install dependencies
-        run: npm install
+        run: pnpm install --strict-peer-dependencies=false
       - name: Run Playwright tests
-        run: npm run test:playwright
+        run: pnpm run test:playwright
       - name: Set BASE_URL
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}" >> $GITHUB_ENV  # Set BASE_URL from deployment status
       - name: Set Bypass Token
         run: echo "BYPASS_TOKEN=${{ secrets.BYPASS_TOKEN }}" >> $GITHUB_ENV  # Set Bypass Token from GitHub Secrets
       - name: Run tests
-        run: npx playwright test  # Execute Playwright tests
+        run: pnpm exec playwright test  # Execute Playwright tests
