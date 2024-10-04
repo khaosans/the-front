@@ -21,6 +21,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps  # Install Playwright browsers
       - name: Set BASE_URL
-        run: echo "BASE_URL=https://${{ github.ref_name }}.vercel.app" >> $GITHUB_ENV  # Set BASE_URL based on branch
+        run: echo "BASE_URL=https://the-front-1.vercel.app" >> $GITHUB_ENV  # Set BASE_URL based on branch
+      - name: Set Bypass Token
+        run: echo "BYPASS_TOKEN=${{ secrets.BYPASS_TOKEN }}" >> $GITHUB_ENV  # Set Bypass Token from GitHub Secrets
       - name: Run tests
         run: npx playwright test  # Execute Playwright tests
