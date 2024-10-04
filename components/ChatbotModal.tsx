@@ -1,54 +1,48 @@
-'use client';
+import { useState } from 'react';
+import { getChatCompletion } from '../lib/ollama'; // Import the function to get chat completion
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+const ChatBotModal = ({ isOpen, onClose }) => {
+    const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
+    const [input, setInput] = useState<string>('');
 
-const ChatbotModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-  const [message, setMessage] = useState('');
+    const handleSendMessage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const userMessage = { role: 'user', content: input };
+        setMessages((prev) => [...prev, userMessage]);
 
-  const handleSend = () => {
-    console.log("Message sent:", message);
-    setMessage(''); // Clear the input after sending
-  };
+        const response = await getChatCompletion([input]); // Send the input to the local Ollama model
+        const aiMessage = { role: 'ai', content: response };
+        setMessages((prev) => [...prev, aiMessage]);
+        setInput(''); // Clear the input field
+    };
 
-  if (!isOpen) return null;
+    if (!isOpen) return null; // Don't render the modal if it's not open
 
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-bold">Chatbot</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col space-y-4">
-          <div className="flex-grow">
-            <div className="h-64 overflow-y-auto border border-gray-300 rounded-lg p-4">
-              <div className="text-gray-700">Chatbot: How can I assist you today?</div>
-              <div className="text-gray-700">User: I need help with my project.</div>
+    return (
+        <div className="modal">
+            <div className="modal-content">
+                <span className="close" onClick={onClose}>&times;</span>
+                <h2>Chat with Ollama</h2>
+                <div className="messages">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={msg.role}>
+                            {msg.role === 'user' ? 'User: ' : 'AI: '}
+                            {msg.content}
+                        </div>
+                    ))}
+                </div>
+                <form onSubmit={handleSendMessage}>
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type your message..."
+                    />
+                    <button type="submit">Send</button>
+                </form>
             </div>
-          </div>
-          <div className="flex">
-            <Input
-              type="text"
-              placeholder="Type a message..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="flex-grow mr-2"
-            />
-            <Button onClick={handleSend} className="bg-blue-500 text-white">
-              Send
-            </Button>
-          </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="mt-4">
-            Close
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
+    );
 };
 
-export default ChatbotModal;
+export default ChatBotModal;
