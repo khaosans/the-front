@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: '16'
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
       - name: Run Playwright tests
-        run: pnpm run test:playwright
+        run: npm run test:playwright
       - name: Set BASE_URL
         run: echo "BASE_URL=${{ github.event.deployment_status.environment_url }}" >> $GITHUB_ENV  # Set BASE_URL from deployment status
       - name: Set Bypass Token
