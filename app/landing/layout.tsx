@@ -6,8 +6,8 @@ import '../globals.css';
 import ChatbotModal from "@/components/ChatbotModal"; // Corrected import path
 
 export default function LandingLayout({
-                                          children,
-                                      }: {
+    children,
+}: {
     children: React.ReactNode;
 }) {
     return (
@@ -38,10 +38,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             }
         };
 
-        window.addEventListener('keydown', handleKeyDown);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('keydown', handleKeyDown);
+        }
 
         return () => {
-            window.removeEventListener('keydown', handleKeyDown);
+            if (typeof window !== 'undefined') {
+                window.removeEventListener('keydown', handleKeyDown);
+            }
         };
     }, [lastShiftPress]);
 
