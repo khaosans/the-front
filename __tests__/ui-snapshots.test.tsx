@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import fs from 'fs';
 import path from 'path';
+import TaskCard from '../components/task-card'; // Ensure this path is correct
 
 // Mock necessary dependencies
 jest.mock('next/navigation', () => ({
