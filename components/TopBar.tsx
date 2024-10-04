@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Import the necessary icons
 import { supabase } from '@/utils/supabase/client';
 import { useTheme } from '@/contexts/ThemeContext';
-import ChatBotModal from './ChatBotModal'; // Import the ChatBotModal component
+import ChatBotModal from './ChatBotModal'; // Ensure this path is correct
 
 const TopBar: React.FC = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);

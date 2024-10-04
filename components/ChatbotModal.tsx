@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getChatCompletion } from '../lib/ollama'; // Import the function to get chat completion
+import ollama from '../lib/ollama'; // Ensure this path is correct
 
 const ChatBotModal = ({ isOpen, onClose }) => {
     const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
