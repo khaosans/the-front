@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow} from 'lucide-react';
+import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow, FileText} from 'lucide-react';
 import ChatbotModal from '@/components/ChatbotModal';
 import ChatModal from '@/components/ChatModal';
 
@@ -14,6 +14,7 @@ const pages = [
   { title: 'Agent Design', description: 'Manage AI agents for task assistance', icon: Bot, href: '/agent-design' },
   { title: 'Task Design', description: 'Manage tasks and workflows', icon: Workflow, href: '/task-design' },
   { title: 'Analytics', description: 'Insights and performance metrics', icon: BarChart, href: '/analytics' },
+  { title: 'Documentation', description: 'View the documentation', icon: FileText, href: '/documentation' },
   { title: 'Settings', description: 'Configure your account and preferences', icon: Settings, href: '/settings' },
 ];
 
