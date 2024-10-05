@@ -1,5 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`UI Component Snapshots AIAgents matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="p-4"
+  >
+    <h1
+      class="text-2xl font-bold mb-4"
+    >
+      AI Agents
+    </h1>
+    <ul>
+      <li
+        class="mb-2"
+      >
+        <a
+          class="text-blue-500 hover:underline"
+          href="/agents/assistant-a"
+        >
+          Assistant A
+        </a>
+      </li>
+      <li
+        class="mb-2"
+      >
+        <a
+          class="text-blue-500 hover:underline"
+          href="/agents/assistant-b"
+        >
+          Assistant B
+        </a>
+      </li>
+      <li
+        class="mb-2"
+      >
+        <a
+          class="text-blue-500 hover:underline"
+          href="/agents/assistant-c"
+        >
+          Assistant C
+        </a>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots AddTaskModal matches snapshot 1`] = `<DocumentFragment />`;
 
 exports[`UI Component Snapshots CenteredAtomSpinner matches snapshot 1`] = `
@@ -15,69 +61,6 @@ exports[`UI Component Snapshots CenteredAtomSpinner matches snapshot 1`] = `
 `;
 
 exports[`UI Component Snapshots ChatBot matches snapshot 1`] = `
-<DocumentFragment>
-  <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div
-      class="bg-white rounded-lg w-96 h-[500px] flex flex-col"
-    >
-      <div
-        class="flex justify-between items-center p-4 border-b"
-      >
-        <h2
-          class="text-xl font-bold"
-        >
-          Chat
-        </h2>
-        <button
-          class="text-gray-500 hover:text-gray-700"
-        >
-          <svg
-            class="lucide lucide-x h-6 w-6"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18 6 6 18"
-            />
-            <path
-              d="m6 6 12 12"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        class="flex-1 overflow-y-auto p-4"
-      />
-      <div
-        class="p-4 border-t flex"
-      >
-        <input
-          class="flex-1 border rounded-l px-2 py-1"
-          placeholder="Type a message..."
-          type="text"
-          value=""
-        />
-        <button
-          class="bg-blue-500 text-white px-4 py-1 rounded-r"
-        >
-          Send
-        </button>
-      </div>
-    </div>
-  </div>
-</DocumentFragment>
-`;
-
-exports[`UI Component Snapshots ChatModal matches snapshot 1`] = `
 <DocumentFragment>
   <div
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -770,6 +753,48 @@ exports[`UI Component Snapshots SideMenu matches snapshot 1`] = `
 </DocumentFragment>
 `;
 
+exports[`UI Component Snapshots Sidebar matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="bg-gray-800 text-white w-64 h-full p-4"
+  >
+    <h2
+      class="text-lg font-bold mb-4"
+    >
+      Menu
+    </h2>
+    <nav
+      class="flex flex-col space-y-2"
+    >
+      <a
+        class="hover:underline"
+        href="/"
+      >
+        Board
+      </a>
+      <a
+        class="hover:underline"
+        href="/projects"
+      >
+        Projects
+      </a>
+      <a
+        class="hover:underline"
+        href="/ai-agents"
+      >
+        Agents
+      </a>
+      <a
+        class="hover:underline"
+        href="/tasks"
+      >
+        Tasks
+      </a>
+    </nav>
+  </div>
+</DocumentFragment>
+`;
+
 exports[`UI Component Snapshots Spinner matches snapshot 1`] = `
 <DocumentFragment>
   <div
@@ -1344,174 +1369,6 @@ exports[`UI Component Snapshots Tooltip matches snapshot 1`] = `
       class="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-sm rounded py-1 px-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
     />
   </div>
-</DocumentFragment>
-`;
-
-exports[`UI Component Snapshots TopBar matches snapshot 1`] = `
-<DocumentFragment>
-  <header
-    class="flex items-center justify-between p-4 bg-gray-800 text-white"
-  >
-    <h1
-      class="text-2xl font-bold"
-    >
-      Quantum Labs
-    </h1>
-    <nav
-      class="flex space-x-4"
-    >
-      <a
-        class="hover:underline flex items-center"
-        href="/"
-      >
-        <svg
-          class="lucide lucide-house h-5 w-5 mr-1"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"
-          />
-          <path
-            d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-          />
-        </svg>
-         Home
-      </a>
-      <a
-        class="hover:underline"
-        href="/dashboard"
-      >
-        Dashboard
-      </a>
-      <a
-        class="hover:underline"
-        href="/members"
-      >
-        Members
-      </a>
-      <a
-        class="hover:underline"
-        href="/task-agent-analytics"
-      >
-        Task Agent Analytics
-      </a>
-    </nav>
-    <div
-      class="flex items-center space-x-4"
-    >
-      <button
-        class="hover:bg-gray-700 p-2 rounded"
-      >
-        <svg
-          class="lucide lucide-message-circle h-5 w-5"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"
-          />
-        </svg>
-         
-      </button>
-      <a
-        class="hover:bg-gray-700 p-2 rounded flex items-center"
-        href="/settings"
-      >
-        <svg
-          class="lucide lucide-settings h-5 w-5"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
-          />
-          <circle
-            cx="12"
-            cy="12"
-            r="3"
-          />
-        </svg>
-         
-      </a>
-      <a
-        class="hover:bg-gray-700 p-2 rounded"
-        href="/notifications"
-      >
-        <svg
-          class="lucide lucide-bell h-5 w-5"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"
-          />
-          <path
-            d="M10.3 21a1.94 1.94 0 0 0 3.4 0"
-          />
-        </svg>
-         
-      </a>
-      <button
-        class="hover:bg-gray-700 p-2 rounded"
-      >
-        <svg
-          class="lucide lucide-log-out h-5 w-5"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
-          />
-          <polyline
-            points="16 17 21 12 16 7"
-          />
-          <line
-            x1="21"
-            x2="9"
-            y1="12"
-            y2="12"
-          />
-        </svg>
-         
-      </button>
-    </div>
-  </header>
 </DocumentFragment>
 `;
 
