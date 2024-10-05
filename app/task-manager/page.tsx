@@ -43,7 +43,7 @@ const initialTasks: Task[] = [
     difficulty: "High",
     estimatedTime: "3 days",
     status: "In Progress",
-    assignedAgents: [],
+    assignedAgents: [agentsData[1], agentsData[2]],
     recommendedTools: ["SQL Profiler", "Index Tuning Wizard"]
   },
   {
@@ -75,7 +75,7 @@ const toolIcons = {
 
 export default function TaskManager() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agents, setAgents] = useState<Agent[]>(agentsData);
   const [isOpen, setIsOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState<Partial<Task>>({
     title: '',
@@ -123,7 +123,7 @@ export default function TaskManager() {
   };
 
   const updateTaskStatus = (taskId: number, newStatus: Task['status']) => {
-    setTasks(tasks.map(task => 
+    setTasks(tasks.map(task =>
       task.id === taskId ? { ...task, status: newStatus } : task
     ));
   };
@@ -167,7 +167,7 @@ export default function TaskManager() {
     const [reorderedTask] = newTasks.splice(source.index, 1);
     newTasks.splice(destination.index, 0, reorderedTask);
 
-    setTasks(newTasks.map(task => 
+    setTasks(newTasks.map(task =>
       task.id === parseInt(draggableId) ? { ...task, status: destination.droppableId as Task['status'] } : task
     ));
   };
