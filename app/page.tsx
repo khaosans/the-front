@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings } from 'lucide-react';
+import ChatbotModal from '@/components/ChatbotModal';
+import ChatModal from '@/components/ChatModal';
 
 const pages = [
   { title: 'Dashboard', description: 'Overview of your projects and tasks', icon: LayoutDashboard, href: '/dashboard' },
   { title: 'Teams', description: 'Manage your teams and members', icon: Users, href: '/teams' },
   { title: 'Projects', description: 'View and manage your projects', icon: Briefcase, href: '/projects' },
-  { title: 'AI Agents', description: 'Manage AI agents for task assistance', icon: Bot, href: '/ai-agents' },
+  { title: 'Agent Design', description: 'Manage AI agents for task assistance', icon: Bot, href: '/agent-design' },
   { title: 'Analytics', description: 'Insights and performance metrics', icon: BarChart, href: '/analytics' },
   { title: 'Settings', description: 'Configure your account and preferences', icon: Settings, href: '/settings' },
 ];

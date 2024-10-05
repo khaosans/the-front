@@ -9,6 +9,7 @@ import { MoncacoEditor } from '@/components/moncaco-editor'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 import Footer from "@/components/footer"
+import RobotTransformerWallpaper from '@/components/RobotTransformerWallpaper'; // Ensure this path is correct
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
@@ -18,6 +19,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'bg-gray-900 text-white  ' : 'bg-white text-black'}`}>
+      <RobotTransformerWallpaper /> {/* Add the wallpaper component */}
       <main className="flex-grow pb-20">{children}</main>
       <Footer />
       <ChatIcon onClick={() => setIsChatOpen(true)} />
