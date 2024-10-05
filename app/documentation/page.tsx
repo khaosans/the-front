@@ -70,7 +70,8 @@ const Documentation: React.FC = () => {
   );
 };
 
-function ConceptDetails({ concept }) {
+// Explicitly type the 'concept' parameter
+function ConceptDetails({ concept }: { concept: { id: string; icon: React.ComponentType; title: string; description: string } }) {
   return (
     <Card>
       <CardHeader>
@@ -122,7 +123,8 @@ function PromptEngineeringTip() {
   );
 }
 
-function getConceptDetails(conceptId) {
+// Explicitly type the 'conceptId' parameter
+function getConceptDetails(conceptId: string): string[] {
   switch (conceptId) {
     case 'teams':
       return [
@@ -161,7 +163,8 @@ function getConceptDetails(conceptId) {
   }
 }
 
-function getConceptDiagram(conceptId) {
+// Explicitly type the 'conceptId' parameter
+function getConceptDiagram(conceptId: string): string {
   const diagrams = {
     teams: `graph TD
     Team --> Member1[Team Member]
