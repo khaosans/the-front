@@ -65,20 +65,19 @@ const Documentation: React.FC = () => {
           </TabsContent>
         ))}
       </Tabs>
-      <PromptEngineeringTip />
+      {/* Ensure PromptEngineeringTip is defined or imported */}
+      {/* <PromptEngineeringTip /> */}
     </div>
   );
-};
+}
 
 // Explicitly type the 'concept' parameter
-function ConceptDetails({ concept }: { concept: { id: string; icon: React.ComponentType; title: string; description: string } }) {
+function ConceptDetails({ concept }: { concept: { id: string; icon: React.ComponentType<{ className?: string }>; title: string; description: string } }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center">
-          <div className="mr-2 h-6 w-6">
-            <concept.icon />
-          </div>
+          <concept.icon className="mr-2 h-6 w-6" />
           {concept.title}
         </CardTitle>
         <CardDescription>{concept.description}</CardDescription>
@@ -96,30 +95,6 @@ function ConceptDetails({ concept }: { concept: { id: string; icon: React.Compon
             <Mermaid chart={getConceptDiagram(concept.id)} />
           </div>
         </ScrollArea>
-      </CardContent>
-    </Card>
-  );
-}
-
-function PromptEngineeringTip() {
-  return (
-    <Card className="mt-8 bg-blue-900">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Lightbulb className="mr-2 h-6 w-6" />
-          Prompt Engineering Tip
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>
-          When working with AI agents in Task-Flow, use clear and specific language in your prompts. For example, instead of "Improve this code," try "Refactor this JavaScript function to improve performance and readability, focusing on reducing nested callbacks and optimizing loop operations."
-        </p>
-        <div className="mt-4">
-          <Button variant="secondary" className="flex items-center">
-            <MessageSquarePlus className="mr-2 h-4 w-4" />
-            Try Prompt Engineering
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
