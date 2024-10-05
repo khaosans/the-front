@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import AnimatedBackground from '../components/AnimatedBackground';
+import AnimatedBackground from '../components/AnimatedBackground'; // Update this path if necessary
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
