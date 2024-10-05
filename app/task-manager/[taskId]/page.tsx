@@ -23,7 +23,7 @@ const mockTasks: Task[] = [
         dueDate: "2024-01-01",
         priority: "High",
         agents: ["Alice Johnson", "Bob Smith"],
-    },  
+    },
 
 
   {
@@ -118,7 +118,7 @@ export default function TaskDetailPage({ params }: { params: { taskId: string } 
         isOpen={true}
         onClose={handleClose}
         onUpdate={handleUpdate}
-        agents={mockAgents} 
+        agents={mockAgents}
         params={params}
       />
     </div>

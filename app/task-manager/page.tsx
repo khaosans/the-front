@@ -123,7 +123,7 @@ export default function TaskManager() {
   };
 
   const updateTaskStatus = (taskId: number, newStatus: Task['status']) => {
-    setTasks(tasks.map(task => 
+    setTasks(tasks.map(task =>
       task.id === taskId ? { ...task, status: newStatus } : task
     ));
   };
@@ -167,7 +167,7 @@ export default function TaskManager() {
     const [reorderedTask] = newTasks.splice(source.index, 1);
     newTasks.splice(destination.index, 0, reorderedTask);
 
-    setTasks(newTasks.map(task => 
+    setTasks(newTasks.map(task =>
       task.id === parseInt(draggableId) ? { ...task, status: destination.droppableId as Task['status'] } : task
     ));
   };

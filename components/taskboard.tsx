@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Task } from '@/lib/task'; // Import the Task type
 import { getTasks } from '@/utils/dataProvider'; // Update the import
+import Mermaid from 'react-mermaid2'; // Import Mermaid component
 
 const Taskboard: React.FC<{ initialTasks: Task[] }> = ({ initialTasks }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -26,6 +27,8 @@ const Taskboard: React.FC<{ initialTasks: Task[] }> = ({ initialTasks }) => {
           </div>
         ))
       )}
+      {/* Example Mermaid Diagram */}
+      <Mermaid chart={`graph TD; A-->B; A-->C; B-->D; C-->D;`} />
     </div>
   );
 };
