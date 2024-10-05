@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import {  TaskDetailViewProps } from '@/types';
+import { Task, Agent, TaskDetailViewProps } from '@/types';
 
 
 
