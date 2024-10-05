@@ -1,41 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Import the necessary icons
-import { supabase } from '@/utils/supabase/client';
+import Link from 'next/link'; // Use Next.js Link
+import { Bell, Settings, MessageCircle, BarChart2 } from 'lucide-react';
 import ChatModal from './ChatModal'; // Import the ChatModal component
 
 const TopBar: React.FC = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
-    const router = useRouter();
-
-    const handleLogout = async () => {
-        try {
-            // Sign out from Supabase
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error('Error logging out:', error.message);
-                return;
-            }
-
-            // Clear any local storage
-            localStorage.clear();
-
-            // Clear any session cookies
-            document.cookie.split(";").forEach((c) => {
-                document.cookie = c
-                    .replace(/^ +/, "")
-                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-            });
-
-            // Redirect to the landing page
-            router.push('/landing');
-        } catch (error) {
-            console.error('Unexpected error during logout:', error);
-        }
-    };
 
     const toggleChat = () => {
         setIsChatOpen(!isChatOpen);
@@ -43,36 +14,35 @@ const TopBar: React.FC = () => {
 
     return (
         <>
-            <header className="flex items-center justify-between p-4 bg-gray-800 text-white">
-                <h1 className="text-2xl font-bold">Quantum Labs</h1>
-                <nav className="flex space-x-4">
-                    <Link href="/" className="hover:underline flex items-center">
-                        <Home className="h-5 w-5 mr-1" /> {/* Home icon */}
+            <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
+                <h1 className="text-lg font-bold">Task Manager</h1>
+                <nav className="space-x-4 flex items-center">
+                    <Link href="/" className="text-white hover:underline">
                         Home
                     </Link>
-
-                    <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-                    <Link href="/members" className="hover:underline">Members</Link>
-                    <Link href="/task-agent-analytics" className="hover:underline">Task Agent Analytics</Link>
+                    <Link href="/ai-agents" className="text-white hover:underline">
+                        AI Agents
+                    </Link>
+                    <Link href="/tasks" className="text-white hover:underline">
+                        Tasks
+                    </Link>
+                    <Link href="/analytics" className="text-white hover:underline flex items-center">
+                        <BarChart2 className="h-5 w-5 mr-1" /> Analytics
+                    </Link>
+                    <Link href="/settings" className="text-white hover:underline flex items-center">
+                        <Settings className="h-5 w-5 mr-1" />
+                    </Link>
+                    <Link href="/notifications" className="text-white hover:underline flex items-center">
+                        <Bell className="h-5 w-5 mr-1" />
+                    </Link>
+                    <button onClick={toggleChat} className="text-white hover:underline flex items-center">
+                        <MessageCircle className="h-5 w-5 mr-1" /> Chat
+                    </button>
                 </nav>
-                <div className="flex items-center space-x-4">
-                    <button className="hover:bg-gray-700 p-2 rounded" onClick={toggleChat}>
-                        <MessageCircle className="h-5 w-5" /> {/* Chat icon */}
-                    </button>
-                    <Link href="/settings" className="hover:bg-gray-700 p-2 rounded flex items-center">
-                        <Settings className="h-5 w-5" /> {/* Gear icon */}
-                    </Link>
-                    <Link href="/notifications" className="hover:bg-gray-700 p-2 rounded">
-                        <Bell className="h-5 w-5" /> {/* Bell icon */}
-                    </Link>
-                    <button className="hover:bg-gray-700 p-2 rounded" onClick={handleLogout}>
-                        <LogOut className="h-5 w-5" /> {/* Logout icon */}
-                    </button>
-                </div>
-            </header>
+            </div>
             {isChatOpen && <ChatModal onClose={toggleChat} />}
         </>
     );
-}
+};
 
 export default TopBar;

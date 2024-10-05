@@ -86,6 +86,12 @@ export default function TaskManager() {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
   };
 
+  const assignAgent = (taskId: string, agentId: string | null) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId ? { ...task, assignedAgent: agentId === "unassign" ? null : agentId } : task
+    ));
+  };
+
   const renderTask = (task: Task, level: number = 0) => (
     <Card key={task.id} className={`mb-4 ${level > 0 ? 'ml-6' : ''}`}>
       <CardHeader className="flex flex-row items-center justify-between p-4">
@@ -136,11 +142,15 @@ export default function TaskManager() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="agent" className="text-right">Assigned Agent</Label>
-                  <Select defaultValue={task.assignedAgent || undefined}>
+                  <Select
+                    value={task.assignedAgent || "unassign"}
+                    onValueChange={(value) => assignAgent(task.id, value)}
+                  >
                     <SelectTrigger className="col-span-3">
                       <SelectValue placeholder="Select agent" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="unassign">Unassign</SelectItem>
                       {aiAgents.map(agent => (
                         <SelectItem key={agent.id} value={agent.id}>{agent.name}</SelectItem>
                       ))}
