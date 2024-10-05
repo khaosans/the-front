@@ -1,51 +1,65 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogOverlay } from '@reach/dialog';
+import '@reach/dialog/styles.css';
 
-const ChatbotModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
+interface ChatbotModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
   const [message, setMessage] = useState('');
 
-  const handleSend = () => {
-    console.log("Message sent:", message);
-    setMessage(''); // Clear the input after sending
+  const handleSendMessage = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+      console.log('Ollama response:', data);
+    } catch (error) {
+      console.error('Error connecting to Ollama:', error);
+    }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md mx-auto p-6 rounded-lg shadow-lg bg-white">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-bold">Chatbot</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col space-y-4">
-          <div className="flex-grow">
-            <div className="h-64 overflow-y-auto border border-gray-300 rounded-lg p-4">
-              <div className="text-gray-700">Chatbot: How can I assist you today?</div>
-              <div className="text-gray-700">User: I need help with my project.</div>
-            </div>
-          </div>
-          <div className="flex">
-            <Input
-              type="text"
-              placeholder="Type a message..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="flex-grow mr-2"
-            />
-            <Button onClick={handleSend} className="bg-blue-500 text-white">
-              Send
-            </Button>
-          </div>
+    <Dialog isOpen={isOpen} onDismiss={onClose} className="chatbot-modal">
+      <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50" />
+      <DialogContent
+        className="bg-gray-800 text-white max-w-3xl mx-auto p-6 rounded-lg shadow-lg"
+        aria-label="Chatbot"
+        // Ensure no laser effect is applied here
+        style={{ background: 'none' }} // Remove any unwanted background effects
+      >
+        <h2 className="text-2xl font-bold mb-4">Chat with Ollama</h2>
+        <div className="chatbot-content mb-4">
+          <textarea
+            className="w-full p-2 bg-gray-700 text-white rounded"
+            rows={4}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message here..."
+          />
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose} className="mt-4">
-            Close
-          </Button>
-        </DialogFooter>
+        <button
+          onClick={handleSendMessage}
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+        >
+          Send
+        </button>
+        <button
+          onClick={onClose}
+          className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+        >
+          Close
+        </button>
       </DialogContent>
     </Dialog>
   );

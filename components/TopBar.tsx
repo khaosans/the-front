@@ -53,7 +53,8 @@ const TopBar: React.FC = () => {
 
                     <Link href="/dashboard" className="hover:underline">Dashboard</Link>
                     <Link href="/members" className="hover:underline">Members</Link>
-                    <Link href="/task-agent-analytics" className="hover:underline">Task Agent Analytics</Link>
+                    <Link href="/task-design" className="hover:underline">Tasks Design</Link>
+
                 </nav>
                 <div className="flex items-center space-x-4">
                     <button className="hover:bg-gray-700 p-2 rounded" onClick={toggleChat}>
