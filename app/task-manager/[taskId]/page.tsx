@@ -23,7 +23,7 @@ const mockTasks: Task[] = [
         dueDate: "2024-01-01",
         priority: "High",
         agents: ["Alice Johnson", "Bob Smith"],
-    },  
+    },
 
 
   {
@@ -84,7 +84,7 @@ const mockAgents: Agent[] = [
 export default function TaskDetailPage({ params }: { params: { taskId: string } }) {
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
-  const router = useRouter();
+
   useEffect(() => {
     //cast them both to string
     const taskId = params.taskId as unknown as string;
@@ -118,7 +118,7 @@ export default function TaskDetailPage({ params }: { params: { taskId: string } 
         isOpen={true}
         onClose={handleClose}
         onUpdate={handleUpdate}
-        agents={mockAgents} 
+        agents={mockAgents}
         params={params}
       />
     </div>
