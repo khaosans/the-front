@@ -42,6 +42,7 @@ export interface Announcement {
   author: string;
 }
 
+
 export interface Agent {
   id: string;
   name: string;
