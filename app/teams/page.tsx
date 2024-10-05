@@ -1,99 +1,48 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, UserPlus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Plus, Users } from 'lucide-react';
+import DynamicWallpaper from '@/components/dynamic-wallpaper';
 
-const initialTeams = [
-  { id: 1, name: 'Development Team', members: 8, avatar: 'DT' },
-  { id: 2, name: 'Design Team', members: 5, avatar: 'DE' },
-  { id: 3, name: 'Marketing Team', members: 6, avatar: 'MT' },
-  { id: 4, name: 'Product Team', members: 4, avatar: 'PT' },
+const teams = [
+  { name: 'Development', members: 5 },
+  { name: 'Design', members: 3 },
+  { name: 'Marketing', members: 4 },
+  { name: 'Sales', members: 6 },
 ];
 
 export default function TeamsPage() {
-  const [teams, setTeams] = useState(initialTeams);
-  const [newTeam, setNewTeam] = useState({ name: '', members: 0 });
-
-  const addTeam = () => {
-    if (newTeam.name) {
-      setTeams([...teams, { ...newTeam, id: teams.length + 1, avatar: newTeam.name.substring(0, 2).toUpperCase() }]);
-      setNewTeam({ name: '', members: 0 });
-    }
-  };
-
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Teams</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" /> Create Team
+    <>
+      <DynamicWallpaper primaryColor="indigo" secondaryColor="purple" />
+      <div className="min-h-screen p-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-4xl font-bold text-white">Teams</h1>
+            <Button className="bg-indigo-600 hover:bg-indigo-700">
+              <UserPlus className="mr-2 h-4 w-4" />
+              Add Team
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Team</DialogTitle>
-              <DialogDescription>Add a new team to your organization.</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input
-                  id="name"
-                  value={newTeam.name}
-                  onChange={(e) => setNewTeam({ ...newTeam, name: e.target.value })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="members" className="text-right">Members</Label>
-                <Input
-                  id="members"
-                  type="number"
-                  value={newTeam.members}
-                  onChange={(e) => setNewTeam({ ...newTeam, members: parseInt(e.target.value) })}
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button onClick={addTeam}>Create Team</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {teams.map((team, index) => (
+              <Card key={index} className="bg-gray-800 bg-opacity-80 backdrop-blur-sm border-gray-700">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-indigo-400">
+                    <Users className="mr-2 h-6 w-6" />
+                    {team.name}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-300">{team.members} members</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teams.map((team) => (
-          <Card key={team.id}>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Avatar className="mr-2">
-                  <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${team.avatar}`} />
-                  <AvatarFallback>{team.avatar}</AvatarFallback>
-                </Avatar>
-                {team.name}
-              </CardTitle>
-              <CardDescription>{team.members} members</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Link href={`/teams/${team.id}`} passHref>
-                <Button className="w-full">
-                  <Users className="mr-2 h-4 w-4" />
-                  View Team
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

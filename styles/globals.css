@@ -19,3 +19,31 @@ main {
 footer {
     flex-shrink: 0;
 }
+
+/* Add these styles to your existing globals.css */
+
+.modal {
+    @apply bg-gray-800 text-white border border-gray-700 rounded-lg shadow-xl;
+}
+
+.modal-header {
+    @apply bg-gray-900 text-blue-400 p-4 rounded-t-lg;
+}
+
+.modal-body {
+    @apply p-4;
+}
+
+.modal-footer {
+    @apply bg-gray-900 p-4 rounded-b-lg;
+}
+
+/* Update input styles for dark theme */
+input, textarea, select {
+    @apply bg-gray-700 border-gray-600 text-white;
+}
+
+/* Update button styles for consistency */
+button {
+    @apply bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-200;
+}

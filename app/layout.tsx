@@ -1,27 +1,26 @@
-'use client';
-
-import React, { ReactNode } from 'react';
-import { ThemeProvider } from '@/app/contexts/ThemeContext'; // Corrected import path
-import '@/styles/globals.css'; // Adjust this path if needed
-import TopBar from '@/components/TopBar'; // Import the TopBar component
-
+import { ReactNode } from 'react';
+import { ThemeProvider } from '@/app/contexts/ThemeContext';
+import '@/styles/globals.css';
+import TopBar from '@/components/TopBar';
+import RoboticWallpaper from '../components/robotic-wallpaper';
+import { metadata } from './metadata';
 
 interface LayoutProps {
     children: ReactNode;
 }
 
-const RootLayout: React.FC<LayoutProps> = ({ children }) => {
+export { metadata };
+
+export default function RootLayout({ children }: LayoutProps) {
     return (
         <html lang="en">
             <body>
                 <ThemeProvider>
+                    <RoboticWallpaper />
                     <TopBar />
-
-                    {children}
+                    <main>{children}</main>
                 </ThemeProvider>
             </body>
         </html>
     );
-};
-
-export default RootLayout;
+}
