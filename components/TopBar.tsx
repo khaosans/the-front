@@ -54,6 +54,7 @@ const TopBar: React.FC = () => {
                     <Link href="/dashboard" className="hover:underline">Dashboard</Link>
                     <Link href="/members" className="hover:underline">Members</Link>
                     <Link href="/task-design" className="hover:underline">Tasks Design</Link>
+                    <Link href="/agent-design" className="hover:underline">Agent Design</Link>
 
                 </nav>
                 <div className="flex items-center space-x-4">
