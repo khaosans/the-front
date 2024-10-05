@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import SharedLayout from '../../components/SharedLayout';
+import { Button } from '@vercel/geist-ui';
 
 const HomePage: React.FC = () => {
   return (
-    <SharedLayout>
+    <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">Welcome to Our App</h1>
       <div className="flex space-x-4">
         <Link href="/tasks">
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
           <a className="text-blue-500 hover:underline">Task Agent Analytics</a>
         </Link>
       </div>
-    </SharedLayout>
+    </div>
   );
 };
 
