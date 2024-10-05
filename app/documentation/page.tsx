@@ -77,7 +77,9 @@ function ConceptDetails({ concept }: { concept: { id: string; icon: React.Compon
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center">
-          <concept.icon className="mr-2 h-6 w-6" />
+          <div className="mr-2 h-6 w-6">
+            <concept.icon />
+          </div>
           {concept.title}
         </CardTitle>
         <CardDescription>{concept.description}</CardDescription>
