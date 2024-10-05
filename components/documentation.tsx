@@ -90,9 +90,9 @@ function ConceptDetails({ concept }: { concept: { id: string; icon: React.Compon
                         ))}
                     </ul>
                     <div className="mt-4">
-                        <h3 className="text-lg font-semibold mb-2">Concept Diagram:</h3>
-                        <Mermaid chart={getConceptDiagram(concept.id)} />
-                    </div>
+            <h3 className="text-lg font-semibold mb-2">Concept Diagram:</h3>
+            <Mermaid chart={getConceptDiagram(concept.id)} />
+          </div>
                 </ScrollArea>
             </CardContent>
         </Card>
