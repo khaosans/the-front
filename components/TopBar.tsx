@@ -24,7 +24,7 @@ const TopBar: React.FC = () => {
                         AI Agents
                     </Link>
                     <Link href="/tasks" className="text-white hover:underline">
-                        Tasks
+                        Tasksfix 
                     </Link>
                     <Link href="/analytics" className="text-white hover:underline flex items-center">
                         <BarChart2 className="h-5 w-5 mr-1" /> Analytics
