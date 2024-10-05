@@ -1,5 +1,3 @@
-import { Agent } from '@/app/task-manager/page';
-
 export interface Project {
   id: string;
   name: string;
@@ -26,11 +24,6 @@ export interface Task {
   dueDate: string;
   priority: string;
   agents: string[];
-  objective: string;
-  difficulty: string;
-  estimatedTime: string;
-  assignedAgents: string[];
-  recommendedTools: string[];
 }
 
 export interface User {
@@ -57,6 +50,7 @@ export interface Agent {
   expertise: string;
   backstory: string;
   tools: string[];
+
 }
 
 
@@ -70,8 +64,8 @@ export interface TaskDetailViewProps {
 }
 // Mock data for agents (replace with actual data from agent-manager)
 export const agentsData: Agent[] = [
-    { id: 1, name: "Alice Johnson", avatar: "/placeholder.svg?height=40&width=40", expertise: "Frontend Development" },
-    { id: 2, name: "Bob Smith", avatar: "/placeholder.svg?height=40&width=40", expertise: "Backend Development" },
-    { id: 3, name: "Charlie Brown", avatar: "/placeholder.svg?height=40&width=40", expertise: "DevOps" },
-    { id: 4, name: "Diana Prince", avatar: "/placeholder.svg?height=40&width=40", expertise: "UI/UX Design" },
+    { id: "1", name: "Alice Johnson", avatar: "/placeholder.svg?height=40&width=40", expertise: "Frontend Development", backstory: "Alice is a frontend developer with a passion for creating beautiful and functional user interfaces.", tools: ["React", "Next.js", "Tailwind CSS"] },
+    { id: "2", name: "Bob Smith", avatar: "/placeholder.svg?height=40&width=40", expertise: "Backend Development", backstory: "Bob is a backend developer with a passion for creating scalable and secure web applications.", tools: ["Node.js", "Express", "MongoDB"] },
+    { id: "3", name: "Charlie Brown", avatar: "/placeholder.svg?height=40&width=40", expertise: "DevOps", backstory: "Charlie is a devops engineer with a passion for creating scalable and secure web applications.", tools: ["Docker", "Kubernetes", "Jenkins"] },
+    { id: "4", name: "Diana Prince", avatar: "/placeholder.svg?height=40&width=40", expertise: "UI/UX Design", backstory: "Diana is a ui/ux designer with a passion for creating beautiful and functional user interfaces.", tools: ["Figma", "Adobe XD", "Sketch"] },
 ];

@@ -43,7 +43,7 @@ const initialTasks: Task[] = [
     difficulty: "High",
     estimatedTime: "3 days",
     status: "In Progress",
-    assignedAgents: [agentsData[1], agentsData[2]],
+    assignedAgents: [],
     recommendedTools: ["SQL Profiler", "Index Tuning Wizard"]
   },
   {
@@ -75,7 +75,7 @@ const toolIcons = {
 
 export default function TaskManager() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
-  const [agents, setAgents] = useState<Agent[]>(agentsData);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState<Partial<Task>>({
     title: '',
