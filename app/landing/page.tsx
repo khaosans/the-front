@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Users, Folder, List, Calendar, BarChart2, CheckCircle, Star, MessageSquare, Database, Bot } from 'lucide-react';
 import { useTheme } from '@/app/contexts/ThemeContext';
+import SharedLayout from '@/components/SharedLayout';
 
 export default function LandingPage() {
   const { theme } = useTheme();
@@ -29,7 +30,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-black'}`}>
+    <SharedLayout>
       <main>
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-20 text-center">
@@ -71,14 +72,14 @@ export default function LandingPage() {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className={`p-6 rounded-lg shadow-lg ${theme === 'dark' ? 'bg-gray-800 bg-opacity-50' : 'bg-white'}`}
+                className="p-6 rounded-lg shadow-lg bg-gray-800 bg-opacity-80 text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="text-blue-500 mb-4">{feature.icon}</div>
+                <div className="text-purple-500 mb-4">{feature.icon}</div>
                 <h3 className="text-2xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-lg" style={{ color: theme === 'dark' ? '#d1d5db' : '#4b5563' }}>{feature.description}</p>
+                <p className="text-lg">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -149,7 +150,7 @@ export default function LandingPage() {
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                className={`p-6 rounded-lg shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'}`}
+                className="p-6 rounded-lg shadow-lg bg-gray-800 bg-opacity-80 text-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -161,7 +162,7 @@ export default function LandingPage() {
                   </div>
                   <div className="ml-3">
                     <p className="text-sm font-medium">{testimonial.name}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                    <p className="text-sm text-gray-400">{testimonial.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -186,6 +187,6 @@ export default function LandingPage() {
           <p>&copy; 2023 QuantumLabs. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </SharedLayout>
   );
 }
