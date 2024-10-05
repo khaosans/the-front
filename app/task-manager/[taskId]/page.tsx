@@ -84,7 +84,7 @@ const mockAgents: Agent[] = [
 export default function TaskDetailPage({ params }: { params: { taskId: string } }) {
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true); // Loading state
-  const router = useRouter();
+
   useEffect(() => {
     //cast them both to string
     const taskId = params.taskId as unknown as string;
