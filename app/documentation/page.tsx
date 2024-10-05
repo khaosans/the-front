@@ -65,14 +65,12 @@ const Documentation: React.FC = () => {
           </TabsContent>
         ))}
       </Tabs>
-      {/* Ensure PromptEngineeringTip is defined or imported */}
-      {/* <PromptEngineeringTip /> */}
+      <PromptEngineeringTip />
     </div>
   );
-}
+};
 
-// Explicitly type the 'concept' parameter
-function ConceptDetails({ concept }: { concept: { id: string; icon: React.ComponentType<{ className?: string }>; title: string; description: string } }) {
+function ConceptDetails({ concept }) {
   return (
     <Card>
       <CardHeader>
@@ -100,8 +98,31 @@ function ConceptDetails({ concept }: { concept: { id: string; icon: React.Compon
   );
 }
 
-// Explicitly type the 'conceptId' parameter
-function getConceptDetails(conceptId: string): string[] {
+function PromptEngineeringTip() {
+  return (
+    <Card className="mt-8 bg-blue-900">
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <Lightbulb className="mr-2 h-6 w-6" />
+          Prompt Engineering Tip
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p>
+          When working with AI agents in Task-Flow, use clear and specific language in your prompts. For example, instead of "Improve this code," try "Refactor this JavaScript function to improve performance and readability, focusing on reducing nested callbacks and optimizing loop operations."
+        </p>
+        <div className="mt-4">
+          <Button variant="secondary" className="flex items-center">
+            <MessageSquarePlus className="mr-2 h-4 w-4" />
+            Try Prompt Engineering
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function getConceptDetails(conceptId) {
   switch (conceptId) {
     case 'teams':
       return [
@@ -140,8 +161,7 @@ function getConceptDetails(conceptId: string): string[] {
   }
 }
 
-// Explicitly type the 'conceptId' parameter
-function getConceptDiagram(conceptId: string): string {
+function getConceptDiagram(conceptId) {
   const diagrams = {
     teams: `graph TD
     Team --> Member1[Team Member]
@@ -194,7 +214,7 @@ function getConceptDiagram(conceptId: string): string {
     end`
   };
 
-  return diagrams[conceptId as keyof typeof diagrams];
+  return diagrams[conceptId];
 }
 
 export default Documentation;

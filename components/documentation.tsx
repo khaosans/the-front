@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertCircle, Users, CheckSquare, Bot, GitBranch, Wrench, Lightbulb, MessageSquarePlus } from 'lucide-react';
-import Mermaid from 'react-mermaid2'; // Import Mermaid component
 
 const Documentation: React.FC = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -70,8 +69,7 @@ const Documentation: React.FC = () => {
   );
 };
 
-// Explicitly type the 'concept' parameter
-function ConceptDetails({ concept }: { concept: { id: string; icon: React.ComponentType<{ className?: string }>; title: string; description: string } }) {
+function ConceptDetails({ concept }) {
   return (
     <Card>
       <CardHeader>
@@ -89,10 +87,7 @@ function ConceptDetails({ concept }: { concept: { id: string; icon: React.Compon
               <li key={index}>{detail}</li>
             ))}
           </ul>
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-2">Concept Diagram:</h3>
-            <Mermaid chart={getConceptDiagram(concept.id)} />
-          </div>
+          {getConceptDiagram(concept.id)}
         </ScrollArea>
       </CardContent>
     </Card>
@@ -123,8 +118,7 @@ function PromptEngineeringTip() {
   );
 }
 
-// Explicitly type the 'conceptId' parameter
-function getConceptDetails(conceptId: string): string[] {
+function getConceptDetails(conceptId) {
   switch (conceptId) {
     case 'teams':
       return [
@@ -163,9 +157,8 @@ function getConceptDetails(conceptId: string): string[] {
   }
 }
 
-// Explicitly type the 'conceptId' parameter
-function getConceptDiagram(conceptId: string): string {
-  const diagrams: Record<string, string> = {
+function getConceptDiagram(conceptId) {
+  const diagrams = {
     teams: `graph TD
     Team --> Member1[Team Member]
     Team --> Member2[Team Member]
@@ -217,7 +210,16 @@ function getConceptDiagram(conceptId: string): string {
     end`
   };
 
-  return diagrams[conceptId];
+  return (
+    <div className="mt-4">
+      <h3 className="text-lg font-semibold mb-2">Concept Diagram:</h3>
+      <div className="bg-gray-800 p-4 rounded-md">
+        ```mermaid
+        {diagrams[conceptId]}
+        ```
+      </div>
+    </div>
+  );
 }
 
 export default Documentation;
