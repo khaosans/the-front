@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Import the necessary icons
+import { Bell, Settings, Home, MessageCircle, LogOut, Wrench } from 'lucide-react'; // Updated icon import
 import { supabase } from '@/utils/supabase/client';
 import ChatModal from './ChatModal'; // Import the ChatModal component
 
@@ -53,9 +53,8 @@ const TopBar: React.FC = () => {
 
                     <Link href="/dashboard" className="hover:underline">Dashboard</Link>
                     <Link href="/members" className="hover:underline">Members</Link>
-                    <Link href="/task-design" className="hover:underline">Tasks Design</Link>
-                    <Link href="/agent-design" className="hover:underline">Agent Design</Link>
-
+                    <Link href="/task-manager" className="hover:underline">Task Manager</Link>
+                    <Link href="/agent-manager" className="hover:underline">Agent Manager</Link> {/* Added link to Agent Manager */}
                 </nav>
                 <div className="flex items-center space-x-4">
                     <button className="hover:bg-gray-700 p-2 rounded" onClick={toggleChat}>
