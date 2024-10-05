@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow, FileText, MessageCircle } from 'lucide-react';
-// Removed ChatbotModal and ChatModal imports
+import ChatbotModal from '@/components/ChatbotModal';
 
 const pages = [
   { title: 'Dashboard', description: 'Overview of your projects and tasks', icon: LayoutDashboard, href: '/dashboard' },
