@@ -7,15 +7,14 @@
 
     // Mock data for agents
     const mockAgents: Agent[] = [
-        // ... (mock agents)
-        { id: "1", name: "Alice Johnson", avatar: "/placeholder.svg?height=40&width=40", expertise: "Frontend Development", backstory: "Alice is a frontend developer with a passion for creating beautiful and functional user interfaces.", tools: ["React", "Next.js", "Tailwind CSS"] },
-        { id: "2", name: "Bob Smith", avatar: "/placeholder.svg?height=40&width=40", expertise: "Backend Development", backstory: "Bob is a backend developer with a passion for creating scalable and secure web applications.", tools: ["Node.js", "Express", "MongoDB"] },
-        { id: "3", name: "Charlie Brown", avatar: "/placeholder.svg?height=40&width=40", expertise: "DevOps", backstory: "Charlie is a devops engineer with a passion for creating scalable and secure web applications.", tools: ["Docker", "Kubernetes", "Jenkins"] },
-        { id: "4", name: "Diana Prince", avatar: "/placeholder.svg?height=40&width=40", expertise: "UI/UX Design", backstory: "Diana is a ui/ux designer with a passion for creating beautiful and functional user interfaces.", tools: ["Figma", "Adobe XD", "Sketch"] },
+        { id: 1, name: "Alice Johnson", avatar: "/placeholder.svg?height=40&width=40", expertise: "Frontend Development", backstory: "Alice is a frontend developer with a passion for creating beautiful and functional user interfaces.", tools: ["React", "Next.js", "Tailwind CSS"] },
+        { id: 2, name: "Bob Smith", avatar: "/placeholder.svg?height=40&width=40", expertise: "Backend Development", backstory: "Bob is a backend developer with a passion for creating scalable and secure web applications.", tools: ["Node.js", "Express", "MongoDB"] },
+        { id: 3, name: "Charlie Brown", avatar: "/placeholder.svg?height=40&width=40", expertise: "DevOps", backstory: "Charlie is a devops engineer with a passion for creating scalable and secure web applications.", tools: ["Docker", "Kubernetes", "Jenkins"] },
+        { id: 4, name: "Diana Prince", avatar: "/placeholder.svg?height=40&width=40", expertise: "UI/UX Design", backstory: "Diana is a ui/ux designer with a passion for creating beautiful and functional user interfaces.", tools: ["Figma", "Adobe XD", "Sketch"] },
     ];
 
     export default function AgentDetailPage({ params }: { params: { id: string } }) {
-        const id = params.id;
+        const id = parseInt(params.id, 10); // Convert id to number
         const [agent, setAgent] = useState<Agent | null>(null);
         const [loading, setLoading] = useState(true); // Loading state
         const router = useRouter();

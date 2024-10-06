@@ -1,1 +1,1 @@
- 
+type MaybeField<T, K extends string> = T extends { [k in K]: infer G } ? (G extends Function ? G : never) : never;

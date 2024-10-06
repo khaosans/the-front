@@ -46,7 +46,7 @@ const mockTasks: Task[] = [
 
 const mockAgents: Agent[] = [
   {
-    id: "1",
+    id: 1, // Change this to a number
     name: "Alice Johnson",
     avatar: "/placeholder.svg?height=40&width=40",
     expertise: "Frontend Development",
@@ -54,7 +54,7 @@ const mockAgents: Agent[] = [
     tools: ["React", "JavaScript", "CSS"],
   },
   {
-    id: "2",
+    id: 2,
     name: "Bob Smith",
     avatar: "/placeholder.svg?height=40&width=40",
     expertise: "Backend Development",
@@ -62,7 +62,7 @@ const mockAgents: Agent[] = [
     tools: ["Node.js", "Express", "MongoDB"],
   },
   {
-    id: "3",
+    id: 3,
     name: "Charlie Brown",
     avatar: "/placeholder.svg?height=40&width=40",
     expertise: "DevOps",
@@ -70,7 +70,7 @@ const mockAgents: Agent[] = [
     tools: ["Docker", "Kubernetes", "Jenkins"],
   },
   {
-    id: "4",
+    id: 4,
     name: "Diana Prince",
     avatar: "/placeholder.svg?height=40&width=40",
     expertise: "UI/UX Design",
@@ -99,6 +99,7 @@ export default function TaskDetailPage({ params }: { params: { taskId: string } 
   };
 
   const handleClose = () => {
+    const router = useRouter();
     router.push('/task-manager');
   };
 
