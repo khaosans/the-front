@@ -1,10 +1,14 @@
 import { createMocks } from 'node-mocks-http';
 import { POST as handler } from '../../app/api/ollama/route';
 
-// Mock the Ollama API response
+// Mock a callback function
+const mockCallback = jest.fn();
+
 jest.mock('../../app/api/ollama/route', () => ({
   POST: jest.fn((req, res) => {
-    res.status(200).json({ reply: 'Ollama received: Hello, Ollama!' });
+    // Simulate calling a callback
+    mockCallback(req.body.message);
+    res.status(200).json({ reply: `Ollama received: ${req.body.message || ''}` });
   }),
 }));
 
@@ -35,7 +39,6 @@ describe('Ollama API', () => {
     expect(data.reply).toContain('Ollama received: ');
   });
 
-
   it('should handle error in Ollama API', async () => {
     const { req, res } = createMocks({
       method: 'POST',
@@ -47,6 +50,17 @@ describe('Ollama API', () => {
     expect(res._getStatusCode()).toBe(200);
     const data = JSON.parse(res._getData());
     expect(data.reply).toContain('Ollama received: Hello, Ollama!');
+  });
 
+  it('should call the callback with the correct message', async () => {
+    const { req, res } = createMocks({
+      method: 'POST',
+      body: { message: 'Hello, Ollama!' },
+    });
+
+    await handler(req as any, res as any);
+
+    // Verify the callback was called with the correct argument
+    expect(mockCallback).toHaveBeenCalledWith('Hello, Ollama!');
   });
 });
