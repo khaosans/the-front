@@ -95,7 +95,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 text-white rounded-lg w-3/4 h-3/4 max-w-4xl max-h-[800px] flex flex-col">
+            <div className="bg-gray-800 text-white rounded-lg w-96 h-[500px] flex flex-col">
                 <div className="flex justify-between items-center p-4 border-b border-gray-700">
                     <h2 className="text-xl font-bold">Chat</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-200">
@@ -110,11 +110,6 @@ const ChatModal: React.FC<ChatModalProps> = ({ onClose }) => {
                             </span>
                         </div>
                     ))}
-                    {loading && (
-                        <div className="flex justify-center items-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                        </div>
-                    )}
                 </div>
                 <div className="p-4 border-t border-gray-700">
                     <select
