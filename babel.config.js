@@ -1,4 +1,10 @@
 module.exports = {
-  presets: ['next/babel'],
-  // Add any additional plugins or configuration here
+  presets: [
+    '@babel/preset-env', // Transpile ES6+ syntax
+    '@babel/preset-react', // Transpile JSX
+    '@babel/preset-typescript', // Transpile TypeScript
+  ],
+  plugins: [
+    // Remove any plugins related to import assertions if they exist
+  ],
 };

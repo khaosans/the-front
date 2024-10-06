@@ -42,7 +42,7 @@ const ChatModal: React.FC<ChatModalProps> = ({ onClose }) => {
     // Function to fetch response from Ollama
     const fetchOllamaResponse = async (message: string) => {
         try {
-            const res = await fetch('/api/ollama', { // Correct API route
+            const res = await fetch('/api/chat', { // Correct API route
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
