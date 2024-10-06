@@ -40,12 +40,6 @@ const BotTaskManager: React.FC = () => {
           <p className="mb-4">
             Use the chatbot to manage your tasks. You can add new tasks, update existing ones, and track your progress through a conversational interface.
           </p>
-          <button
-            onClick={() => setIsChatOpen(true)}
-            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-          >
-            Open Chatbot
-          </button>
         </div>
         <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Task List</h2>
