@@ -1,17 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
   try {
-    const { token } = req.body;
+    const body = await req.json();
+    const { token } = body;
 
     // Simulate token verification or processing
     if (!token) {
-      return res.status(400).json({ error: 'Token is required' });
+      return NextResponse.json({ error: 'Token is required' }, { status: 400 });
     }
 
     // Mock successful authentication
-    return res.status(200).json({ message: 'Authentication successful', token });
+    return NextResponse.json({ message: 'Authentication successful', token }, { status: 200 });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal server error' }); // Updated to match test expectation
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
