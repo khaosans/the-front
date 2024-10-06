@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import supabase from '../utils/supabase'; // Adjust the import based on your file structure
+import SkeletonLoader from './SkeletonLoader'; // Import Skeleton Loader
+import LoaderSpinner from './LoaderSpinner'; // Import Loader Spinner
 
 interface ChatModalProps {
     onClose: () => void;
@@ -19,10 +21,16 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [models, setModels] = useState<string[]>([]);
     const [selectedModel, setSelectedModel] = useState('');
+    const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for scrolling
 
     useEffect(() => {
         fetchModels();
     }, []);
+
+    useEffect(() => {
+        // Scroll to the bottom of the messages whenever they change
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     const fetchModels = async () => {
         try {
@@ -47,8 +55,6 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
             setMessages(prevMessages => [...prevMessages, userMessage]);
             setInputMessage('');
 
-            console.log('Sending message:', inputMessage); // Log the message being sent
-
             try {
                 const response = await fetch('http://localhost:11434/v1/chat/completions', { // Updated URL for Ollama API
                     method: 'POST',
@@ -61,12 +67,9 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                     }),
                 });
 
-                console.log('Response status:', response.status); // Log the response status
-
                 if (!response.ok) {
                     const errorText = await response.text(); // Get the error message from the response
-                    console.error('Error response from external API:', errorText); // Log the error message
-                    throw new Error(`Failed to fetch response: ${response.status} - ${errorText}`);
+                    throw new Error(`Failed to fetch response: ${errorText}`);
                 }
 
                 const reader = response.body?.getReader();
@@ -80,9 +83,6 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                     const chunk = decoder.decode(value, { stream: true });
                     assistantMessage += chunk;
 
-                    // Log the chunk received
-                    console.log('Received chunk:', chunk);
-
                     // Update the assistant message in the state
                     setMessages(prevMessages => [
                         ...prevMessages,
@@ -90,27 +90,17 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                     ]);
                 }
 
-                // Log the final assistant message
-                console.log('Final assistant message:', assistantMessage);
-
                 // Save messages to Supabase
-                const { data, error } = await supabase.from('messages').insert([
+                await supabase.from('messages').insert([
                     { content: inputMessage, role: 'user' },
                     { content: assistantMessage, role: 'assistant' }
                 ]);
-                if (error) {
-                    console.error('Error saving messages to Supabase:', error);
-                } else {
-                    console.log('Messages saved successfully:', data);
-                }
 
             } catch (error) {
                 console.error('Error:', error);
             } finally {
                 setLoading(false); // Ensure loading state is reset
             }
-        } else {
-            console.log('Input message is empty or loading is true'); // Log if the input is empty or loading
         }
     };
 
@@ -123,7 +113,7 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 text-white rounded-lg w-full h-full max-w-4xl max-h-[90vh] flex flex-col"> {/* Adjusted size */}
+            <div className="bg-gray-800 text-white rounded-lg w-full h-full max-w-4xl max-h-[90vh] flex flex-col">
                 <div className="flex justify-between items-center p-4 border-b border-gray-700">
                     <h2 className="text-xl font-bold">Chat</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-200">
@@ -138,6 +128,12 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                             </span>
                         </div>
                     ))}
+                    {loading && (
+                        <div className="flex justify-center items-center mb-4">
+                            <LoaderSpinner /> {/* Spinner */}
+                        </div>
+                    )}
+                    <div ref={messagesEndRef} /> {/* Empty div to scroll to */}
                 </div>
                 <div className="p-4 border-t border-gray-700">
                     <select
