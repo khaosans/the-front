@@ -2,9 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    // Remove the 'appDir' option as it's no longer needed in Next.js 14
+    appDir: true,
   },
-  // Remove the 'metadataBase' option if it's not needed
 }
 
 module.exports = nextConfig

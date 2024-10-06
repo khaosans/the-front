@@ -35,17 +35,14 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    ".next/types/**/*.ts",
-    "types",
-    "app/**/*"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
