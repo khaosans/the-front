@@ -13,7 +13,7 @@
 - [AI Disclosure](#ai-disclosure)
 - [Contributing](#contributing)
 - [License](#license)
-
+![alt text](public/images/TaskFlow.gif)
 ## Overview
 The **QuantumLabs Task Management Application** is a powerful and intuitive task management board designed to help users efficiently create, manage, and organize tasks. With features like drag-and-drop functionality and customizable task cards, users can easily track progress and collaborate effectively. 🌟
 

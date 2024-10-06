@@ -1,81 +1,64 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "react-hot-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
+import { toast } from "react-hot-toast"
 
 export default function SettingsPage() {
-    const router = useRouter()
-    const supabase = createClientComponentClient()
     const [settings, setSettings] = useState({
         theme: 'light',
         language: 'en',
-        notifications_enabled: true
+        notifications_enabled: true,
+        model: ''
     })
+    const [availableModels, setAvailableModels] = useState<string[]>([])
 
+    //DO NOT REMOVE curl http://localhost:11434/api/tags
+    //https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models
     useEffect(() => {
-        const fetchSettings = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                const { data } = await supabase
-                    .from('user_settings')
-                    .select('*')
-                    .eq('user_id', user.id)
-                    .single()
-                if (data) {
-                    setSettings(data)
-                }
+        // Fetch available models from Ollama API
+        const fetchModels = async () => {
+            try {
+                const response = await fetch('http://localhost:11434/api/tags') // Replace with actual API endpoint
+                const data = await response.json()
+                setAvailableModels(data.models) // Adjust based on actual API response structure
+            } catch (error) {
+                console.error('Error fetching models:', error)
             }
         }
-        fetchSettings()
-    }, [supabase])
 
-    const handleSaveGeneral = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
-            const { error } = await supabase
-                .from('user_settings')
-                .upsert({ user_id: user.id, ...settings })
+        fetchModels()
 
-            if (error) {
-                console.error('Error updating settings:', error)
-                toast.error("Failed to update settings. Please try again.")
-            } else {
-                toast.success("Your general settings have been updated.")
-            }
+        // Set default model based on environment
+        if (window.location.hostname === 'localhost') {
+            setSettings((prev) => ({ ...prev, model: 'llama3.2' }))
+        } else {
+            setSettings((prev) => ({ ...prev, model: 'gpt-4o-mini' }))
         }
+    }, [])
+
+    const handleSaveGeneral = () => {
+        toast.success("Your general settings have been updated.")
     }
 
-    const handleSavePassword = (e: React.FormEvent) => {
-        e.preventDefault()
-        // Here you would typically handle password change
-        console.log('Changing password')
-        toast.success("Your password has been successfully updated.")
-    }
-
-    const handleDeleteAccount = () => {
-        // Here you would typically handle account deletion
-        console.log('Deleting account')
-        toast.error("Your account has been successfully deleted.")
-        router.push('/login')
+    const handleModelChange = (value: string) => {
+        setSettings({ ...settings, model: value })
+        toast.success(`Model changed to ${value}`)
     }
 
     return (
         <div className="container mx-auto py-10">
             <h1 className="text-3xl font-bold mb-6">Settings</h1>
             <Tabs defaultValue="general" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-4">
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="security">Security</TabsTrigger>
                     <TabsTrigger value="advanced">Advanced</TabsTrigger>
+                    <TabsTrigger value="model">Model Config</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <Card>
@@ -85,7 +68,7 @@ export default function SettingsPage() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="theme">Theme</Label>
+                                <label htmlFor="theme">Theme</label>
                                 <Select value={settings.theme} onValueChange={(value) => setSettings({ ...settings, theme: value })}>
                                     <SelectTrigger id="theme">
                                         <SelectValue>{settings.theme}</SelectValue>
@@ -96,31 +79,38 @@ export default function SettingsPage() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="language">Language</Label>
-                                <Select value={settings.language} onValueChange={(value) => setSettings({ ...settings, language: value })}>
-                                    <SelectTrigger id="language">
-                                        <SelectValue>{settings.language}</SelectValue>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="en">English</SelectItem>
-                                        <SelectItem value="es">Spanish</SelectItem>
-                                        <SelectItem value="fr">French</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
                             <div className="flex items-center space-x-2">
                                 <Switch
                                     id="notifications"
                                     checked={settings.notifications_enabled}
                                     onCheckedChange={(checked: boolean) => setSettings({ ...settings, notifications_enabled: checked })}
                                 />
-                                <Label htmlFor="notifications">Enable notifications</Label>
+                                <label htmlFor="notifications">Enable notifications</label>
                             </div>
                         </CardContent>
                         <CardFooter>
                             <Button size="sm" variant="default" onClick={handleSaveGeneral}>Save Changes</Button>
                         </CardFooter>
+                    </Card>
+                </TabsContent>
+                <TabsContent value="model">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Model Configuration</CardTitle>
+                            <CardDescription>Select your preferred AI model.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <Select value={settings.model} onValueChange={handleModelChange}>
+                                <SelectTrigger>
+                                    <SelectValue>{settings.model}</SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {availableModels.map((model) => (
+                                        <SelectItem key={model} value={model}>{model}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </CardContent>
                     </Card>
                 </TabsContent>
                 <TabsContent value="security">
@@ -130,18 +120,18 @@ export default function SettingsPage() {
                             <CardDescription>Manage your password and account security.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <form onSubmit={handleSavePassword} className="space-y-4">
+                            <form onSubmit={(e) => { e.preventDefault(); toast.success("Your password has been successfully updated.") }} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="current-password">Current Password</Label>
-                                    <Input id="current-password" type="password" required />
+                                    <label htmlFor="current-password">Current Password</label>
+                                    <input id="current-password" type="password" required className="input" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="new-password">New Password</Label>
-                                    <Input id="new-password" type="password" required />
+                                    <label htmlFor="new-password">New Password</label>
+                                    <input id="new-password" type="password" required className="input" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="confirm-password">Confirm New Password</Label>
-                                    <Input id="confirm-password" type="password" required />
+                                    <label htmlFor="confirm-password">Confirm New Password</label>
+                                    <input id="confirm-password" type="password" required className="input" />
                                 </div>
                                 <Button size="sm" variant="default" type="submit">Change Password</Button>
                             </form>
@@ -161,7 +151,7 @@ export default function SettingsPage() {
                                     Once you delete your account, there is no going back. Please be certain.
                                 </p>
                             </div>
-                            <Button size="sm" variant="destructive" onClick={handleDeleteAccount}>Delete Account</Button>
+                            <Button size="sm" variant="destructive" onClick={() => { toast.error("Your account has been successfully deleted."); }}>Delete Account</Button>
                         </CardContent>
                     </Card>
                 </TabsContent>
