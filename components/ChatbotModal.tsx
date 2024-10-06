@@ -1,231 +1,148 @@
 'use client';
 
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogOverlay } from '@reach/dialog';
-import '@reach/dialog/styles.css';
+import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
+import supabase from '../utils/supabase'; // Adjust the import based on your file structure
 
-interface ChatbotModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface ChatModalProps {
+    onClose: () => void;
 }
-
-const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
-  const [message, setMessage] = useState('');
-
-  const handleSendMessage = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
-
-      const data = await response.json();
-      console.log('Ollama response:', data);
-    } catch (error) {
-      console.error('Error connecting to Ollama:', error);
-    }
-  };
-
-  return (
-    <Dialog isOpen={isOpen} onDismiss={onClose} className="chatbot-modal">
-      <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50" />
-      <DialogContent
-        className="bg-gray-800 text-white max-w-3xl mx-auto p-6 rounded-lg shadow-lg"
-        aria-label="Chatbot"
-        // Ensure no laser effect is applied here
-        style={{ background: 'none' }} // Remove any unwanted background effects
-      >
-        <h2 className="text-2xl font-bold mb-4">Chat with Ollama</h2>
-        <div className="chatbot-content mb-4">
-          <textarea
-            className="w-full p-2 bg-gray-700 text-white rounded"
-            rows={4}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message here..."
-          />
-        </div>
-        <button
-          onClick={handleSendMessage}
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-        >
-          Send
-        </button>
-        <button
-          onClick={onClose}
-          className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
-        >
-          Close
-        </button>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
-export default ChatbotModal;
-=======
-import { useState, useRef, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Dialog"; // Updated import
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTheme } from '../app/contexts/ThemeContext';
-
-type Persona = 'Engineering' | 'QA' | 'Product Manager' | 'Customer'
 
 interface Message {
-  id: string
-  content: string
-  sender: 'user' | 'bot'
+    role: 'user' | 'assistant';
+    content: string;
 }
 
-interface ChatbotModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
+const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [inputMessage, setInputMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [models, setModels] = useState<string[]>([]);
+    const [selectedModel, setSelectedModel] = useState('');
 
-export function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [persona, setPersona] = useState<Persona>('Engineering');
-  const [modalSize, setModalSize] = useState({ width: 500, height: 600 });
-  const resizeRef = useRef<HTMLDivElement>(null);
-  const {   theme } = useTheme();
+    useEffect(() => {
+        fetchModels();
+    }, []);
 
-  const handleSendMessage = () => {
-    if (inputMessage.trim()) {
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        content: inputMessage,
-        sender: 'user',
-      }
-      setMessages([...messages, newMessage])
-      setInputMessage('')
-      
-      // Simulate bot response
-      setTimeout(() => {
-        const botResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          content: `${persona} persona: I've received your message and I'm processing it.`,
-          sender: 'bot',
+    const fetchModels = async () => {
+        try {
+            const response = await fetch('/api/tags');
+            if (!response.ok) {
+                throw new Error('Failed to fetch models');
+            }
+            const data = await response.json();
+            setModels(data.models);
+            if (data.models.length > 0) {
+                setSelectedModel(data.models[0]);
+            }
+        } catch (error) {
+            console.error('Error fetching models:', error);
         }
-        setMessages(prevMessages => [...prevMessages, botResponse])
-      }, 1000)
-    }
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
-    }
-  }
-
-  useEffect(() => {
-    const resizeModal = (e: MouseEvent) => {
-      if (resizeRef.current) {
-        const newWidth = e.clientX - resizeRef.current.getBoundingClientRect().left;
-        const newHeight = e.clientY - resizeRef.current.getBoundingClientRect().top;
-        setModalSize({ width: newWidth, height: newHeight });
-      }
     };
 
-    const stopResize = () => {
-      window.removeEventListener('mousemove', resizeModal);
-      window.removeEventListener('mouseup', stopResize);
+    const handleSendMessage = async () => {
+        if (inputMessage.trim() && !loading) {
+            setLoading(true);
+            const userMessage: Message = { role: 'user', content: inputMessage };
+            setMessages(prevMessages => [...prevMessages, userMessage]);
+            setInputMessage('');
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: inputMessage, model: selectedModel }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch response');
+                }
+
+                const reader = response.body?.getReader();
+                let assistantMessage = '';
+
+                while (true) {
+                    const { done, value } = await reader!.read();
+                    if (done) break;
+                    const chunk = new TextDecoder().decode(value);
+                    assistantMessage += chunk;
+                    setMessages(prevMessages => [
+                        ...prevMessages.slice(0, -1),
+                        { role: 'assistant', content: assistantMessage }
+                    ]);
+                }
+
+                // Save messages to Supabase
+                await supabase.from('messages').insert([
+                    { content: inputMessage, role: 'user' },
+                    { content: assistantMessage, role: 'assistant' }
+                ]);
+
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
-    const startResize = (e: MouseEvent) => {
-      e.preventDefault();
-      window.addEventListener('mousemove', resizeModal);
-      window.addEventListener('mouseup', stopResize);
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
     };
 
-    const resizeHandle = resizeRef.current;
-    if (resizeHandle) {
-      resizeHandle.addEventListener('mousedown', startResize as EventListener);
-    }
-
-    return () => {
-      if (resizeHandle) {
-        resizeHandle.removeEventListener('mousedown', startResize as EventListener);
-      }
-    };
-  }, []);
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`sm:max-w-[500px] ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`}>
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Chatbot Assistant</DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col h-[500px]">
-          <div className="flex items-center space-x-2 mb-4">
-            <span className="text-sm font-medium">Current Persona:</span>
-            <Select value={persona} onValueChange={(value: Persona) => setPersona(value)}>
-              <SelectTrigger className={`w-[180px] ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}>
-                <SelectValue placeholder="Select a persona" />
-              </SelectTrigger>
-              <SelectContent className={theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}>
-                <SelectItem value="Engineering">Engineering</SelectItem>
-                <SelectItem value="QA">QA</SelectItem>
-                <SelectItem value="Product Manager">Product Manager</SelectItem>
-                <SelectItem value="Customer">Customer</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <ScrollArea className={`flex-grow border rounded-md p-4 ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'}`}>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
-                } mb-4`}
-              >
-                <div
-                  className={`flex items-start ${
-                    message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'
-                  }`}
-                >
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src={message.sender === 'user' ? '/user-avatar.png' : '/bot-avatar.png'}
-                      alt={message.sender === 'user' ? 'User' : 'Bot'}
-                    />
-                    <AvatarFallback>{message.sender === 'user' ? 'U' : 'B'}</AvatarFallback>
-                  </Avatar>
-                  <div
-                    className={`mx-2 p-3 rounded-lg ${
-                      message.sender === 'user'
-                        ? theme === 'dark' ? 'bg-blue-600 text-white' : 'bg-blue-100 text-gray-900'
-                        : theme === 'dark' ? 'bg-gray-600 text-white' : 'bg-gray-200 text-gray-900'
-                    }`}
-                  >
-                    {message.content}
-                  </div>
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-800 text-white rounded-lg w-96 h-[500px] flex flex-col">
+                <div className="flex justify-between items-center p-4 border-b border-gray-700">
+                    <h2 className="text-xl font-bold">Chat</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-gray-200">
+                        <X className="h-6 w-6" />
+                    </button>
                 </div>
-              </div>
-            ))}
-          </ScrollArea>
-          <div className="flex items-center space-x-2 mt-4">
-            <Input
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message here..."
-                className={`flex-grow ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-gray-900 border-gray-300'}`}
-            />
-            <Button onClick={handleSendMessage} className={theme === 'dark' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}>Send</Button>
-          </div>
+                <div className="flex-1 overflow-y-auto p-4">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`mb-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
+                            <span className={`inline-block rounded px-2 py-1 ${msg.role === 'user' ? 'bg-blue-600' : 'bg-gray-600'}`}>
+                                {msg.content}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+                <div className="p-4 border-t border-gray-700">
+                    <select
+                        value={selectedModel}
+                        onChange={(e) => setSelectedModel(e.target.value)}
+                        className="w-full mb-2 bg-gray-700 text-white border border-gray-600 rounded px-2 py-1"
+                    >
+                        {models.map((model) => (
+                            <option key={model} value={model}>{model}</option>
+                        ))}
+                    </select>
+                    <div className="flex">
+                        <input
+                            type="text"
+                            value={inputMessage}
+                            onChange={(e) => setInputMessage(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="flex-1 bg-gray-700 text-white border border-gray-600 rounded-l px-2 py-1"
+                            placeholder="Type a message..."
+                            disabled={loading}
+                        />
+                        <button
+                            onClick={handleSendMessage}
+                            className="bg-blue-500 text-white px-4 py-1 rounded-r"
+                            disabled={loading}
+                        >
+                            {loading ? 'Sending...' : 'Send'}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
->>>>>>> parent of b07c47e (kebabo (#10))
+    );
+};
+
+export default ChatBotModal;
