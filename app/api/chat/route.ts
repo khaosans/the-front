@@ -1,63 +1,78 @@
-import { NextRequest } from 'next/server';
-// Importing necessary types for Node.js
-import { ReadableStream } from 'stream/web'; // Ensure this import is available
-import { Response } from 'node-fetch'; // Ensure this import is available
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@/app/utils/session';
+
+export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
-  const { message, model } = await req.json();
-
-  // Log the incoming request data for debugging
-  console.log('Incoming request:', { message, model });
-
   try {
-    const response = await fetch('http://localhost:11434/api/chat', {
+    const session = await getSession(); // Retrieve session data
+    const body = await req.json();
+    console.log('Incoming request body:', body); // Log the incoming request body
+
+    const messages = body?.messages || (body?.message ? [{ role: 'user', content: body.message }] : null);
+
+    // Check for valid messages format
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      console.error('Invalid messages format:', messages); // Log the invalid format
+      throw new Error('Invalid messages format. Expected an array of messages.');
+    }
+
+    console.log('Received messages:', messages); // Log received messages
+
+    // Use session data to personalize the response
+    const userName = session?.user?.name || 'User';
+
+    // Prepare the request to the external API
+    const response = await fetch('http://localhost:11434/v1/chat/completions', { // Updated URL for Ollama API
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
-        model,
-        messages: [{ role: 'user', content: message }],
-        stream: true,
-      }),
+        model: 'llama2', // Ensure the model is correctly set
+        messages: messages,
+        stream: true
+      })
     });
 
-    // Log the response status and body for debugging
-    console.log('Response from external API:', {
-      status: response.status,
-      statusText: response.statusText,
-    });
+    console.log('Response from external API:', response.status); // Log the response status
 
-    // Check if the response is okay
     if (!response.ok) {
-      const errorText = await response.text(); // Capture the error response
-      console.error('Error response from external API:', errorText);
-      throw new Error(`Failed to fetch from Ollama: ${response.status} ${response.statusText}`);
+      const errorText = await response.text(); // Get the error message from the response
+      console.error('Error response from external API:', errorText); // Log the error message
+      throw new Error(`Failed to fetch response: ${response.status} - ${errorText}`);
+    }
+
+    if (!response.body) {
+      console.error('Response body is null');
+      throw new Error('Response body is null');
     }
 
     const stream = new ReadableStream({
-      async start(controller) {
-        const reader = response.body?.getReader();
+      async start(controller: ReadableStreamDefaultController) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder(); // Use global TextDecoder
+
         while (true) {
-          const { done, value } = await reader!.read();
+          const { done, value } = await reader.read();
           if (done) break;
-          const chunk = new TextDecoder().decode(value);
-          try {
-            const parsed = JSON.parse(chunk);
-            if (parsed.message?.content) {
-              controller.enqueue(parsed.message.content);
-            }
-          } catch (e) {
-            console.error('Error parsing JSON:', e);
-          }
+          const chunk = decoder.decode(value, { stream: true });
+          console.log('Streaming chunk:', chunk); // Log each chunk received
+          controller.enqueue(chunk);
         }
+
         controller.close();
-      },
+      }
     });
 
-    return new Response(stream, {
-      headers: { 'Content-Type': 'text/plain' },
+    return new NextResponse(stream, {
+      headers: { 'Content-Type': 'text/event-stream' }
     });
   } catch (error) {
-    console.error('Error in POST handler:', error);
-    return new Response('Internal Server Error', { status: 500 });
+    console.error('Error in API route:', error);
+    return new NextResponse(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
