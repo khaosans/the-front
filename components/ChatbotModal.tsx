@@ -123,7 +123,7 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 text-white rounded-lg w-96 h-[500px] flex flex-col">
+            <div className="bg-gray-800 text-white rounded-lg w-full h-full max-w-4xl max-h-[90vh] flex flex-col"> {/* Adjusted size */}
                 <div className="flex justify-between items-center p-4 border-b border-gray-700">
                     <h2 className="text-xl font-bold">Chat</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-200">
