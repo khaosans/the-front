@@ -9,19 +9,14 @@ interface LayoutProps {
     children: ReactNode;
 }
 
-const RootLayout: React.FC<LayoutProps> = ({ children }) => {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
             <body>
                 <ThemeProvider attribute="class">
-                    <TopBar />
-                    <div className="container mx-auto py-10">
-                        {children}
-                    </div>
+                    {children}
                 </ThemeProvider>
             </body>
         </html>
     );
-};
-
-export default RootLayout;
+}

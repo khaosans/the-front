@@ -1,13 +1,4 @@
 module.exports = {
-  extends: [
-    'next/core-web-vitals',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
-  root: true,
-  env: {
-    node: true,
-    browser: true,
-  },
+  extends: ['next/core-web-vitals'],
+  // Remove useEslintrc and extensions options
 };

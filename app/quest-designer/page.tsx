@@ -1,20 +1,21 @@
 'use client';
 
 import React from 'react';
-import { DialogHeader, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Documentation from '@/components/documentation';
 
-const QuestDesignerPage: React.FC = () => {
+export default function QuestDesigner() {
     return (
-        <div className="container mx-auto p-4">
-            <DialogHeader>
-                <DialogDescription className="px-4">
-                    Collaborate with our AI Lorekeeper to craft a legendary quest for our champions.
-                </DialogDescription>
-            </DialogHeader>
-            <Documentation />
-        </div>
+        <Dialog>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Quest Designer</DialogTitle>
+                    <DialogDescription>
+                        Design your quest here.
+                    </DialogDescription>
+                </DialogHeader>
+                <Documentation />
+            </DialogContent>
+        </Dialog>
     );
-};
-
-export default QuestDesignerPage;
+}

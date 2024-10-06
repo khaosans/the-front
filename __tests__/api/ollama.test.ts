@@ -1,6 +1,9 @@
 import { createMocks } from 'node-mocks-http';
 import { POST as handler } from '../../app/api/ollama/route';
 
+// Add Jest types
+import '@jest/globals';
+
 // Mock a callback function
 const mockCallback = jest.fn();
 
