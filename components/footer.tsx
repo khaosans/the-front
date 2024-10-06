@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useTheme } from '../app/contexts/ThemeContext';
+<<<<<<< HEAD
 import { Modal,  Button } from '@geist-ui/react'; //
+=======
+import Modal from './Modal'; // Assuming Modal.tsx is in the same directory
+
+>>>>>>> parent of b07c47e (kebabo (#10))
 const Footer: React.FC = () => {
   const { theme } = useTheme();
   const [showAbout, setShowAbout] = useState(false);

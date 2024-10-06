@@ -1,7 +1,10 @@
 {
   "private": true,
+<<<<<<< HEAD
   "name": "Task-Flow",
   "version": "1.0.0",
+=======
+>>>>>>> parent of b07c47e (kebabo (#10))
   "scripts": {
     "dev": "next dev",
     "build": "next build",
