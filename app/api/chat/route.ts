@@ -1,17 +1,43 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-// Remove the Edge runtime specification
-// export const runtime = 'edge';
+import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  try {
-    const { message } = await req.json();
+  const { message, model } = await req.json();
 
-    // Process the chat message here
-    // For now, let's just echo the message back
+  const response = await fetch('http://localhost:11434/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: message }],
+      stream: true,
+    }),
+  });
 
-    return NextResponse.json({ reply: `You said: ${message}` });
-  } catch (error) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  if (!response.ok) {
+    throw new Error('Failed to fetch from Ollama');
   }
+
+  const stream = new ReadableStream({
+    async start(controller) {
+      const reader = response.body?.getReader();
+      while (true) {
+        const { done, value } = await reader!.read();
+        if (done) break;
+        const chunk = new TextDecoder().decode(value);
+        try {
+          const parsed = JSON.parse(chunk);
+          if (parsed.message?.content) {
+            controller.enqueue(parsed.message.content);
+          }
+        } catch (e) {
+          console.error('Error parsing JSON:', e);
+        }
+      }
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { 'Content-Type': 'text/plain' },
+  });
 }

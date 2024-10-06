@@ -1,20 +1,27 @@
-import React from 'react';
-import Nav from './Nav';
-import RobotTransformerWallpaper from '@/components/RobotTransformerWallpaper'; // Ensure this path is correct
+'use client';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return (
-    <div className="layout">
-      <RobotTransformerWallpaper /> {/* Add the wallpaper component */}
-      <Nav />
-      <main className="main-content">
-        {children}
-      </main>
-      <footer className="footer">
-        <p>© 2023 Your Company</p>
-      </footer>
-    </div>
-  );
+import React from 'react';
+import TopBar from './TopBar';
+import { usePathname } from 'next/navigation';
+
+interface LayoutProps {
+    children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+    const pathname = usePathname();
+
+    // Add routes where you don't want the TopBar to appear
+    const routesWithoutTopBar = ['/login', '/register', '/landing'];
+
+    const showTopBar = !routesWithoutTopBar.includes(pathname);
+
+    return (
+        <>
+            {showTopBar && <TopBar />}
+            <main>{children}</main>
+        </>
+    );
 };
 
 export default Layout;

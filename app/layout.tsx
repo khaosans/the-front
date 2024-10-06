@@ -1,7 +1,9 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { ThemeProvider } from 'next-themes';
+import '@/styles/globals.css';
+import Layout from '@/components/Layout';
 
 export default function RootLayout({
     children,
@@ -12,7 +14,7 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                    {children}
+                    <Layout>{children}</Layout>
                 </ThemeProvider>
             </body>
         </html>
