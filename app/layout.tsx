@@ -2,23 +2,9 @@
 
 <<<<<<< HEAD
 import React, { ReactNode } from 'react';
-import { ThemeProvider } from '@/app/contexts/ThemeContext'; // Corrected import path
-import '@/styles/globals.css'; // Adjust this path if needed
-import TopBar from '@/components/TopBar'; // Import the TopBar component
-import RobotTransformerWallpaper from '@/components/RobotTransformerWallpaper'; // Ensure this path is correct
-=======
-import React, { useState } from 'react'; // Import React
-import '../styles/globals.css'; // Adjust this path if your global styles are located elsewhere
-import { Header } from './header';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import ChatIcon from '../components/ChatIcon';
-import { ChatbotModal } from '@/components/ChatbotModal';
-import CodeEditorIcon from '../components/CodeEditorIcon';
-import { MonacoEditor } from '@/components/MonacoEditor';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import Footer from "@/components/footer";
->>>>>>> parent of b07c47e (kebabo (#10))
+import { ThemeProvider } from 'next-themes';
+import '@/styles/globals.css';
+import TopBar from '@/components/TopBar';
 
 interface LayoutProps {
     children: ReactNode;
@@ -29,11 +15,11 @@ const RootLayout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <html lang="en">
             <body>
-                <ThemeProvider>
-                    <RobotTransformerWallpaper /> {/* Add the wallpaper component */}
+                <ThemeProvider attribute="class">
                     <TopBar />
-
-                    {children}
+                    <div className="container mx-auto py-10">
+                        {children}
+                    </div>
                 </ThemeProvider>
             </body>
         </html>

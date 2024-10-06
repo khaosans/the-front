@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow, FileText} from 'lucide-react';
-import ChatbotModal from '@/components/ChatbotModal';
-import ChatModal from '@/components/ChatModal';
+import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow, FileText, MessageCircle } from 'lucide-react';
+// Removed ChatbotModal and ChatModal imports
 
 const pages = [
   { title: 'Dashboard', description: 'Overview of your projects and tasks', icon: LayoutDashboard, href: '/dashboard' },
@@ -16,6 +15,7 @@ const pages = [
   { title: 'Analytics', description: 'Insights and performance metrics', icon: BarChart, href: '/analytics' },
   { title: 'Documentation', description: 'View the documentation', icon: FileText, href: '/documentation' },
   { title: 'Settings', description: 'Configure your account and preferences', icon: Settings, href: '/settings' },
+  { title: 'Chat Room', description: 'Join the chat room', icon: MessageCircle, href: '/chat' },
 ];
 
 export default function HomePage() {
