@@ -5,11 +5,10 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTheme } from '../contexts/ThemeContext';
-import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import logger from '@/lib/logger';
 import SharedLayout from '../../components/SharedLayout';
+import { toast } from 'react-hot-toast';
 
 export default function SignupPage() {
 	const [email, setEmail] = useState('');
@@ -17,8 +16,6 @@ export default function SignupPage() {
 	const [error, setError] = useState<string | null>(null);
 	const router = useRouter();
 	const supabase = createClientComponentClient();
-	const themeContext = useTheme();
-	const theme = themeContext?.theme ?? 'light';
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
