@@ -1,4 +1,7 @@
 import { NextRequest } from 'next/server';
+// Importing necessary types for Node.js
+import { ReadableStream } from 'stream/web'; // Ensure this import is available
+import { Response } from 'node-fetch'; // Ensure this import is available
 
 export async function POST(req: NextRequest) {
   const { message, model } = await req.json();
