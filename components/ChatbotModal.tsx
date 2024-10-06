@@ -21,6 +21,7 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [models, setModels] = useState<string[]>([]);
     const [selectedModel, setSelectedModel] = useState('');
+    const [showAssistantOnly, setShowAssistantOnly] = useState(false); // State for toggle
     const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for scrolling
 
     useEffect(() => {
@@ -111,6 +112,14 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
         }
     };
 
+    const copyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Message copied to clipboard!'); // Optional: Notify the user
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-gray-800 text-white rounded-lg w-full h-full max-w-4xl max-h-[90vh] flex flex-col">
@@ -120,12 +129,25 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                         <X className="h-6 w-6" />
                     </button>
                 </div>
+                <div className="flex items-center p-4 border-b border-gray-700">
+                    <label className="mr-2">
+                        <input
+                            type="checkbox"
+                            checked={showAssistantOnly}
+                            onChange={() => setShowAssistantOnly(!showAssistantOnly)}
+                        />
+                        Show Assistant Responses Only
+                    </label>
+                </div>
                 <div className="flex-1 overflow-y-auto p-4">
-                    {messages.map((msg, index) => (
+                    {messages.filter(msg => !showAssistantOnly || msg.role === 'assistant' || msg.role === 'user').map((msg, index) => (
                         <div key={index} className={`mb-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                             <span className={`inline-block rounded px-2 py-1 ${msg.role === 'user' ? 'bg-blue-600' : 'bg-gray-600'}`}>
                                 {msg.content}
                             </span>
+                            <button onClick={() => copyToClipboard(msg.content)} className="ml-2 text-gray-300 hover:text-white">
+                                Copy
+                            </button>
                         </div>
                     ))}
                     {loading && (
