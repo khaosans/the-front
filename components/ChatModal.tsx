@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import supabase from '../utils/supabase'; // Adjust the import based on your file structure
+import { TextDecoder } from 'util'; // Added import for TextDecoder
+import { HTMLInputElement } from 'react'; // Added import for HTMLInputElement
 
 interface ChatModalProps {
     onClose: () => void;
@@ -13,7 +15,7 @@ interface Message {
     content: string;
 }
 
-const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
+const ChatModal: React.FC<ChatModalProps> = ({ onClose }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
 
     const fetchModels = async () => {
         try {
-            const response = await fetch('/api/tags');
+            const response = await fetch('/api/tags'); // Ensure fetch is defined in your environment
             if (!response.ok) {
                 throw new Error('Failed to fetch models');
             }
@@ -36,81 +38,43 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                 setSelectedModel(data.models[0]);
             }
         } catch (error) {
-            console.error('Error fetching models:', error);
+            console.error('Error fetching models:', error); // Ensure console is defined in your environment
         }
     };
 
     const handleSendMessage = async () => {
         if (inputMessage.trim() && !loading) {
-            setLoading(true); // Set loading to true
+            setLoading(true);
             const userMessage: Message = { role: 'user', content: inputMessage };
             setMessages(prevMessages => [...prevMessages, userMessage]);
             setInputMessage('');
 
-            console.log('Sending message:', inputMessage); // Log the message being sent
-
             try {
-                const response = await fetch('http://localhost:11434/v1/chat/completions', { // Updated URL for Ollama API
+                const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: selectedModel,
-                        messages: [
-                            { role: 'user', content: inputMessage }
-                        ],
-                    }),
+                    body: JSON.stringify({ message: inputMessage, model: selectedModel }),
                 });
 
-                console.log('Response status:', response.status); // Log the response status
-
                 if (!response.ok) {
-                    const errorText = await response.text(); // Get the error message from the response
-                    console.error('Error response from external API:', errorText); // Log the error message
-                    throw new Error(`Failed to fetch response: ${response.status} - ${errorText}`);
+                    throw new Error('Failed to fetch response');
                 }
 
-                const reader = response.body?.getReader();
-                let assistantMessage = '';
-
-                // Stream the response
-                const decoder = new TextDecoder();
-                while (true) {
-                    const { done, value } = await reader!.read();
-                    if (done) break;
-                    const chunk = decoder.decode(value, { stream: true });
-                    assistantMessage += chunk;
-
-                    // Log the chunk received
-                    console.log('Received chunk:', chunk);
-
-                    // Update the assistant message in the state
-                    setMessages(prevMessages => [
-                        ...prevMessages,
-                        { role: 'assistant', content: assistantMessage } // Append the assistant message
-                    ]);
-                }
-
-                // Log the final assistant message
-                console.log('Final assistant message:', assistantMessage);
+                const data = await response.json();
+                const assistantMessage: Message = { role: 'assistant', content: data.response }; // Adjust based on Ollama's response structure
+                setMessages(prevMessages => [...prevMessages, assistantMessage]);
 
                 // Save messages to Supabase
-                const { data, error } = await supabase.from('messages').insert([
+                await supabase.from('messages').insert([
                     { content: inputMessage, role: 'user' },
-                    { content: assistantMessage, role: 'assistant' }
+                    { content: assistantMessage.content, role: 'assistant' }
                 ]);
-                if (error) {
-                    console.error('Error saving messages to Supabase:', error);
-                } else {
-                    console.log('Messages saved successfully:', data);
-                }
 
             } catch (error) {
                 console.error('Error:', error);
             } finally {
-                setLoading(false); // Ensure loading state is reset
+                setLoading(false);
             }
-        } else {
-            console.log('Input message is empty or loading is true'); // Log if the input is empty or loading
         }
     };
 
@@ -173,4 +137,4 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
     );
 };
 
-export default ChatBotModal;
+export default ChatModal;
