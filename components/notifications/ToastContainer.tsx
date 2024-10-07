@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Toast from './Toast';
 
-const ToastContainer: React.FC = () => {
+const aToastContainer: React.FC = () => {
     const [toasts, setToasts] = useState<{ id: number; message: string; type: 'success' | 'error' | 'info' }[]>([]);
     let toastId = 0;
 

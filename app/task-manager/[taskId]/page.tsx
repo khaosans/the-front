@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation'; // Ensure useRouter is imported
+import { useRouter } from 'next/navigation'; // Ensure useRouter is imported
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Task, Agent } from '@/types';

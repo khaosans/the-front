@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import SharedLayout from './SharedLayout';
+import SharedLayout from '@/components/SharedLayout';
 
 const Login = () => {
   const [email, setEmail] = useState('');

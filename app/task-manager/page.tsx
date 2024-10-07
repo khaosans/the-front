@@ -12,8 +12,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlusCircle, Target, Clock, Users, CheckCircle2, MoveRight, AlertTriangle, Zap, Bomb, Skull, Code, Database, Server } from 'lucide-react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Link from 'next/link';
-import TaskDetailView from '@/components/task-detail-view'; // Ensure this path is correct
-import { agentsData } from '@/types';
 
 export type Agent = {
   id: number;

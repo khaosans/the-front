@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Image, Card, Text, Button } from '@geist-ui/react'; // Ensure these components are available
 import { CheckCircle, XCircle } from 'lucide-react'; // Import icons
-import SharedLayout from '../../components/SharedLayout';
+import SharedLayout from '@/components/SharedLayout';
 
 interface Task {
   id: number;

@@ -21,7 +21,20 @@ const pages = [
 export default function HomePage() {
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-4xl font-bold mb-8">Welcome to TaskFlow</h1>
+      <div className="top-bar flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">TaskFlow</h1>
+        <nav>
+          <ul className="flex space-x-4">
+            {pages.map((page) => (
+              <li key={page.href}>
+                <Link href={page.href}>
+                  <a className="text-blue-500 hover:underline">{page.title}</a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pages.map((page, index) => (
           <Card key={index}>

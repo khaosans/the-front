@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
-import SharedLayout from '../../components/SharedLayout';
+import SharedLayout from '@/components/SharedLayout';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');

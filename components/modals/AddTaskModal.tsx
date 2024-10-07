@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Modal, Button } from '@geist-ui/core';
-import { Input } from './ui/input';
+import { Input } from '@/components/ui/input'; // Updated to use absolute import
 
 interface AddTaskModalProps {
     isOpen: boolean;

@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import RobotTransformerWallpaper from '../../components/RobotTransformerWallpaper';
-import ChatbotModal from '../../components/ChatbotModal';
+
+//use absolute imports
+import RobotTransformerWallpaper from '@/components/RobotTransformerWallpaper';
+import ChatbotModal from '@/components/ChatbotModal';
 
 interface Task {
   id: number;

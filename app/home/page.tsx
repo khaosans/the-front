@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import SharedLayout from '../../components/SharedLayout';
+import SharedLayout from '@/components/SharedLayout';
 
 const HomePage: React.FC = () => {
   return (
