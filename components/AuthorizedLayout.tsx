@@ -1,25 +1,29 @@
-import React from 'react';
-import { useSession } from '@supabase/auth-helpers-react';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/utils/supabase/client';
 
 const AuthorizedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { session, loading } = useSession();
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    React.useEffect(() => {
-        if (!loading && !session) {
-            router.push('/login'); // Redirect to login if not authenticated
-        }
-    }, [loading, session, router]);
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push('/login');
+            } else {
+                setLoading(false);
+            }
+        };
 
-    if (loading) return <div>Loading...</div>; // Show loading state
+        checkSession();
+    }, [router]);
 
-    return (
-        <div>
-            {/* Add your authorized layout components here, e.g., header, sidebar */}
-            {children}
-        </div>
-    );
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    return <>{children}</>;
 };
 
 export default AuthorizedLayout;
