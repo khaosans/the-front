@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button as GeistButton, ButtonProps } from '@geist-ui/react';
 
-interface CustomButtonProps extends Omit<ButtonProps, 'placeholder'> {
+interface CustomButtonProps extends ButtonProps {
   placeholder?: string;
-  scale?: number | string;
+  children?: React.ReactNode;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ children, placeholder = '', scale, ...props }) => {
-  return <GeistButton placeholder={placeholder} scale={scale} {...props}>{children}</GeistButton>;
+const CustomButton: React.FC<CustomButtonProps> = ({ children, placeholder, ...props }) => {
+  return <GeistButton {...props}>{children}</GeistButton>;
 };
 
 export { CustomButton };

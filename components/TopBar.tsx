@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Bell, Settings, Home, MessageCircle, LogOut, Wallet } from 'lucide-react';
+import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import ChatbotModal from './ChatbotModal';
 import { User } from '@supabase/supabase-js';
@@ -22,7 +22,6 @@ const TopBar: React.FC = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [ethBalance, setEthBalance] = useState<string>('0');
   const router = useRouter();
-  const [logoText] = useState('Quantum Labs');
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const TopBar: React.FC = () => {
   const fetchEthBalance = async () => {
     if (active && account) {
       try {
-        const provider = new ethers.providers.InfuraProvider('mainnet', process.env.NEXT_PUBLIC_INFURA_API_KEY);
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const balance = await provider.getBalance(account);
         setEthBalance(ethers.utils.formatEther(balance));
       } catch (error) {
@@ -65,19 +64,27 @@ const TopBar: React.FC = () => {
     setIsChatOpen(!isChatOpen);
   };
 
-  const connectWallet = useCallback(async () => {
-    if (isConnecting) return;
+  const connectWallet = async () => {
+    if (isConnecting) return; // Prevent multiple requests
     setIsConnecting(true);
     try {
-      await activate(injected);
-      toast.success('Wallet connected successfully');
+      if (typeof window.ethereum !== 'undefined') {
+        await activate(injected);
+        toast.success('Wallet connected successfully');
+      } else {
+        toast.error('Please install MetaMask or Rabby');
+      }
     } catch (error: any) {
-      console.error("Error connecting to wallet:", error.message);
-      toast.error("Failed to connect wallet. Please try again.");
+      if (error.code === -32002) {
+        toast.error('Connection request already in progress. Please check your wallet.');
+      } else {
+        console.error("Error connecting wallet:", error.message);
+        toast.error(error.message || "Failed to connect wallet");
+      }
     } finally {
       setIsConnecting(false);
     }
-  }, [activate, isConnecting]);
+  };
 
   const disconnectWallet = async () => {
     try {
@@ -93,7 +100,7 @@ const TopBar: React.FC = () => {
   return (
     <>
       <header className="flex items-center justify-between p-4 bg-gray-800 text-white">
-        <h1 className="text-2xl font-bold glow-effect">{logoText}</h1>
+        <h1 className="text-2xl font-bold">Quantum Labs</h1>
         <nav className="flex space-x-4">
           <Link href="/" className="hover:underline flex items-center">
             <Home className="h-5 w-5 mr-1" />
@@ -114,10 +121,11 @@ const TopBar: React.FC = () => {
               </CustomButton>
             </>
           ) : (
-            <CustomButton onClick={connectWallet} disabled={isConnecting} className="bg-blue-500 hover:bg-blue-600">
+            <CustomButton onClick={connectWallet} className="bg-blue-500 hover:bg-blue-600" disabled={isConnecting}>
               {isConnecting ? 'Connecting...' : 'Connect Wallet'}
             </CustomButton>
           )}
+          {isConnecting && <span className="text-white">Connecting to wallet...</span>}
           <button className="hover:bg-gray-700 p-2 rounded" onClick={toggleChat}>
             <MessageCircle className="h-5 w-5" />
           </button>
@@ -135,15 +143,6 @@ const TopBar: React.FC = () => {
         </div>
       </header>
       {isChatOpen && <ChatbotModal onClose={() => setIsChatOpen(false)} />}
-      <style jsx>{`
-        .glow-effect {
-          text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
-          transition: text-shadow 0.3s;
-        }
-        .glow-effect:hover {
-          text-shadow: 0 0 10px #ffffff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-        }
-      `}</style>
     </>
   );
 }
