@@ -38,8 +38,8 @@ export default function RootLayout({
             <body>
                 <Web3ReactProvider connectors={connectors}>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-                        {/* @ts-ignore */}
                         <Layout>{children}</Layout>
+                        <Toaster position="top-right" />
                     </ThemeProvider>
                 </Web3ReactProvider>
             </body>
