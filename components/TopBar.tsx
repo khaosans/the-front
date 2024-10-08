@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Updated icon import
@@ -8,33 +8,22 @@ import { supabase } from '@/utils/supabase/client';
 import ChatbotModal from './ChatbotModal'; // Updated import to use ChatbotModal
 
 const TopBar: React.FC = () => {
+    const [user, setUser] = useState(null);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const router = useRouter();
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        };
+
+        fetchUser();
+    }, []);
+
     const handleLogout = async () => {
-        try {
-            // Sign out from Supabase
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                console.error('Error logging out:', error.message);
-                return;
-            }
-
-            // Clear any local storage
-            localStorage.clear();
-
-            // Clear any session cookies
-            document.cookie.split(";").forEach((c) => {
-                document.cookie = c
-                    .replace(/^ +/, "")
-                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-            });
-
-            // Redirect to the landing page
-            router.push('/landing');
-        } catch (error) {
-            console.error('Unexpected error during logout:', error);
-        }
+        await supabase.auth.signOut();
+        router.push('/login');
     };
 
     const toggleChat = () => {

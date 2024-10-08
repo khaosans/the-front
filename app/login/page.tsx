@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import SharedLayout from '../../components/SharedLayout';
+import { supabase } from '@/utils/supabase/client'; // Make sure this import is correct
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -16,7 +17,30 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null);
-        // Implement login logic here
+        
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        if (error) {
+            setError(error.message);
+        } else {
+            router.push('/dashboard'); // Redirect to dashboard after successful login
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/auth/callback`,
+            },
+        });
+
+        if (error) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -90,6 +114,7 @@ export default function LoginPage() {
                     <div className="mt-6">
                         <Button
                             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
+                            onClick={handleGoogleLogin}
                         >
                             <Image
                                 src="/images/google.svg"

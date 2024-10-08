@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     const stream = new ReadableStream({
       async start(controller: ReadableStreamDefaultController) {
-        const reader = response.body.getReader();
+        const reader = response.body?.getReader();
         const decoder = new TextDecoder(); // Use global TextDecoder
 
         while (true) {
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Error in API route:', error);
-    return new NextResponse(JSON.stringify({ error: error.message }), {
+    return new NextResponse(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
