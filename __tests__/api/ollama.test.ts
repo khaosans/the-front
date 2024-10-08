@@ -1,7 +1,7 @@
 import { createMocks } from 'node-mocks-http';
 import { POST as handler } from '../../app/api/ollama/route';
 import { render } from '@testing-library/react'; // Use @testing-library/react
-import ChatModal from '../../components/ChatModal'; // Ensure this path is correct
+import ChatModal from '../../components/ChatbotModal'; // Update the path if necessary
 
 // Mock a callback function
 const mockCallback = jest.fn();

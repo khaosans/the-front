@@ -8,7 +8,7 @@ import { supabase } from '@/utils/supabase/client';
 import ChatbotModal from './ChatbotModal'; // Updated import to use ChatbotModal
 
 const TopBar: React.FC = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
     const [isChatOpen, setIsChatOpen] = useState(false);
     const router = useRouter();
 
