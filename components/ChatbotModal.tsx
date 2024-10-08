@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
+import { X } from 'lucide-react'; // Ensure lucide-react is installed and imported correctly
 import supabase from '../utils/supabase'; // Adjust the import based on your file structure
 import SkeletonLoader from './SkeletonLoader'; // Import Skeleton Loader
 import LoaderSpinner from './LoaderSpinner'; // Import Loader Spinner
@@ -14,8 +14,10 @@ interface ChatModalProps {
 interface Message {
     role: 'user' | 'assistant';
     content: string;
+
 }
 
+//make a jsx modal type 
 const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
@@ -153,8 +155,8 @@ const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
                     ))}
                     {loading && (
                         <div className="flex justify-center items-center mb-4">
-                            <LoaderSpinner /> {/* Spinner */}
-                        </div>
+                        <LoaderSpinner /> {/* Spinner */}
+                    </div>
                     )}
                     <div ref={messagesEndRef} /> {/* Empty div to scroll to */}
                 </div>
