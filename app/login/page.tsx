@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import SharedLayout from '../../components/SharedLayout';
-import { supabase } from '@/utils/supabase/client'; // Make sure this import is correct
+import { supabase } from '@/lib/supabaseClient'; // Ensure you have the correct path to your Supabase client
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -17,29 +17,21 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null);
-        
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        if (error) {
-            setError(error.message);
-        } else {
-            router.push('/dashboard'); // Redirect to dashboard after successful login
-        }
+        // Implement login logic here
     };
 
-    const handleGoogleLogin = async () => {
+    const handleGoogleSignIn = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${window.location.origin}/auth/callback`,
+                redirectTo: `${window.location.origin}/auth/callback`, // Adjust the redirect URL as needed
             },
         });
 
         if (error) {
-            setError(error.message);
+            setError('Google sign-in failed');
+        } else {
+            router.push('/dashboard');
         }
     };
 
@@ -114,7 +106,7 @@ export default function LoginPage() {
                     <div className="mt-6">
                         <Button
                             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
-                            onClick={handleGoogleLogin}
+                            onClick={handleGoogleSignIn}
                         >
                             <Image
                                 src="/images/google.svg"

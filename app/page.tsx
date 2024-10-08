@@ -19,10 +19,10 @@ const pages = [
 ];
 
 export default function HomePage() {
-  return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-4xl font-bold mb-8">Welcome to TaskFlow</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    return (
+        <div className="container mx-auto py-10">
+            <h1 className="text-4xl font-bold mb-8">Welcome to TaskFlow</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pages.map((page, index) => (
           <Card key={index}>
             <CardHeader>
@@ -44,5 +44,6 @@ export default function HomePage() {
         ))}
       </div>
     </div>
-  );
+        
+    );
 }

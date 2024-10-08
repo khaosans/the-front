@@ -1,18 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
-import ChatbotModal from '../../components/ChatbotModal'; // Updated import to use ChatbotModal
+import ChatModal from '@/components/ChatModal';
 
 const ChatPage: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(true); // Open the modal by default
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
-    const handleClose = () => {
-        setIsModalOpen(false);
+    const toggleChat = () => {
+        setIsChatOpen(!isChatOpen);
     };
 
     return (
-        <div>
-            {isModalOpen && <ChatbotModal onClose={handleClose} />} {/* Updated to render ChatbotModal */}
+        <div className="container mx-auto py-10">
+            <h1 className="text-4xl font-bold mb-8">Chat Room</h1>
+            <button
+                onClick={toggleChat}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+                {isChatOpen ? 'Close Chat' : 'Open Chat'}
+            </button>
+            {isChatOpen && <ChatModal onClose={toggleChat} />}
         </div>
     );
 };
