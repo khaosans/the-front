@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@geist-ui/react"; // Import Button from Geist UI
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { ArrowUpRight, ArrowDownRight, MoreHorizontal, Wallet } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ethers } from 'ethers'; // Import ethers
-import { supabase } from '@/utils/supabase/client';
-import ChatbotModal from '@/components/ChatbotModal';
-import { useRouter } from 'next/navigation';
+import { Button } from '@geist-ui/react';
+import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
+import { ArrowUpRight, ArrowDownRight, MoreHorizontal, Wallet } from 'lucide-react';
+import { useWeb3React } from '@web3-react/core';
+import { InjectedConnector } from '@web3-react/injected-connector';
+import { Web3Provider } from '@ethersproject/providers'; // Correct import
 
 // Mock data for Ethereum
 const ethTokens = [
@@ -40,13 +39,14 @@ const transactions = [
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
+const injected = new InjectedConnector({
+  supportedChainIds: [1, 3, 4, 5, 42], // Mainnet, Ropsten, Rinkeby, Goerli, Kovan
+});
+
 export default function DefiWalletPage() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
+  const { activate, deactivate, account, active } = useWeb3React<Web3Provider>();
   const [activeChain, setActiveChain] = useState('ethereum');
-  const [loading, setLoading] = useState(false); // Loading state
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const tokens = activeChain === 'ethereum' ? ethTokens : solTokens;
   const totalValue = tokens.reduce((sum, token) => sum + token.value, 0);
@@ -57,48 +57,34 @@ export default function DefiWalletPage() {
   }));
 
   const connectWallet = async () => {
-    setLoading(true); // Set loading to true
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accounts = await provider.send("eth_requestAccounts", []);
-        setWalletAddress(accounts[0]);
-        setIsWalletConnected(true);
-        console.log(`Connected to wallet: ${accounts[0]}`);
-      } catch (error) {
-        console.error("Error connecting to wallet:", error);
-      } finally {
-        setLoading(false); // Set loading to false after connection attempt
-      }
-    } else {
-      alert("Please install a web3 wallet like MetaMask or Rabby Wallet.");
-      setLoading(false); // Set loading to false if no wallet is found
+    setLoading(true);
+    try {
+      await activate(injected);
+    } catch (error) {
+      console.error("Error connecting to wallet:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const disconnectWallet = () => {
-    setIsWalletConnected(false);
-    setWalletAddress('');
-  };
-
-  const handleLogin = () => {
-    router.push('/login');
+    deactivate();
   };
 
   return (
     <div className="container mx-auto py-8 text-white bg-gray-900 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">DeFi Wallet</h1>
-        {isWalletConnected ? (
+        {active ? (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-400">{walletAddress}</span>
-            <Button variant="outline" onClick={disconnectWallet}>Disconnect</Button>
+            <span className="text-sm text-gray-400">{account}</span>
+            <Button auto scale={2/3} onClick={disconnectWallet}>Disconnect</Button>
           </div>
         ) : (
           <Dialog>
             <DialogTrigger asChild>
-              <Button>
-                <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+              <Button auto scale={2/3} onClick={connectWallet} disabled={loading}>
+                <Wallet className="mr-2 h-4 w-4" /> {loading ? 'Connecting...' : 'Connect Wallet'}
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-gray-800 text-white">
@@ -109,22 +95,16 @@ export default function DefiWalletPage() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <Button onClick={connectWallet} className="justify-start bg-gray-700 hover:bg-gray-600" disabled={loading}>
-                  {loading ? 'Connecting...' : (
-                    <>
-                      <img src="/placeholder.svg?height=24&width=24" alt="Rabby" className="mr-2 h-6 w-6" />
-                      Rabby Wallet
-                    </>
-                  )}
+                <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
+                  Rabby Wallet
                 </Button>
-                {/* Add more wallet options here */}
               </div>
             </DialogContent>
           </Dialog>
         )}
       </div>
       
-      {isWalletConnected ? (
+      {active ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card className="bg-gray-800 text-white">
@@ -202,7 +182,7 @@ export default function DefiWalletPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">{protocol.apy}% APY</p>
-                        <Button variant="outline" size="sm" className="bg-gray-700 hover:bg-gray-600">
+                        <Button auto scale={1/3} className="bg-gray-700 hover:bg-gray-600">
                           Interact <ArrowUpRight className="ml-2 w-4 h-4" />
                         </Button>
                       </div>
@@ -229,7 +209,7 @@ export default function DefiWalletPage() {
                       <p className="font-semibold">{tx.amount}</p>
                       <p className="text-sm text-gray-400">{tx.timestamp}</p>
                     </div>
-                    <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
+                    <Button auto scale={1/3} className="text-gray-400 hover:text-white">
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
                   </li>
@@ -246,8 +226,8 @@ export default function DefiWalletPage() {
             <p className="text-gray-400 mb-4">Connect your wallet to view your DeFi portfolio</p>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Wallet className="mr-2 h-4 w-4" /> Connect Wallet
+                <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
+                  <Wallet className="mr-2 h-4 w-4" /> {loading ? 'Connecting...' : 'Connect Wallet'}
                 </Button>
               </DialogTrigger>
               <DialogContent className="bg-gray-800 text-white">
@@ -258,18 +238,15 @@ export default function DefiWalletPage() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
-                  <Button onClick={connectWallet} className="justify-start bg-gray-700 hover:bg-gray-600">
-                    <img src="/placeholder.svg?height=24&width=24" alt="Rabby" className="mr-2 h-6 w-6" />
+                  <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
                     Rabby Wallet
                   </Button>
-                  {/* Add more wallet options here */}
                 </div>
               </DialogContent>
             </Dialog>
           </CardContent>
         </Card>
       )}
-      {isChatOpen && <ChatbotModal onClose={() => setIsChatOpen(false)} />}
     </div>
   );
 }
