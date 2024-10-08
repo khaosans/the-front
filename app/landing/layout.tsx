@@ -21,7 +21,7 @@ export default function LandingLayout({
           <div className="relative z-10">
             {children}
             
-            <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
+            <ChatbotModal onClose={() => setIsChatbotOpen(false)} />
           </div>
         </ThemeProvider>
       </body>

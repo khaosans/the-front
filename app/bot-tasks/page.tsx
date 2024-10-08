@@ -68,7 +68,6 @@ const BotTaskManager: React.FC = () => {
         </div>
       </div>
       <ChatbotModal
-        isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
       />
     </div>

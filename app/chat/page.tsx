@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import ChatModal from '@/components/ChatModal';
+import ChatbotModal from '@/components/ChatbotModal';
 
 const ChatPage: React.FC = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -19,7 +19,7 @@ const ChatPage: React.FC = () => {
             >
                 {isChatOpen ? 'Close Chat' : 'Open Chat'}
             </button>
-            {isChatOpen && <ChatModal onClose={toggleChat} />}
+            {isChatOpen && <ChatbotModal onClose={toggleChat} />}
         </div>
     );
 };

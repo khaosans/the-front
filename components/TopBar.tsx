@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Bell, Settings, Home, MessageCircle, LogOut } from 'lucide-react'; // Updated icon import
 import { supabase } from '@/utils/supabase/client';
 import ChatbotModal from './ChatbotModal'; // Updated import to use ChatbotModal
+import { User } from '@supabase/supabase-js';
 
 const TopBar: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);

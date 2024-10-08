@@ -7,7 +7,6 @@ import SkeletonLoader from './SkeletonLoader'; // Import Skeleton Loader
 import LoaderSpinner from './LoaderSpinner'; // Import Loader Spinner
 
 interface ChatModalProps {
-    isOpen: boolean;
     onClose: () => void;
     // Add any other props you're using
 }
@@ -17,7 +16,7 @@ interface Message {
     content: string;
 }
 
-const ChatBotModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
+const ChatBotModal: React.FC<ChatModalProps> = ({ onClose }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const [loading, setLoading] = useState(false);
