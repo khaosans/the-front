@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from '@geist-ui/react';
+import { CustomButton } from '@/components/CustomButton';
 import { Pie, PieChart, Cell, ResponsiveContainer } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, MoreHorizontal, Wallet } from 'lucide-react';
 import { useWeb3React } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { Web3Provider } from '@ethersproject/providers'; // Correct import
+import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
+import { toast } from 'react-hot-toast';
 
 // Mock data for Ethereum
 const ethTokens = [
@@ -44,9 +46,10 @@ const injected = new InjectedConnector({
 });
 
 export default function DefiWalletPage() {
-  const { activate, deactivate, account, active } = useWeb3React<Web3Provider>();
+  const { activate, deactivate, account, active, library } = useWeb3React<Web3Provider>();
   const [activeChain, setActiveChain] = useState('ethereum');
   const [loading, setLoading] = useState(false);
+  const [ethBalance, setEthBalance] = useState<string>('0');
 
   const tokens = activeChain === 'ethereum' ? ethTokens : solTokens;
   const totalValue = tokens.reduce((sum, token) => sum + token.value, 0);
@@ -56,19 +59,50 @@ export default function DefiWalletPage() {
     value: token.value
   }));
 
+  useEffect(() => {
+    if (active && library && account) {
+      fetchEthBalance();
+    }
+  }, [active, library, account]);
+
+  const fetchEthBalance = async () => {
+    if (library && account) {
+      try {
+        const balance = await library.getBalance(account);
+        setEthBalance(ethers.utils.formatEther(balance));
+      } catch (error) {
+        console.error("Error fetching ETH balance:", error);
+        toast.error("Failed to fetch ETH balance");
+      }
+    }
+  };
+
   const connectWallet = async () => {
     setLoading(true);
     try {
       await activate(injected);
-    } catch (error) {
+      toast.success('Wallet connected successfully');
+    } catch (error: any) {
       console.error("Error connecting to wallet:", error);
+      if (error.message.includes("Already processing eth_requestAccounts")) {
+        toast.error("Wallet connection is already in progress. Please check your wallet for any pending actions.");
+      } else {
+        toast.error("Failed to connect wallet. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const disconnectWallet = () => {
-    deactivate();
+    try {
+      deactivate();
+      setEthBalance('0');
+      toast.success('Wallet disconnected successfully');
+    } catch (error) {
+      console.error("Error disconnecting wallet:", error);
+      toast.error('Failed to disconnect wallet');
+    }
   };
 
   return (
@@ -78,14 +112,16 @@ export default function DefiWalletPage() {
         {active ? (
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-400">{account}</span>
-            <Button auto scale={2/3} onClick={disconnectWallet}>Disconnect</Button>
+            <CustomButton auto scale={2/3} onClick={disconnectWallet} placeholder="Disconnect">
+              Disconnect
+            </CustomButton>
           </div>
         ) : (
           <Dialog>
             <DialogTrigger asChild>
-              <Button auto scale={2/3} onClick={connectWallet} disabled={loading}>
+              <CustomButton auto scale={2/3} onClick={connectWallet} disabled={loading} placeholder="Connect Wallet">
                 <Wallet className="mr-2 h-4 w-4" /> {loading ? 'Connecting...' : 'Connect Wallet'}
-              </Button>
+              </CustomButton>
             </DialogTrigger>
             <DialogContent className="bg-gray-800 text-white">
               <DialogHeader>
@@ -95,9 +131,9 @@ export default function DefiWalletPage() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
+                <CustomButton auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading} placeholder="Connect Wallet">
                   Rabby Wallet
-                </Button>
+                </CustomButton>
               </div>
             </DialogContent>
           </Dialog>
@@ -109,10 +145,10 @@ export default function DefiWalletPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card className="bg-gray-800 text-white">
               <CardHeader>
-                <CardTitle>Total Balance</CardTitle>
+                <CardTitle>ETH Balance</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-4xl font-bold">${totalValue.toLocaleString()}</p>
+                <p className="text-4xl font-bold">{parseFloat(ethBalance).toFixed(4)} ETH</p>
               </CardContent>
             </Card>
             
@@ -182,9 +218,9 @@ export default function DefiWalletPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold">{protocol.apy}% APY</p>
-                        <Button auto scale={1/3} className="bg-gray-700 hover:bg-gray-600">
+                        <CustomButton auto scale={1/3} className="bg-gray-700 hover:bg-gray-600">
                           Interact <ArrowUpRight className="ml-2 w-4 h-4" />
-                        </Button>
+                        </CustomButton>
                       </div>
                     </li>
                   ))}
@@ -209,9 +245,9 @@ export default function DefiWalletPage() {
                       <p className="font-semibold">{tx.amount}</p>
                       <p className="text-sm text-gray-400">{tx.timestamp}</p>
                     </div>
-                    <Button auto scale={1/3} className="text-gray-400 hover:text-white">
+                    <CustomButton auto scale={1/3} className="text-gray-400 hover:text-white">
                       <MoreHorizontal className="w-4 h-4" />
-                    </Button>
+                    </CustomButton>
                   </li>
                 ))}
               </ul>
@@ -226,9 +262,9 @@ export default function DefiWalletPage() {
             <p className="text-gray-400 mb-4">Connect your wallet to view your DeFi portfolio</p>
             <Dialog>
               <DialogTrigger asChild>
-                <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
+                <CustomButton auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading} placeholder="Connect Wallet">
                   <Wallet className="mr-2 h-4 w-4" /> {loading ? 'Connecting...' : 'Connect Wallet'}
-                </Button>
+                </CustomButton>
               </DialogTrigger>
               <DialogContent className="bg-gray-800 text-white">
                 <DialogHeader>
@@ -238,9 +274,9 @@ export default function DefiWalletPage() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
-                  <Button auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading}>
+                  <CustomButton auto scale={1} className="justify-start bg-gray-700 hover:bg-gray-600" onClick={connectWallet} disabled={loading} placeholder="Connect Wallet">
                     Rabby Wallet
-                  </Button>
+                  </CustomButton>
                 </div>
               </DialogContent>
             </Dialog>

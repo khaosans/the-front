@@ -33,8 +33,8 @@
       "./@types"
     ],
     "types": [
-      "jest",
-      "node"
+      "node",
+      "jest"
     ],
     "baseUrl": "."
   },
