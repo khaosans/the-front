@@ -19,7 +19,7 @@ const ChatLayout: React.FC<ChatLayoutProps> = ({ children }) => {
       <div className="relative z-10 min-h-screen">
         {children}
         
-        <ChatbotModal isOpen={isChatbotOpen} onClose={() => setIsChatbotOpen(false)} />
+        <ChatbotModal onClose={() => setIsChatbotOpen(false)} />
       </div>
     </ThemeProvider>
   );
