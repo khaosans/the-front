@@ -34,7 +34,7 @@ export default function PortfolioPage() {
           console.log("Response Data:", data); // Log the response data
           setTotalBalance(data.total_usd_value); // Assuming the response contains total_usd_value
         } catch (error) {
-          console.error("Error fetching total balance data:", error.message); // Log error message
+          console.error("Error fetching total balance data:", error as Error); // Log error message
         } finally {
           setLoading(false);
         }
@@ -67,8 +67,8 @@ export default function PortfolioPage() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Your Portfolio</h1>
       <div className="flex items-center mb-4">
-        <img src={user.profileImageUrl || '/default-profile.png'} alt={user.fullName || 'User'} className="w-12 h-12 rounded-full mr-2" />
-        <h2 className="text-xl font-semibold">{user.fullName || user.email}</h2>
+        <img src={user.imageUrl || '/default-profile.png'} alt={'User'} className="w-12 h-12 rounded-full mr-2" />
+        <h2 className="text-xl font-semibold">{ user.username}</h2>
       </div>
       {totalBalance !== null ? (
         <Card>
