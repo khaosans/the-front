@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
+<<<<<<< HEAD
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -21,6 +22,12 @@ export default function ForgotPassword() {
     setIsSubmitting(false)
     setIsSubmitted(true)
   }
+=======
+// Create a client-side only version of the ForgotPassword component
+const ForgotPasswordForm = dynamic(() => import('@/components/ForgotPasswordForm'), {
+  ssr: false,
+});
+>>>>>>> parent of b07c47e (kebabo (#10))
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
