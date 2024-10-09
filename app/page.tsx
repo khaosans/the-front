@@ -1,49 +1,103 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, LayoutDashboard, Users, Briefcase, Bot, BarChart, Settings, Workflow, FileText, MessageCircle } from 'lucide-react';
-import ChatbotModal from '@/components/ChatbotModal';
+import { useUser } from '@clerk/nextjs';
+import { ArrowRight, Brain, Cog, Users, Zap, BarChart, Shield } from 'lucide-react';
 
-const pages = [
-  { title: 'Dashboard', description: 'Overview of your projects and tasks', icon: LayoutDashboard, href: '/dashboard' },
-  { title: 'Teams', description: 'Manage your teams and members', icon: Users, href: '/teams' },
-  { title: 'Projects', description: 'View and manage your projects', icon: Briefcase, href: '/projects' },
-  { title: 'Agent Design', description: 'Manage AI agents for task assistance', icon: Bot, href: '/agent-design' },
-  { title: 'Task Design', description: 'Manage tasks and workflows', icon: Workflow, href: '/task-design' },
-  { title: 'Analytics', description: 'Insights and performance metrics', icon: BarChart, href: '/analytics' },
-  { title: 'Documentation', description: 'View the documentation', icon: FileText, href: '/documentation' },
-  { title: 'Settings', description: 'Configure your account and preferences', icon: Settings, href: '/settings' },
-  { title: 'Chat Room', description: 'Join the chat room', icon: MessageCircle, href: '/chat' },
-];
+const WelcomePage: React.FC = () => {
+  const { isSignedIn, user } = useUser();
 
-export default function HomePage() {
-    return (
-        <div className="container mx-auto py-10">
-            <h1 className="text-4xl font-bold mb-8">Welcome to TaskFlow</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pages.map((page, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <page.icon className="mr-2 h-6 w-6" />
-                {page.title}
-              </CardTitle>
-              <CardDescription>{page.description}</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Link href={page.href} passHref>
-                <Button className="w-full">
-                  Go to {page.title}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="container mx-auto px-4 py-16">
+        <header className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-4">Welcome to Quantum Labs</h1>
+          <p className="text-xl text-gray-400">Empowering your projects with AI-driven solutions</p>
+        </header>
+
+        {isSignedIn ? (
+          <div className="text-center mb-16">
+            <p className="text-2xl mb-4">Hello, {user?.firstName}! Ready to dive in?</p>
+            <Link 
+              href="/dashboard" 
+              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full inline-flex items-center text-lg transition-colors duration-300"
+            >
+              Go to Dashboard
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </div>
+        ) : (
+          <div className="text-center mb-16">
+            <div className="space-x-4">
+              <Link 
+                href="/login"
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full inline-flex items-center text-lg transition-colors duration-300"
+              >
+                Sign In
               </Link>
-            </CardFooter>
-          </Card>
-        ))}
+              <Link 
+                href="/sign-up"
+                className="bg-transparent hover:bg-purple-700 text-purple-600 hover:text-white font-bold py-3 px-6 rounded-full inline-flex items-center text-lg border-2 border-purple-600 transition-colors duration-300"
+              >
+                Sign Up
+              </Link>
+            </div>
+          </div>
+        )}
+
+        <section className="mb-16">
+          <h2 className="text-3xl font-semibold mb-8 text-center">Our Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <FeatureCard 
+              icon={<Brain className="h-12 w-12 text-purple-500" />}
+              title="AI Agents"
+              description="Leverage our intelligent AI agents for various tasks, from data analysis to content creation."
+            />
+            <FeatureCard 
+              icon={<Cog className="h-12 w-12 text-purple-500" />}
+              title="Task Management"
+              description="Efficiently manage and track your projects with our intuitive task management system."
+            />
+            <FeatureCard 
+              icon={<Users className="h-12 w-12 text-purple-500" />}
+              title="Collaboration"
+              description="Work seamlessly with your team members in real-time, enhancing productivity and communication."
+            />
+            <FeatureCard 
+              icon={<Zap className="h-12 w-12 text-purple-500" />}
+              title="Automation"
+              description="Automate repetitive tasks and workflows to save time and reduce errors."
+            />
+            <FeatureCard 
+              icon={<BarChart className="h-12 w-12 text-purple-500" />}
+              title="Analytics"
+              description="Gain valuable insights with our advanced analytics and reporting tools."
+            />
+            <FeatureCard 
+              icon={<Shield className="h-12 w-12 text-purple-500" />}
+              title="Security"
+              description="Rest easy knowing your data is protected with our state-of-the-art security measures."
+            />
+          </div>
+        </section>
+
+        <footer className="text-center text-gray-500">
+          <p>&copy; 2023 Quantum Labs. All rights reserved.</p>
+        </footer>
       </div>
     </div>
-        
-    );
-}
+  );
+};
+
+const FeatureCard: React.FC<{ icon: React.ReactNode; title: string; description: string }> = ({ icon, title, description }) => (
+  <div className="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform duration-300 hover:transform hover:scale-105">
+    <div className="flex items-center mb-4">
+      {icon}
+      <h3 className="text-xl font-semibold ml-4">{title}</h3>
+    </div>
+    <p className="text-gray-400">{description}</p>
+  </div>
+);
+
+export default WelcomePage;

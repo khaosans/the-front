@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   webpack: (config) => {
-    config.resolve.fallback = { ...config.resolve.fallback, net: false, os: false };
+    // Disable the webpack cache if not needed
+    config.cache = false;
     return config;
   },
 };

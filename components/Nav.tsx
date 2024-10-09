@@ -1,22 +1,34 @@
-import { Link } from 'lucide-react';
-import React from 'react';
+import Link from 'next/link';
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
-const Nav: React.FC = () => {
+const Nav = () => {
   return (
-    <nav>
-      <ul>
+    <nav className="bg-gray-800 text-white p-4">
+      <ul className="flex space-x-4">
         <li>
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/" className="hover:text-gray-300">
+            Home
+          </Link>
         </li>
-        <li>
-          <Link href="/profile">Profile</Link>
-        </li>
-        <li>
-          <Link href="/taskboard">Taskboard</Link>
-        </li>
-        <li>
-          <Link href="/other-page">Other Page</Link>
-        </li>
+        <SignedIn>
+          <li>
+            <Link href="/taskboard" className="hover:text-gray-300">
+              Taskboard
+            </Link>
+          </li>
+        </SignedIn>
+        <SignedOut>
+          <li>
+            <Link href="/login" className="hover:text-gray-300">
+              Login
+            </Link>
+          </li>
+          <li>
+            <Link href="/sign-up" className="hover:text-gray-300">
+              Sign Up
+            </Link>
+          </li>
+        </SignedOut>
       </ul>
     </nav>
   );
