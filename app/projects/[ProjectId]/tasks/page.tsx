@@ -30,7 +30,7 @@ const mockTasks: Task[] = [
 
 export default function TasksPage() {
   const params = useParams();
-  const projectId = params?.projectId as string;
+  const projectId = params?.projectId as string || '';
   const [tasks, setTasks] = useState<Task[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentTask, setCurrentTask] = useState<Task | null>(null)

@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import { useTheme } from './contexts/ThemeContext'
-import ChatIcon from '../components/chat-icon'
-import { ChatBotModal } from '@/components/chat-bot-modal'
-import CodeEditorIcon from '../components/code-editor-icon'
-import { MoncacoEditor } from '@/components/moncaco-editor'
+import ChatIcon from '@/app/components/chat-icon'
+import { ChatBotModal } from '@/app/components/chat-bot-modal'
+import CodeEditorIcon from '@/app/components/code-editor-icon'
+import { MoncacoEditor } from '@/app/components/moncaco-editor'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 import Footer from "@/components/footer"
@@ -36,7 +36,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               <X className="h-4 w-4" />
             </Button>
             <MoncacoEditor
-              onSave={(value) => {
+              onSave={(value: string) => {
                 console.log('Saved:', value)
                 setIsEditorOpen(false)
               }}

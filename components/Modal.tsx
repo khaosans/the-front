@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/Dialog"; // Updated import
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"; // Updated import
 import { Button } from "@/components/ui/button";
-import { useTheme } from '../app/contexts/ThemeContext';
+import { useTheme } from '@/components/ThemeContext'; // Updated import
 import { X } from 'lucide-react';
 
 interface ModalProps {
