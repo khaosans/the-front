@@ -1,6 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import logger from '@/lib/logger';
 import { Redis } from '@upstash/redis';
+
+// Add these lines
+import 'server-only';
+import { headers } from 'next/headers';
 
 // Initialize Upstash Redis client
 const redis = new Redis({
@@ -8,16 +12,16 @@ const redis = new Redis({
   token: 'AV3qAAIjcDE1YjZkMjExYTAyOTQ0ZDI5YWI3MzU4OGE2ZDlkMTE1ZHAxMA'
 });
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = req.nextUrl;
     const walletAddress = searchParams.get('id');
 
     logger.info('Starting API request...');
     logger.info(`Received request for wallet ID: ${walletAddress}`);
 
     if (!walletAddress) {
-      logger.warn('Missing wallet address in request');
+      logger.info('Missing wallet address in request');
       return NextResponse.json({ error: 'Missing wallet address' }, { status: 400 });
     }
 
