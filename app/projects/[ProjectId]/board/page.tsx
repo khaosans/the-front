@@ -47,9 +47,8 @@ const getPriorityColor = (priority: string) => {
   }
 };
 
-export default function ProjectBoard() {
-  const params = useParams()
-  const projectId = params.projectId
+export default function BoardPage({ params }: { params: { projectId: string } }) {
+  const projectId = params.projectId;
   const [tasks, setTasks] = useState<Task[]>(initialTasks)
 
   const onDragEnd = (result: any) => {
