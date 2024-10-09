@@ -46,9 +46,9 @@ export default function DefiWalletPage() {
     const [isWalletConnected, setIsWalletConnected] = useState(false)
     const [walletAddress, setWalletAddress] = useState('')
     const [activeChain, setActiveChain] = useState('ethereum')
-    const tokens = tokenData[activeChain]
-    const totalValue = tokens.reduce((sum, token) => sum + token.value, 0)
-    const pieData = tokens.map(token => ({ name: token.symbol, value: token.value }))
+    const tokens = tokenData[activeChain as keyof typeof tokenData]
+    const totalValue = tokens.reduce((sum: any, token: any) => sum + token.value, 0)
+    const pieData = tokens.map((token: any) => ({ name: token.symbol, value: token.value }))
 
     const connectWallet = async () => {
         // Simulating wallet connection
@@ -127,7 +127,7 @@ export default function DefiWalletPage() {
                                 <ResponsiveContainer width="100%" height={200}>
                                     <PieChart>
                                         <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                                            {pieData.map((entry, index) => (
+                                            {pieData.map((entry: any, index: any) => (
                                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                             ))}
                                         </Pie>
@@ -143,7 +143,7 @@ export default function DefiWalletPage() {
                             </CardHeader>
                             <CardContent>
                                 <ul className="space-y-4">
-                                    {tokens.map((token, index) => (
+                                    {tokens.map((token: any, index: any) => (
                                         <li key={index} className="flex justify-between items-center">
                                             <div>
                                                 <p className="font-semibold">{token.name}</p>
@@ -166,7 +166,7 @@ export default function DefiWalletPage() {
                             </CardHeader>
                             <CardContent>
                                 <ResponsiveContainer width="100%" height={200}>
-                                    <AreaChart data={tokens[0].history.map((value, index) => ({ name: index, value }))}>
+                                    <AreaChart data={tokens[0].history.map((value: any, index: any) => ({ name: index, value }))}>
                                         <XAxis dataKey="name" />
                                         <YAxis />
                                         <Tooltip />

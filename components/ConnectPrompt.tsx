@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { CustomButton } from '@/components/CustomButton';
+import CustomButton from '@/components/CustomButton';
 import { Wallet } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Button as GeistButton, ButtonProps } from '@geist-ui/react';
+import React, { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
 
-interface CustomButtonProps extends ButtonProps {
-  placeholder?: string;
-  children?: React.ReactNode;
+interface CustomButtonProps {
+  children: ReactNode;
+  [key: string]: any;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ children, placeholder, ...props }) => {
-  return <GeistButton {...props}>{children}</GeistButton>;
+const CustomButton: React.FC<CustomButtonProps> = ({ children, ...props }) => {
+  return <Button {...props}>{children}</Button>;
 };
 
-export { CustomButton };
+export default CustomButton;

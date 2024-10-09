@@ -1,8 +1,7 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-
+import auth  from "@clerk/nextjs";
+import { redirect } from "next/navigation"
 export default function TaskboardPage() {
-  const { userId } = auth();
+    const userId = auth.useUser();
 
   if (!userId) {
     redirect("/login");

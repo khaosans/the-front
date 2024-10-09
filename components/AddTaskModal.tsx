@@ -1,8 +1,10 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Modal, Button } from '@geist-ui/core';
-import { Input } from './ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface AddTaskModalProps {
     isOpen: boolean;
@@ -22,24 +24,31 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd }) =
             onClose();
         }
     };
+
     return (
-        <Modal visible={isOpen} onClose={onClose}>
-            <Modal.Title>Add New Task</Modal.Title>
-            <Modal.Content>
-                <Input
-                    placeholder="Task Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <Input
-                    placeholder="Task Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
-            </Modal.Content>
-            <Modal.Action passive onClick={onClose} placeholder="Cancel">Cancel</Modal.Action>
-            <Modal.Action onClick={handleAddTask} placeholder="Add Task">Add Task</Modal.Action>
-        </Modal>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Add New Task</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <Input
+                        placeholder="Task Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <Textarea
+                        placeholder="Task Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button onClick={handleAddTask}>Add Task</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };
 
