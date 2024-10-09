@@ -23,7 +23,10 @@ export const middleware = clerkMiddleware((request: NextRequest) => {
   logger.info(`Is Public Route: ${isPublicRoute}, User ID: ${userId}`);
 
   if (!isPublicRoute && !userId) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    // Redirect to login page if not authenticated and not on a public route
+    // Using the URL constructor to create a new URL for the redirect
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
