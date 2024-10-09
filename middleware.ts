@@ -2,29 +2,25 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-    // Check if the user is authenticated
-    const isAuthenticated = request.cookies.get('authToken'); // Adjust this based on your auth logic
+  const publicRoutes = ["/", "/login(.*)", "/sign-up(.*)"];
+  const isPublicRoute = publicRoutes.some(route => new RegExp(`^${route}`).test(request.nextUrl.pathname));
 
-    // Define unprotected paths
-    const unProtectedPaths = ['/login', '/signup'];
-    // Define paths that require authentication
-    const protectedPaths = ['/dashboard', '/profile'];
+  // Check authentication
+  const isAuthenticated = checkAuthentication(request);
 
-    // If the user is not authenticated and trying to access a protected path
-    if (!isAuthenticated && protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  if (!isPublicRoute && !isAuthenticated) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
-    // If the user is authenticated and trying to access unprotected paths, redirect to dashboard
-    if (isAuthenticated && unProtectedPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
-
-    // Allow the request to proceed
-    return NextResponse.next();
+  return NextResponse.next();
 }
 
-// Specify the paths to apply the middleware
+function checkAuthentication(request: NextRequest): boolean {
+  // Implement your authentication check here
+  const token = request.cookies.get('session-token'); // Adjust based on your authentication method
+  return token ? true : false; // Placeholder: replace with actual authentication check
+}
+
 export const config = {
-    matcher: ['/dashboard/:path*', '/profile/:path*', '/login'], // Adjust as necessary
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
