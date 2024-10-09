@@ -1,4 +1,6 @@
 module.exports = {
   extends: ['next/core-web-vitals'],
-  // Remove the 'useEslintrc' and 'extensions' options
+  rules: {
+    // Add any custom rules here
+  }
 };
