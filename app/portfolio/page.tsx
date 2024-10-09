@@ -33,7 +33,7 @@ export default function PortfolioPage() {
       logger.info(`Fetching balance for wallet: ${walletAddress}`);
       const fetchPortfolioData = async () => {
         try {
-          const response = await fetch(`/api/debank?id=${walletAddress}`, {
+          const response = await fetch(`/api/debank/user/total_balance?id=${walletAddress}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
