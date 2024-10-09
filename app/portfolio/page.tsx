@@ -7,6 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
 
+// Add this at the top of the file, after the imports
+declare const fetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+
 interface ChainData {
   id: string;
   name: string;

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import logger from '@/lib/logger';
-import { kv } from '@vercel/kv'; // Import Vercel KV for data storage and retrieval
-
+import { kv } from '@vercel/kv';
+    
 let data: any = {
     "total_usd_value": 27654.142997146177,
     "chain_list": [
@@ -132,26 +132,32 @@ let data: any = {
         "usd_value": 2009.3777816671507
       }
     ]
-  }
+    };
 
-export async function GET() {
-    let response = NextResponse.json(data); 
 
-    
-    // return response;
+  export async function GET() {
+    const cacheKey = 'debank-total-balance';
+    const cacheTTL = 300; // Cache for 5 minutes (300 seconds)
 
-    const debankData = await kv.get('debank-data');
-    if (debankData) {
-        logger.info(`Retrieved data from KV store for wallet ID: ${debankData}`);
-        return NextResponse.json(debankData);
+    try {
+      // Try to get data from cache
+      const cachedData = await kv.get(cacheKey);
+      
+      if (cachedData) {
+          logger.info('Retrieved data from KV store cache');
+          return NextResponse.json(cachedData);
+      }
+
+      // If not in cache, use the existing data
+      logger.info('Data not found in cache, using existing data');
+
+      // Store the data in cache
+      await kv.set(cacheKey, data, { ex: cacheTTL });
+      logger.info('Stored data in KV store cache');
+
+      return NextResponse.json(data);
+    } catch (error) {
+      logger.error('Error in GET function:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-
-    //get data from stubb debank
-    const debankResponse = data;
-
-    await kv.set('debank-data', debankResponse);
-    return NextResponse.json(debankResponse);
-
-
-
-  }
+  }       
