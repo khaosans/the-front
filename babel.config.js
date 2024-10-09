@@ -1,4 +1,10 @@
-module.exports = {
+const config = {
   presets: ['next/babel'],
-  // Add any additional plugins or configuration here
+  plugins: [
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-transform-private-methods', { loose: true }],
+    ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
+  ]
 };
+
+module.exports = config;

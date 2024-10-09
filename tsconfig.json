@@ -33,8 +33,10 @@
       "./@types"
     ],
     "types": [
+      "node",
       "jest",
-      "node"
+      "react",
+      "react-dom"
     ],
     "baseUrl": "."
   },

@@ -1,7 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Add any other necessary configurations
-}
+  webpack: (config) => {
+    // Disable the webpack cache if not needed
+    config.cache = false;
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

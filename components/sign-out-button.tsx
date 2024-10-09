@@ -1,17 +1,11 @@
 'use client'
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { useRouter } from 'next/navigation'
 import { signOut } from '@/utils/auth'
 
 export default function SignOutButton() {
-  const router = useRouter()
-  const supabase = createClientComponentClient()
-
   const handleSignOut = async () => {
     await signOut()
-    await supabase.auth.signOut()
-    router.push('/login')
+    window.location.href = '/login'
   }
 
   return (
@@ -22,4 +16,7 @@ export default function SignOutButton() {
       Sign Out
     </button>
   )
+}
+function createClientComponentClient() {
+  throw new Error('Function not implemented.')
 }

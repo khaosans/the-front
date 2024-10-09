@@ -3,8 +3,15 @@
 import React from 'react';
 import { Wrench, Globe, Database, FileText, User } from 'lucide-react'; // Importing the new icons
 import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 
 const AgentManager: React.FC = () => {
+    const { isSignedIn, user } = useUser();
+
+    if (!isSignedIn) {
+        return <div>Please sign in to access the Agent Manager.</div>;
+    }
+
     // Sample agent data for demonstration
     const agents = [
         { id: 1, avatar: 'AJ', name: 'Alice Johnson', type: 'Researcher', tools: ['Web Scraper', 'Database'], tasks: 15, successRate: '93.0%', score: 87, rank: 'Expert' },
@@ -48,6 +55,7 @@ const AgentManager: React.FC = () => {
             </div>
         </div>
     );
-}
+};
 
 export default AgentManager;
+
