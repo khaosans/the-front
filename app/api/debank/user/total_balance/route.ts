@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     }
 
     const cacheKey = `debank-total-balance-${walletAddress}`;
-    const cacheTTL = 300; // Cache for 5 minutes (300 seconds)
+    const cacheTTL = 3600; // Cache for 60 minutes (3600 seconds)
     const debankAPIUrl = `https://pro-openapi.debank.com/v1/user/total_balance?id=${walletAddress}`;
 
     // Try to get data from cache
