@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Bell, Settings, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import ChatbotModal from './ChatbotModal';
@@ -15,12 +14,13 @@ import { useNotifications } from '@/hooks/useNotifications';
 interface TopBarProps {
   onWalletChange: (wallet: { address: string; type: string } | null) => void;
   selectedWallet: { address: string; type: string } | null;
+  productName: string;
+  productLinks: Array<{ href: string; label: string }>;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isNudged, setIsNudged] = useState(false);
-  const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
   const { notifications } = useNotifications();
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -31,7 +31,10 @@ const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
 
   const handleLogoClick = () => {
     setIsNudged(true);
-    globalThis.setTimeout(() => setIsNudged(false), 300);
+    globalThis.setTimeout(() => {
+      setIsNudged(false);
+      window.location.href = '/'; // Use window to navigate to the home page
+    }, 300);
   };
 
   const handleWalletChange = (wallet: { address: string; type: string } | null) => {
@@ -50,7 +53,7 @@ const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
         transition={{ duration: 0.5 }}
         className="flex items-center justify-between p-4 bg-gray-800 text-white"
       >
-        <Link href="/" className={`text-2xl font-bold hover:text-purple-400 transition-colors ${isNudged ? 'animate-nudge' : ''}`} onClick={handleLogoClick}>
+        <div className={`text-2xl font-bold hover:text-purple-400 transition-colors ${isNudged ? 'animate-nudge' : ''}`} onClick={handleLogoClick}>
           <motion.span 
             className="glow"
             whileHover={{ scale: 1.1 }}
@@ -58,7 +61,7 @@ const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
           >
             Quantum Labs
           </motion.span>
-        </Link>
+        </div>
         <nav className="flex space-x-4">
           <SignedIn>
             <motion.div className="flex space-x-4">
@@ -69,9 +72,9 @@ const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Link href={`/${item.toLowerCase().replace(' ', '-')}`} className="hover:text-purple-400 transition-colors">
+                  <a href={`/${item.toLowerCase().replace(' ', '-')}`} className="hover:text-purple-400 transition-colors">
                     {item}
-                  </Link>
+                  </a>
                 </motion.div>
               ))}
             </motion.div>
@@ -89,27 +92,27 @@ const TopBar: React.FC<TopBarProps> = ({ onWalletChange, selectedWallet }) => {
               <MessageCircle className="h-5 w-5" />
             </motion.button>
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link href="/settings" className="relative hover:bg-gray-700 p-2 rounded flex items-center transition-colors glow-button">
+              <a href="/settings" className="relative hover:bg-gray-700 p-2 rounded flex items-center transition-colors glow-button">
                 <Settings className="h-5 w-5" />
-              </Link>
+              </a>
             </motion.div>
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link href="/notifications" className="relative hover:bg-gray-700 p-2 rounded transition-colors glow-button">
+              <a href="/notifications" className="relative hover:bg-gray-700 p-2 rounded transition-colors glow-button">
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
                   <Badge variant="destructive" className="absolute -top-2 -right-2 px-2 py-1 text-xs">
                     {unreadCount}
                   </Badge>
                 )}
-              </Link>
+              </a>
             </motion.div>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
           <SignedOut>
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link href="/login" className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors">
+              <a href="/login" className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-colors">
                 Sign In
-              </Link>
+              </a>
             </motion.div>
           </SignedOut>
         </div>

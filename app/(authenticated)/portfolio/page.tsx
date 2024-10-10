@@ -6,8 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
+import { toast } from 'react-hot-toast';
 import { useWallet } from '@/contexts/WalletContext';
 import Spinner from '@/components/Spinner';
+import fetch from 'cross-fetch';
+import { kvClient } from 'app/lib/kvClient'; // Ensure this path is correct
 
 interface ChainData {
   id: string;
@@ -34,6 +37,14 @@ export default function PortfolioPage() {
       logger.info(`Fetching balance for wallet: ${wallet.address}`);
       const fetchPortfolioData = async () => {
         try {
+          // Example of using the KV client
+          const cachedData = await kvClient.get(`portfolio:${wallet.address}`);
+          if (cachedData) {
+            setPortfolioData(cachedData);
+            setLoading(false);
+            return;
+          }
+
           const response = await fetch(`/api/debank/user/total_balance?id=${wallet.address}`, {
             method: 'GET',
             headers: {
@@ -58,6 +69,9 @@ export default function PortfolioPage() {
           const data: PortfolioData = await response.json();
           logger.info(`Response Data: ${JSON.stringify(data)}`);
           setPortfolioData(data);
+
+          // Cache the data in KV store
+          await kvClient.set(`portfolio:${wallet.address}`, data);
         } catch (error) {
           logger.error(`Error fetching portfolio data: ${(error as Error).message}`);
           setError((error as Error).message);

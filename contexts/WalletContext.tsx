@@ -18,9 +18,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [wallet, setWallet] = useState<Wallet | null>(null);
 
   useEffect(() => {
-    const savedWallet = localStorage.getItem('connectedWallet');
-    if (savedWallet) {
-      setWallet(JSON.parse(savedWallet));
+    if (typeof window !== 'undefined') { // Ensures this runs only on the client side
+      const savedWallet = localStorage.getItem('connectedWallet');
+      if (savedWallet) {
+        setWallet(JSON.parse(savedWallet));
+      }
     }
   }, []);
 
