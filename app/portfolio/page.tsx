@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
 import { toast } from 'react-hot-toast';
-import type { MetaMaskInpageProvider } from "@metamask/providers";
+import { useWallet } from '@/contexts/WalletContext';
+import Spinner from '@/components/Spinner';
 
 interface ChainData {
   id: string;
@@ -21,45 +22,20 @@ interface PortfolioData {
   chain_list: ChainData[];
 }
 
-declare global {
-  interface Window {
-    ethereum?: MetaMaskInpageProvider;
-  }
-}
-
 export default function PortfolioPage() {
   const { isLoaded: isUserLoaded, isSignedIn, user } = useUser();
   const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const { wallet } = useWallet();
 
   useEffect(() => {
-    const connectWallet = async () => {
-      if (typeof window !== 'undefined' && window.ethereum) {
-        try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) as string[];
-          if (accounts[0]) {
-            setWalletAddress(accounts[0]);
-          }
-        } catch (error) {
-          console.error('Failed to connect wallet:', error);
-          toast.error('Failed to connect wallet');
-        }
-      }
-    };
-
-    connectWallet();
-  }, []);
-
-  useEffect(() => {
-    if (isUserLoaded && isSignedIn && user && walletAddress) {
-      logger.info(`Fetching balance for wallet: ${walletAddress}`);
+    if (isUserLoaded && isSignedIn && user && wallet) {
+      logger.info(`Fetching balance for wallet: ${wallet.address}`);
       const fetchPortfolioData = async () => {
         try {
-          const response = await fetch(`/api/debank/user/total_balance?id=${walletAddress}`, {
+          const response = await fetch(`/api/debank/user/total_balance?id=${wallet.address}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -93,13 +69,18 @@ export default function PortfolioPage() {
 
       fetchPortfolioData();
     } else {
-      logger.info("User is not signed in, data is not loaded, or wallet is not connected.");
+      setPortfolioData(null);
       setLoading(false);
     }
-  }, [isUserLoaded, isSignedIn, user, walletAddress]);
+  }, [isUserLoaded, isSignedIn, user, wallet]);
 
-  if (!isUserLoaded) {
-    return <div>Loading...</div>;
+  if (!isUserLoaded || loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Spinner size="large" color="#611BBD" />
+        <p className="mt-4 text-xl">Loading...</p>
+      </div>
+    );
   }
 
   if (!isSignedIn) {
@@ -111,7 +92,7 @@ export default function PortfolioPage() {
     );
   }
 
-  if (!walletAddress) {
+  if (!wallet) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold mb-4">No wallet connected</h1>
@@ -135,7 +116,7 @@ export default function PortfolioPage() {
         <img src={user.imageUrl || '/default-profile.png'} alt={'User'} className="w-12 h-12 rounded-full mr-2" />
         <h2 className="text-xl font-semibold">{user.username}</h2>
       </div>
-      <p className="mb-4">Connected Wallet: {walletAddress || 'No wallet connected'}</p>
+      <p className="mb-4">Connected Wallet: {wallet.address}</p>
       {portfolioData ? (
         <div>
           <Card className="mb-4">

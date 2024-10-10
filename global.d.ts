@@ -1,8 +1,15 @@
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import { ethers } from 'ethers';
+
+interface ExtendedProvider extends ethers.providers.ExternalProvider {
+  isMetaMask?: boolean;
+  isRabby?: boolean;
+}
 
 declare global {
   interface Window {
-    ethereum?: MetaMaskInpageProvider;
+    ethereum?: ExtendedProvider;
+    rabby?: ExtendedProvider;
   }
 }
 

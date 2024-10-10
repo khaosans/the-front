@@ -12,7 +12,7 @@ const CommonLayout: React.FC<CommonLayoutProps> = ({ children }) => {
     <ThemeProvider>
       <RobotTransformerWallpaper />
       <TopBar />
-      <main className="main-content">
+      <main className="main-content dark:bg-gray-900 dark:text-white">
         {children}
       </main>
     </ThemeProvider>
