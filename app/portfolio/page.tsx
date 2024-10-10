@@ -7,8 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
 
-// Remove the declare statement and add this import
-import type { RequestInfo, RequestInit, Response } from 'node-fetch';
+// The import for node-fetch types should be removed
 
 interface ChainData {
   id: string;
