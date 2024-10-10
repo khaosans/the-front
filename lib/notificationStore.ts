@@ -14,7 +14,9 @@ class NotificationStore {
   async fetchNotifications(userId: string): Promise<Notification[]> {
     if (!this.notifications.has(userId)) {
       const notifications = await kv.get(`notifications:${userId}`) || [];
-      this.notifications.set(userId, notifications);
+      // Ensure the fetched notifications are of type Notification[]
+      const typedNotifications = notifications as Notification[];
+      this.notifications.set(userId, typedNotifications);
     }
     return this.notifications.get(userId) || [];
   }

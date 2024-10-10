@@ -97,7 +97,7 @@ const Web3SignIn: React.FC<Web3SignInProps> = ({ onWalletChange }) => {
 
   const fetchBalance = async (address: string) => {
     try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+      const provider = new ethers.providers.Web3Provider(window.ethereum as any, "any");
       const balanceBigNumber = await provider.getBalance(address);
       const balanceInEther = ethers.utils.formatEther(balanceBigNumber);
       setBalance(parseFloat(balanceInEther).toFixed(4));
