@@ -51,7 +51,7 @@ const Web3SignIn: React.FC<Web3SignInProps> = ({ onWalletChange }) => {
   const getProvider = (type: string): ExtendedProvider | null => {
     if (type === 'MetaMask' && (window.ethereum as ExtendedProvider)?.isMetaMask) {
       return window.ethereum as ExtendedProvider;
-    } else if (type === 'Rabby' && ((window.ethereum as ExtendedProvider)?.isRabby || (window as any).rabby)) {
+    } else if (type === 'Rabby' && ((window.ethereum as ExtendedProvider)?.isRabby || window.rabby)) {
       return ((window as any).rabby || window.ethereum) as ExtendedProvider;
     }
     return null;
