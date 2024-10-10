@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useTheme } from './contexts/ThemeContext';
+import { useTheme } from './(authenticated)/contexts/ThemeContext';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Settings } from 'lucide-react';

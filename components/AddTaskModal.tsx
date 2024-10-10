@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from 'components/ui/dialog';
+import { Button } from 'components/ui/button';
+import { Input } from 'components/ui/input';
+import { Textarea } from 'components/ui/textarea';
 
 interface AddTaskModalProps {
     isOpen: boolean;
@@ -35,12 +35,12 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onClose, onAdd }) =
                     <Input
                         placeholder="Task Title"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
                     />
                     <Textarea
                         placeholder="Task Description"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}
                     />
                 </div>
                 <DialogFooter>

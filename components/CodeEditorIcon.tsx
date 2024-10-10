@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Code } from 'lucide-react';
-import { useTheme } from '../app/contexts/ThemeContext';
+import { useTheme } from 'next-themes';
 
 interface CodeEditorIconProps {
   onClick: () => void;

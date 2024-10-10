@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '../app/contexts/ThemeContext';
+import { useTheme } from '../app/(authenticated)/contexts/ThemeContext';
 import { Modal,  Button } from '@geist-ui/react'; //
 const Footer: React.FC = () => {
   const { theme } = useTheme();

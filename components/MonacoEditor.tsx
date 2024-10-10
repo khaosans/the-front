@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTheme } from '../app/contexts/ThemeContext';
+import { useTheme } from '../app/(authenticated)/contexts/ThemeContext';
 
 interface MonacoEditorProps {
   initialValue?: string;

@@ -6,7 +6,7 @@ const mockPortfolio = [
   { name: 'Cardano', symbol: 'ADA', amount: 1000, value: 500 },
 ];
 
-export default function Portfolio() {
+const Portfolio: React.FC = () => {
   const totalValue = mockPortfolio.reduce((sum, asset) => sum + asset.value, 0);
 
   return (
@@ -34,4 +34,6 @@ export default function Portfolio() {
       </div>
     </div>
   );
-}
+};
+
+export default Portfolio;

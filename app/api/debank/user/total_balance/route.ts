@@ -7,9 +7,9 @@ import 'server-only';
 import { headers } from 'next/headers';
 
 // Initialize Upstash Redis client
-const redis = new Redis({//use env variables
-  url: process.env.UPSTASH_REDIS_URL!,
-  token: process.env.UPSTASH_REDIS_TOKEN!
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_URL,
+  token: process.env.UPSTASH_REDIS_TOKEN
 });
 
 export async function GET(req: NextRequest) {

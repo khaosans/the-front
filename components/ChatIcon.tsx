@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
-import { useTheme } from '../app/contexts/ThemeContext';
+import { useTheme } from '../app/(authenticated)/contexts/ThemeContext';
 
 interface ChatIconProps {
   onClick: () => void;
