@@ -28,8 +28,9 @@ const mockTasks: Task[] = [
   { id: '3', title: 'Task 3', description: 'Description 3', due_date: '2023-05-03', status: 'done', project_id: 'project1' },
 ]
 
-export default function ProjectTasksPage() {
-  const { projectId } = useParams()
+export default function TasksPage() {
+  const params = useParams();
+  const projectId = params?.projectId as string || '';
   const [tasks, setTasks] = useState<Task[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentTask, setCurrentTask] = useState<Task | null>(null)
