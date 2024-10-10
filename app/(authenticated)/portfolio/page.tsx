@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 import { useWallet } from '@/contexts/WalletContext';
 import Spinner from '@/components/Spinner';
 import fetch from 'cross-fetch';
-import { kvClient } from 'app/lib/kvClient'; // Ensure this path is correct
+import { kvClient } from '@/app/lib/kvClient';
 
 interface ChainData {
   id: string;
@@ -37,9 +37,9 @@ export default function PortfolioPage() {
       logger.info(`Fetching balance for wallet: ${wallet.address}`);
       const fetchPortfolioData = async () => {
         try {
-          // Example of using the KV client
           const cachedData = await kvClient.get(`portfolio:${wallet.address}`);
           if (cachedData) {
+            console.log('Cached Data:', cachedData);
             setPortfolioData(cachedData);
             setLoading(false);
             return;
@@ -52,28 +52,16 @@ export default function PortfolioPage() {
             },
           });
 
-          logger.info(`Response Status: ${response.status}`);
-
-          if (response.status === 404) {
-            const errorText = await response.text();
-            logger.error(`404 Error: ${errorText}`);
-            throw new Error('API endpoint not found');
-          }
-
           if (!response.ok) {
-            const errorData = await response.json();
-            logger.error(`Error Response Data: ${JSON.stringify(errorData)}`);
-            throw new Error(`Network response was not ok: ${errorData.error}`);
+            throw new Error(`Network response was not ok: ${response.statusText}`);
           }
 
           const data: PortfolioData = await response.json();
-          logger.info(`Response Data: ${JSON.stringify(data)}`);
+          console.log('Fetched Data:', data);
           setPortfolioData(data);
-
-          // Cache the data in KV store
           await kvClient.set(`portfolio:${wallet.address}`, data);
         } catch (error) {
-          logger.error(`Error fetching portfolio data: ${(error as Error).message}`);
+          console.error('Error fetching data:', error);
           setError((error as Error).message);
         } finally {
           setLoading(false);
@@ -130,36 +118,30 @@ export default function PortfolioPage() {
         <h2 className="text-xl font-semibold">{user.username}</h2>
       </div>
       <p className="mb-4">Connected Wallet: {wallet.address}</p>
-      {portfolioData ? (
-        <div>
-          <Card className="mb-4">
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle>Portfolio Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-lg font-semibold">Total Balance: ${portfolioData.total_usd_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+        </CardContent>
+      </Card>
+      <h3 className="text-xl font-semibold mb-2">Chain Breakdown</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {portfolioData.chain_list.map((chain) => (
+          <Card key={chain.id}>
             <CardHeader>
-              <CardTitle>Portfolio Overview</CardTitle>
+              <CardTitle className="flex items-center">
+                <img src={chain.logo_url} alt={chain.name} className="w-6 h-6 mr-2" />
+                {chain.name}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-lg font-semibold">Total Balance: ${portfolioData.total_usd_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+              <p>${chain.usd_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
             </CardContent>
           </Card>
-          <h3 className="text-xl font-semibold mb-2">Chain Breakdown</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {portfolioData.chain_list.map((chain) => (
-              <Card key={chain.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <img src={chain.logo_url} alt={chain.name} className="w-6 h-6 mr-2" />
-                    {chain.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>${chain.usd_value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <p>No portfolio data available.</p>
-      )}
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { authMiddleware } from 'app/middleware/authMiddleware'; // Updated to absolute path
+import { authMiddleware } from 'app/middleware/authMiddleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Your existing API logic here
