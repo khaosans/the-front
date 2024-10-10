@@ -1,0 +1,1 @@
+"workbench.activityBar.orientation": "vertical"

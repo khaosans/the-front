@@ -7,9 +7,9 @@ import 'server-only';
 import { headers } from 'next/headers';
 
 // Initialize Upstash Redis client
-const redis = new Redis({
-  url: 'https://viable-ladybird-24042.upstash.io',
-  token: 'AV3qAAIjcDE1YjZkMjExYTAyOTQ0ZDI5YWI3MzU4OGE2ZDlkMTE1ZHAxMA'
+const redis = new Redis({//use env variables
+  url: process.env.UPSTASH_REDIS_URL!,
+  token: process.env.UPSTASH_REDIS_TOKEN!
 });
 
 export async function GET(req: NextRequest) {
