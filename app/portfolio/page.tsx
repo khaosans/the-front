@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
-
-// The import for node-fetch types should be removed
+import { toast } from 'react-hot-toast';
+import type { MetaMaskInpageProvider } from "@metamask/providers";
 
 interface ChainData {
   id: string;
@@ -21,6 +21,12 @@ interface PortfolioData {
   chain_list: ChainData[];
 }
 
+declare global {
+  interface Window {
+    ethereum?: MetaMaskInpageProvider;
+  }
+}
+
 export default function PortfolioPage() {
   const { isLoaded: isUserLoaded, isSignedIn, user } = useUser();
   const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
@@ -28,10 +34,28 @@ export default function PortfolioPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   
-  const walletAddress = user?.web3Wallets?.[0]?.web3Wallet;
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isSignedIn && walletAddress) {
+    const connectWallet = async () => {
+      if (typeof window !== 'undefined' && window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) as string[];
+          if (accounts[0]) {
+            setWalletAddress(accounts[0]);
+          }
+        } catch (error) {
+          console.error('Failed to connect wallet:', error);
+          toast.error('Failed to connect wallet');
+        }
+      }
+    };
+
+    connectWallet();
+  }, []);
+
+  useEffect(() => {
+    if (isUserLoaded && isSignedIn && user && walletAddress) {
       logger.info(`Fetching balance for wallet: ${walletAddress}`);
       const fetchPortfolioData = async () => {
         try {
@@ -69,10 +93,10 @@ export default function PortfolioPage() {
 
       fetchPortfolioData();
     } else {
-      logger.info("User is not signed in or wallet address is not available.");
+      logger.info("User is not signed in, data is not loaded, or wallet is not connected.");
       setLoading(false);
     }
-  }, [isSignedIn, user, walletAddress]);
+  }, [isUserLoaded, isSignedIn, user, walletAddress]);
 
   if (!isUserLoaded) {
     return <div>Loading...</div>;
@@ -83,6 +107,15 @@ export default function PortfolioPage() {
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold mb-4">Please sign in to view your portfolio</h1>
         <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
+      </div>
+    );
+  }
+
+  if (!walletAddress) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold mb-4">No wallet connected</h1>
+        <p>Please connect a wallet to view your portfolio.</p>
       </div>
     );
   }
@@ -102,6 +135,7 @@ export default function PortfolioPage() {
         <img src={user.imageUrl || '/default-profile.png'} alt={'User'} className="w-12 h-12 rounded-full mr-2" />
         <h2 className="text-xl font-semibold">{user.username}</h2>
       </div>
+      <p className="mb-4">Connected Wallet: {walletAddress || 'No wallet connected'}</p>
       {portfolioData ? (
         <div>
           <Card className="mb-4">
