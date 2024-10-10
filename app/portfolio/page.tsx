@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import logger from '@/lib/logger';
-
-// The import for node-fetch types should be removed
+import { toast } from 'react-hot-toast';
+import { useWallet } from '@/contexts/WalletContext';
+import Spinner from '@/components/Spinner';
 
 interface ChainData {
   id: string;
@@ -27,15 +28,14 @@ export default function PortfolioPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  
-  const walletAddress = user?.web3Wallets?.[0]?.web3Wallet;
+  const { wallet } = useWallet();
 
   useEffect(() => {
-    if (isSignedIn && walletAddress) {
-      logger.info(`Fetching balance for wallet: ${walletAddress}`);
+    if (isUserLoaded && isSignedIn && user && wallet) {
+      logger.info(`Fetching balance for wallet: ${wallet.address}`);
       const fetchPortfolioData = async () => {
         try {
-          const response = await fetch(`/api/debank/user/total_balance?id=${walletAddress}`, {
+          const response = await fetch(`/api/debank/user/total_balance?id=${wallet.address}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -69,13 +69,18 @@ export default function PortfolioPage() {
 
       fetchPortfolioData();
     } else {
-      logger.info("User is not signed in or wallet address is not available.");
+      setPortfolioData(null);
       setLoading(false);
     }
-  }, [isSignedIn, user, walletAddress]);
+  }, [isUserLoaded, isSignedIn, user, wallet]);
 
-  if (!isUserLoaded) {
-    return <div>Loading...</div>;
+  if (!isUserLoaded || loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Spinner size="large" color="#611BBD" />
+        <p className="mt-4 text-xl">Loading...</p>
+      </div>
+    );
   }
 
   if (!isSignedIn) {
@@ -83,6 +88,15 @@ export default function PortfolioPage() {
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold mb-4">Please sign in to view your portfolio</h1>
         <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
+      </div>
+    );
+  }
+
+  if (!wallet) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold mb-4">No wallet connected</h1>
+        <p>Please connect a wallet to view your portfolio.</p>
       </div>
     );
   }
@@ -102,6 +116,7 @@ export default function PortfolioPage() {
         <img src={user.imageUrl || '/default-profile.png'} alt={'User'} className="w-12 h-12 rounded-full mr-2" />
         <h2 className="text-xl font-semibold">{user.username}</h2>
       </div>
+      <p className="mb-4">Connected Wallet: {wallet.address}</p>
       {portfolioData ? (
         <div>
           <Card className="mb-4">
